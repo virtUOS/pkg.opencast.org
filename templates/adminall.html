@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Admin | Matterhorn Repository</title>
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+<link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+function checkDelete(u) {
+	if ($('select[name='+u+']').val() == 'delete') {
+		if (!confirm('Are you sure, you want to delete this user?')) {
+			return false;
+		}
+	}
+	return true;
+}
+</script>
+</head>
+
+<body>
+<div class="header">
+	<div class="admintip">Admin view <a href="{{ url_for('home') }}">Go to repository</a></div>  
+	<h1>
+		<a href="index.php" class="headline">
+			<img src="{{ url_for('static', filename='img/logo.png') }}" />
+			Matterhorn Repo    
+		</a> 
+
+		<span class="registered_users">{{ usercount }} User</span>
+
+	</h1>
+
+	<div class="switchview-container">
+		<a href="{{ url_for('admin', who='new') }}" class="switchview switchview-active">New Users ({{ newusercount }})</a> 
+		<a href="{{ url_for('admin', who='all') }}" class="switchview">All Users</a>          		
+		<!-- <a href="export.php" class="switchview">Export Email</a>      		 -->
+		<div class="clear"></div>
+	</div>
+
+</div>  
+
+<div class="container"> 
+	<?php echo ($userelement);?>    
+	{% for u in user %}
+	<div class='element'>
+		<table>
+			<tr>
+				<td class='column1'>
+					<a class='more-button' onclick='$("#details{{ u[0] }}").toggle();' title='User information'>
+						<img class='arrow' src="{{ url_for('static', filename='img/info-r.png') }}" /></a></td>
+				<td class='column2'><div class='name'>{{ u[0] }}</div></td>
+				<td class='column3'><div class='email'><a href='mailto:{{ u[4] }}'>{{ u[4] }}</a></div></td>
+			</tr>
+		</table>
+		<div class='clear'>
+			<div style='display:none;' class='userinfo' id='details{{ u[0] }}'>
+				<span class='userinfoline'>
+					<label>Status:</label>{{ 'Admin' if u[13] else ( 'User' if u[14] else 'Disabled' ) }}</span>
+				<span class='userinfoline'>
+					<label>Name:</label>{{ u[1] }} {{ u[2] }}</span>
+				<span class='userinfoline'>
+					<label>E-Mail:</label>{{ u[4] }}</span>
+				<span class='userinfoline'>
+					<label>City:</label>{{ u[6] }}, {{ u[5] }}</span>
+				<span class='userinfoline'>
+					<label>Company:</label>{{ u[8] }}, {{ u[7] }}</span>
+
+				<div class='userstatistics'>
+					{% if u[10] %}
+					Is using Matterhorn in {{ u[11] }} rooms.
+					{% else %}
+					Not using Matterhorn. Is planning to install in {{ u[12] }}.
+					{% endif %}
+				</div>
+
+				<div class='useraction'>
+					<form method='POST' action="{{ url_for('admin', who='all') }}" onsubmit="return checkDelete('{{ u[0] }}');">
+						<select style="font-size: smaller;" name='{{ u[0] }}'>
+							<option value=ignore>–</option>
+							<option value=admin>Grant Administrative Privileges</option>
+							<option value=user>Grant Repository Access Only</option>
+							<option value=delete>Delete User Completely</option>
+						</select>
+						<input style="font-size: smaller;" type=submit value="Save Changes" />
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+
+</div>
+
+
+
+<div class="clear"></div>
+
+
+</body>
+
+</html>

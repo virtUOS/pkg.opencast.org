@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Admin | Matterhorn Repository</title>
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+<link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+function checkDelete() {
+	if ($('.radio[value=delete]:checked').length) {
+		if (!confirm('Are you sure, you want to delete some of the requests?')) {
+			return false;
+		}
+	}
+	return true;
+}
+</script>
+</head>
+
+<body>
+<div class="header">
+	<div class="admintip">Admin view <a href="{{ url_for('home') }}">Go to repository</a></div>  
+	<h1>
+		<a href="index.php" class="headline">
+			<img src="../img/logo.png" />
+			Matterhorn Repo     
+		</a>
+	</h1>
+
+	<div class="switchview-container">
+		<a href="{{ url_for('admin', who='new') }}" class="switchview switchview-active">New Users ({{ newusercount }})</a> 
+		<a href="{{ url_for('admin', who='all') }}" class="switchview">All Users</a>          		
+		<div class="clear"></div>
+	</div>
+</div>  
+
+<div class="container"> 
+	<form method='POST' action='{{ url_for('admin') }}' onsubmit="return checkDelete();">
+		{% for u in user %}
+		<div class='element'>
+			<div class='icon-container admin-selector'>
+				<label><input type='radio' name='{{ u[0] }}' title='Set Admin Rights' value=ignore class='radio' checked />No Action</label>
+				<label><input type='radio' name='{{ u[0] }}' title='Set Admin Rights' value=admin class='radio' />Admin</label>
+				<label><input type='radio' name='{{ u[0] }}' title='Set Reposity Access' value=user class='radio' />User</label>
+				<label><input type='radio' name='{{ u[0] }}' title='Set Reposity Access' value=delete class='radio' />Delete</label>
+			</div>
+			<div class='name'>{{ u[0] }}</div>
+			<div class='clear'>
+				<div class='userinfo'>
+					<span class='userinfoline'><label>Name:</label>{{ u[1] }} {{ u[2] }}</span>
+					<span class='userinfoline'><label>E-Mail:</label>{{ u[4] }}</span>
+					<span class='userinfoline'><label>City:</label>{{ u[6] }}, {{ u[5] }}</span>
+					<span class='userinfoline'><label>Company:</label>{{ u[8] }}, {{ u[7] }}</span>
+					<div class='userstatistics'>
+						{% if u[10] %}
+						Is using Matterhorn in {{ u[11] }} rooms.
+						{% else %}
+						Not using Matterhorn. Is planning to install in {{ u[12] }}.
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+		{% else %}
+		<div class='element'>No open requests.</div>
+		<hr />
+		{% endfor %}
+
+		<div class='submitbutton'><input type='submit' value='Save changes' /></div>
+	</form>
+</div>
+</body>
+</html>
