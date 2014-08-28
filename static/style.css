@@ -589,3 +589,42 @@ input:focus {
 .useraction {
 	margin-top: 10px;
 }
+
+/* SIGN-UP PAGE */
+
+#signup-page input {
+  font-size: 16px;
+  padding: 6px;
+}
+
+#signup-page label {
+  display: inline-block;
+  min-width: 92px;
+  text-align: right;
+  padding: 8px;
+}
+
+#signup-page input[type=radio], #signup-page input[type=checkbox] {
+	width: auto;
+}
+
+#signup-page label.radio {
+	min-width: 50px;
+}
+
+#signup-page .answer {
+	margin-left: 30px;
+}
+
+#signup-page .answer {
+	display: none;
+}
+
+#signup-page .button {
+	width: 100%;
+	margin-bottom: 15px;
+}
+
+#signup-page .field-space {
+  margin-top: 8px;
+}

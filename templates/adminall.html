@@ -23,7 +23,7 @@ function checkDelete(u) {
 <div class="header">
 	<div class="admintip">Admin view <a href="{{ url_for('home') }}">Go to repository</a></div>  
 	<h1>
-		<a href="index.php" class="headline">
+		<a href="{{ url_for('home') }}" class="headline">
 			<img src="{{ url_for('static', filename='img/logo.png') }}" />
 			Matterhorn Repo    
 		</a> 

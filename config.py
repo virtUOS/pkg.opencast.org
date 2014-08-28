@@ -10,7 +10,7 @@ sessionkey = 'bdkfHvkVt(r8%ZGIUZGTRHg'
 
 repourl      = "http://www.lernfunk.de/repo/"
 mailsender   = "virtuos@uni-osnabrueck.de"
-mailtopic    = "Registration Matterhorn RPM Repo"
+mailtopic    = "Registration: Matterhorn RPM Repo"
 mailtext     = '''Hello %(firstname)s %(lastname)s,
 Welcome to the Matterhorn RPM Repository.
 Here are your credentials for the repo:
@@ -18,7 +18,8 @@ Here are your credentials for the repo:
 	Username: %(username)s
 	Password: %(password)s
 	
-You will find more information if you login under ''' + repourl
+For more information, please visit
+ ''' + repourl
 
 # EMAIL TO ADMIN */
 
@@ -26,7 +27,10 @@ adminurl          = "http://www.lernfunk.de/repo/admin/"
 #adminmailadress  = "rrolf@uni-osnabrueck.de"
 adminmailadress   = "lkiesow@uos.de"
 adminmailtopic    = "%(username)s registered on Matterhorn CentOS Repo"
-adminmailtext     = "Hello Admin, \n%(username)s (%(firstname)s %(lastname)s) registered to the Matterhorn RPM Repo.\n\nVisit " + adminurl + " to activate his account."
+adminmailtext     = '''Hello Admin,
+%(username)s (%(firstname)s %(lastname)s) signed-up for the Matterhorn RPM Repo.
+
+Visit ''' + adminurl + ''' to activate his account.'''
 
 # EMAIL FORGOT PASSWORD */
 
@@ -41,19 +45,25 @@ your login for the Matterhorn RPM Repository:
 successtext     = '''Thank you for signing up! Your request will be reviewed
 		and you will get your login after approval.'''
 userexistserror = ('Sign-up failed', '''We are sorry, but a user with this
-		username already exists. Please choose another username.''')
+		username already exists. Please choose another username.''', 'Go back')
 emailerror = ('Sign-up failed', '''You are required to use a valid email
-		address for registration.''')
+		address for registration.''', 'Go back')
 captchaerror    = ('Sign-up failed', '''There was an error during the sign up
-		process. Please try again.''')
+		process. The equation was not solved correctly. Please try again.''',
+		'Go back')
+termsofuseuerror = ('Sign-up failed', '''There was an error during the sign up
+		process. The terms of use have to be accepted. Please try again.''',
+		'Go back')
 dberror         = ('Database error', '''An error occurred. The connection to
 		the database could not be established. This should not have happened.
-		Please report this and try again later.''')
+		Please report this and try again later.''', 'Go back')
 loginerror      = ('Log-in failed', '''The log-in failed. Please verify that
-		you used the correct username and password and try again.''')
+		you used the correct username and password and try again.''', 'Go back')
 forgotmailerror = ('Password recovery failed', '''There is no active user with
 		the given mail address. Please make sure you entered the address
-		correctly.''')
+		correctly.''', 'Go back')
+forgotsuccess = ('Success', '''A mail containing your login
+		credentials has been sent to you.''', '')
 
 
 # TEXT SIGNUP INFO TEXT */

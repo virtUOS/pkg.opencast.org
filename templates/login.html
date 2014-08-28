@@ -16,7 +16,7 @@
       <a href="{{ url_for('logout') }}" style="float: right;" class="switchview">Logout</a>
   <h1>
 	  <a href="{{ url_for('home') }}" class="headline">
-      <img src="../img/logo.png" />
+		<img src="{{ url_for('static', filename='img/logo.png') }}" />
       Matterhorn Repo   
     </a>
   </h1>

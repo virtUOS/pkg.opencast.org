@@ -21,7 +21,11 @@
 	<div class="text-wrapper">
 		<h2>{{ message[0] }}</h2>      
 		<p style="margin-top: 30px;">{{ message[1] }}</p>
-		<p style="margin-top: 30px;"><a href="{{ url_for('home') }}" style="width: 100%; text-align: center;" class="button">Go back</a></p>
+		{% if message[2] %}
+		<p style="margin-top: 30px;"><a href="{{ url_for('home') }}" 
+			onclick="window.history.back(); return false;" style="width: 100%; text-align: center;"
+			class="button">{{ message[2] }}</a></p>
+		{% endif %}
 	</div>
 
 </div>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Recover password</title>
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+<link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+		$('form').submit(function() {
+			if ($(".user").val() == "") {
+				alert("Pleas type your username");
+				$(".user").focus();
+				return false;
+			}
+			if ($(".firstname").val() == "") {
+				alert("Pleas type your firstname");
+				$(".firstname").focus();
+				return false;
+			}
+			if ($(".lastname").val() == "") {
+				alert("Pleas type your lastname");
+				$(".lastname").focus();
+				return false;
+			}
+			if ($(".email").val() == "") {
+				alert("Pleas type your email");
+				$(".email").focus();
+				return false;
+			}
+			if ($(".country").val() == "") {
+				alert("Pleas type your country");
+				$(".country").focus();
+				return false;
+			}
+			if ($(".city").val() == "") {
+				alert("Pleas type your city");
+				$(".city").focus();
+				return false;
+			}
+			if ($(".company").val() == "") {
+				alert("Pleas type your company");
+
+				return false;
+			}
+			if ($(".department").val() == "") {
+				alert("Pleas type your department");
+				$(".department").focus();
+				return false;
+			}
+			if (!$('.agreebox').attr('checked')) {
+				alert("You have to agree to the terms of use");
+				return false;
+			}
+			return true;
+
+		});
+});
+
+function clickAgree(theForm) {
+	if ( theForm.agreebox.checked == false) {
+		alert("You have to agree to the terms of use");
+		return false;
+	} else {
+		return true;
+	}
+}
+
+</script>
+</head>
+
+<body>
+
+<div class="header">
+	<a href="{{ url_for('home') }}">
+		<h1>
+			<img src="{{ url_for('static', filename='img/logo.png') }}" />
+			Matterhorn Repository      
+		</h1>
+	</a>
+</div>
+<div class="box" style="min-width: 500px;">
+	<div class="text-wrapper">
+		<h2>Sign-up</h2>      
+		<div id="signup-page" style="margin-top: 20px;">
+			<form name="form2" method="post" action="{{ url_for('storeuser') }}">
+
+
+				<label for="user">Username:</label>
+				<input name="user" class="user" type="text" required="required" />
+
+				<div class="field-space">
+					<label for="firstname">Firstname:</label>
+					<input name="firstname" class="firstname" type="text" required="required" />
+				</div>
+
+				<div class="field-space">
+					<label for="lastname">Lastname:</label>
+					<input name="lastname" class="lastname" type="text" required="required" />
+				</div>
+
+				<div class="field-space">
+					<label for="email">E-Mail:</label>
+					<input name="email" class="email" type="email" required="required" />
+				</div>
+
+				<div class="field-space">
+					<label for="country">Country:</label>
+					<input name="country" class="country" type="text" required="required" />
+				</div>
+
+				<div class="field-space">
+					<label for="city">City:</label>
+					<input name="city" class="city" type="text" required="required" />
+				</div>
+
+				<div class="field-space">
+					<label for="company">Company:</label>
+					<input name="company" class="company" type="text" required="required" />
+				</div>
+
+				<div class="field-space">
+					<label for="department">Department:</label>
+					<input name="department" class="department" type="text" required="required" />
+				</div>
+
+				<div class="field-space">
+					<label class="question">Do you use Matterhorn?</label>
+					<label class=radio><input type="radio" name="usematterhorn" required="required" value="1" onclick="$('.answer-no').hide();$('.answer-yes').show();" /> Yes</label>
+					<label class=radio><input type="radio" name="usematterhorn" required="required" value="0" onclick="$('.answer-yes').hide();$('.answer-no').show();" /> No</label>
+				</div>
+
+				<div class="answer-yes answer">
+					<label class="questiona">How many rooms are in use?</label>
+					<p class="answera">
+					<select name="installations">
+						<option selected>---</option>
+						<option>1-5</option>
+						<option>6-10</option>
+						<option>11-20</option>
+						<option>21-50</option>
+						<option>51-100</option>
+					</select>
+					</p>
+				</div>
+
+				<div class="answer-no answer">
+					<label class="questiona">When are you planning to use MH?</label>
+					<p class="answera">
+					<select name="adoptiontime">
+						<option selected>---</option>
+						<option>1 week</option>
+						<option>1 month</option>
+						<option>6 month</option>
+						<option>1 year</option>
+						<option>2 years</option>
+					</select>
+				</div>
+				</p>
+
+				<div class="field-space">
+					<label style="text-align: left;">
+						<input type="checkbox" name="agreebox" class="agreebox" value=agree />
+						I acknowledge that this account is for personal or
+						educational use only. I'm not allowed to share this account
+						with others and to use it for commercial purposes.
+					</label>
+				</div>
+
+				<div class="field-space">
+					Please solve the following equation:<br />
+					<label style="font-weight: bold;" for="captcha">{{ rand[0] }}+{{ rand[1] }}=</label>
+					<input required="required" type="text" name="captcha" id="captcha" />
+					<input type="hidden" value="{{ rand[2] }}" name="correct_result" id="correct_result" />
+				</div>
+
+				<div class="field-space">
+					<input type="submit" class="button" name="signupsubmit" value="Sign up">
+				</div>
+
+			</form>
+
+		</div>
+
+	</div>
+</div>
+</body>
+
+</html>

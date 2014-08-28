@@ -18,6 +18,28 @@ from flask import Flask, render_template, request, Response, redirect, url_for, 
 app = Flask(__name__)
 app.secret_key = config.sessionkey
 
+with sqlite3.connect('users.db') as con:
+	cur = con.cursor()
+	cur.execute('''create table if not exists user(
+		username      TEXT PRIMARY KEY,
+		firstname     TEXT,
+		lastname      TEXT,
+		password      TEXT,
+		email         TEXT,
+		country       TEXT,
+		city          TEXT,
+		company       TEXT,
+		department    TEXT,
+		created       TEXT,
+		usematterhorn BOOL,
+		installations TEXT,
+		adoptiontime  TEXT,
+		admin         BOOL,
+		repoaccess    BOOL,
+		deleteaccess  TEXT,
+		comment       TEXT)''')
+	con.commit()
+
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
@@ -48,17 +70,36 @@ def home():
 				admin=admin)
 
 	# No login? Show start page:
-	randa = random.randrange(1, 49)
-	randb = random.randrange(1, 49)
-	randr = randa + randb
-	return render_template('index.html', config=config, rand=(randa, randb, randr))
+	return render_template('index.html', config=config)
 
 
-@app.route('/error/<e>')
+@app.route('/auth', methods=['GET'])
+def auth():
+	try:
+		user, passwd = request.authorization.username, request.authorization.password
+		if session.get('login') == (user, passwd):
+			return '' # 200 OK
+		with sqlite3.connect('users.db') as con:
+			cur = con.cursor()
+			cur.execute('''select username from user
+					where username=? and password=? and repoaccess''',
+					(user, passwd))
+			data = cur.fetchone()
+			if data:
+				session['login'] = (user, passwd)
+				return '' # 200 OK
+	except:
+		pass
+	return Response('', 401,
+			{'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+
+
+@app.route('/msg/<e>')
 def error(e):
 	try:
 		msg = getattr(config, e)
-		return render_template('error.html', config=config, message=msg)
+		return render_template('message.html', config=config, message=msg)
 	except:
 		return '', 400
 
@@ -94,7 +135,15 @@ def forgot():
 			email,
 			message)
 	server.quit()
-	return redirect(url_for('success'))
+	return redirect(url_for('error', e='forgotsuccess'))
+
+
+@app.route('/signup')
+def signup():
+	randa = random.randrange(1, 49)
+	randb = random.randrange(1, 49)
+	randr = randa + randb
+	return render_template('signup.html', config=config, rand=(randa, randb, randr))
 
 
 @app.route('/success')
@@ -156,6 +205,9 @@ def logout():
 
 @app.route('/storeuser', methods=['POST'])
 def storeuser():
+	if request.form.get('agreebox') != 'agree':
+		return redirect(url_for('error', e='termsofuseuerror'))
+
 	if request.form.get('captcha') != request.form.get('correct_result'):
 		return redirect(url_for('error', e='captchaerror'))
 
@@ -163,27 +215,12 @@ def storeuser():
 	if not ( email and '@' in email and '.' in email.split('@')[-1] ):
 		return redirect(url_for('error', e='emailerror'))
 
+	if not request.form.get('user'):
+		return redirect(url_for('error', e='userexistserror'))
+
 	try:
 		with sqlite3.connect('users.db') as con:
 			cur = con.cursor()
-			cur.execute('''create table if not exists user(
-				username      TEXT PRIMARY KEY,
-				firstname     TEXT,
-				lastname      TEXT,
-				password      TEXT,
-				email         TEXT,
-				country       TEXT,
-				city          TEXT,
-				company       TEXT,
-				department    TEXT,
-				created       TEXT,
-				usematterhorn BOOL,
-				installations TEXT,
-				adoptiontime  TEXT,
-				admin         BOOL,
-				repoaccess    BOOL,
-				deleteaccess  TEXT,
-				comment       TEXT)''')
 			cur.execute('''insert into user
 					values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''', (
 						request.form.get('user'),

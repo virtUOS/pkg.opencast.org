@@ -1,113 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <title>LogIn - Matterhorn Repository</title>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>LogIn - Matterhorn Repository</title>
 
-  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/fancybox/jquery.fancybox-1.3.4.css') }}" media="screen" />
-  <link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/fancybox/jquery.fancybox-1.3.4.css') }}" media="screen" />
+<link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/fancybox/jquery.mousewheel-3.0.4.pack.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/fancybox/jquery.fancybox-1.3.4.pack.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/slimScroll/slimScroll.min.js') }}"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/fancybox/jquery.mousewheel-3.0.4.pack.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/fancybox/jquery.fancybox-1.3.4.pack.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/slimScroll/slimScroll.min.js') }}"></script>
 
 <script type="text/javascript">
-	$(document).ready(function() {
-    $('.signup-link').click(function() {
-      $('.signup-link').removeClass('signup-inactive');
-      $('.login-link').addClass('login-inactive');
-      $('.login-view').hide();
-      $('.signup-view').fadeIn('slow');
-    });
+$(document).ready(function() {
+		$('.signup-link').click(function() {
+			$('.signup-link').removeClass('signup-inactive');
+			$('.login-link').addClass('login-inactive');
+			$('.login-view').hide();
+			$('.signup-view').fadeIn('slow');
+			});
 
-    $('.login-link').click(function() {
-      $('.signup-link').addClass('signup-inactive');
-      $('.login-link').removeClass('login-inactive');
-      $('.login-view').fadeIn('slow');
-      $('.signup-view').hide();
-    });
-
-    $(".signup-button").fancybox({
-        'hideOnOverlayClick'  : false,
-        'showCloseButton'     : false,
-        'overlayOpacity'      : 0.7,
-        'overlayColor'        : '#000',
-        'padding'             : 20,
-        'scrolling'           : 'no'
-      });
-
-      $('input[name="usematterhorn"]').prop('checked', false);
-
-      $('#form2').submit(function() {
-        if ($(".user").val() == "") {
-          alert("Pleas type your username");
-          $(".user").focus();
-          return false;
-        }
-        if ($(".firstname").val() == "") {
-          alert("Pleas type your firstname");
-          $(".firstname").focus();
-          return false;
-        }
-        if ($(".lastname").val() == "") {
-          alert("Pleas type your lastname");
-          $(".lastname").focus();
-          return false;
-        }
-        if ($(".email").val() == "") {
-          alert("Pleas type your email");
-          $(".email").focus();
-          return false;
-        }
-        if ($(".country").val() == "") {
-          alert("Pleas type your country");
-          $(".country").focus();
-          return false;
-        }
-        if ($(".city").val() == "") {
-          alert("Pleas type your city");
-          $(".city").focus();
-          return false;
-        }
-        if ($(".company").val() == "") {
-          alert("Pleas type your company");
-
-          return false;
-        }
-        if ($(".department").val() == "") {
-          alert("Pleas type your department");
-          $(".department").focus();
-          return false;
-        }
-        return true;
-
-      });
-  });
-
-  function login() {
-      var username = $('#username').val();
-      var password = $('#password').val();
-      var host =      window.location.host;
-      var url = 'http://'+username+':'+password+'@'+host+'/repo/login/';
-      window.location.href = url;
-      return false;
-  }
-
-  function clickAgree(theForm) {
-    if ( theForm.agreebox.checked == false) {
-      alert("Please check");
-      return false;
-    } else {
-      return true;
-    }
-  }
-
+		$('.login-link').click(function() {
+			$('.signup-link').addClass('signup-inactive');
+			$('.login-link').removeClass('login-inactive');
+			$('.login-view').fadeIn('slow');
+			$('.signup-view').hide();
+			});
+		});
 </script>
-
 
 
 </head>
@@ -115,174 +38,65 @@
 
 <div id="page">
 
-  <div class="header">
-    <a href="index.php">
-    <h1>
-		<img src="{{ url_for('static', filename='img/logo.png') }}" />
-      Matterhorn Repository
-    </h1>
-    </a>
-  </div>
+	<div class="header">
+		<a href="{{ url_for('home') }}">
+			<h1>
+				<img src="{{ url_for('static', filename='img/logo.png') }}" />
+				Matterhorn Repository
+			</h1>
+		</a>
+	</div>
 
 
-  <div class="box">
+	<div class="box">
 
-    <div class="navigation">
-      <a href="#" class="login-link">Log in</a>
-      <a href="#" class="signup-link signup-inactive">Sign up</a>
-      <div class="clear"></div>
-    </div>
+		<div class="navigation">
+			<a href="#" class="login-link">Log in</a>
+			<a href="#" class="signup-link signup-inactive">Sign up</a>
+			<div class="clear"></div>
+		</div>
 
-<!-- ########## LOGIN VIEW ########## -->
+		<!-- ########## LOGIN VIEW ########## -->
 
-    <div class="login-view">
+		<div class="login-view">
 
-      <div class="text-wrapper">
+			<div class="text-wrapper">
 
-        <form class="loginform" method="post" action="{{ url_for('home') }}">
-          <label for="username" class="loginlabel">Username:</label>
-          <input name="username" id="username" type="text" required="required" autofocus=autofocus />
+				<form class="loginform" method="post" action="{{ url_for('home') }}">
+					<label for="username" class="loginlabel">Username:</label>
+					<input name="username" id="username" type="text" required="required" autofocus=autofocus />
 
-          <label for="password" class="loginlabel" style="margin-top:20px;">Password:</label>
-          <input name="password" id="password" type="password" required="required" />
+					<label for="password" class="loginlabel" style="margin-top:20px;">Password:</label>
+					<input name="password" id="password" type="password" required="required" />
 
-          <div class="forgot">
-				 <a href="{{ url_for('forgot') }}" class="forgot-button">forgot password?</a>
-          </div>
+					<div class="forgot">
+						<a href="{{ url_for('forgot') }}" class="forgot-button">forgot password?</a>
+					</div>
 
-          <input type="submit" class="button login-button" value="Login" />
-        </form>
+					<input type="submit" class="button login-button" value="Login" />
+				</form>
 
-      </div>
+			</div>
 
-    </div>
+		</div>
 
-<!-- ########## SIGNUP VIEW ########## -->
+		<!-- ########## SIGNUP VIEW ########## -->
 
-    <div class="signup-view" style="display:none;">
+		<div class="signup-view" style="display:none;">
 
-      <div class="text-wrapper signup-text-wrapper">
+			<div class="text-wrapper signup-text-wrapper">
 
-        <p>{{ config.signupinfotext }}</p>
+				<p>{{ config.signupinfotext }}</p>
 
-        <a href="#signup-form" class="button signup-button">Sign up now!</a>
+				<a href="{{ url_for('signup') }}" class="button signup-button">Sign up now!</a>
 
-        <div class="clear"></div>
+				<div class="clear"></div>
 
-      </div>
+			</div>
 
-    </div>
+		</div>
 
-<!-- ##### SIGNUP FORM ##### -->
-
-    <div style="display:none;">
-      <div id="signup-form">
-       <form name="form2" id="form2" method="post" onsubmit="return clickAgree(this)" action="{{ url_for('storeuser') }}">
-        <div class="signup-form-left">
-
-
-          <label for="user">Username:</label>
-          <input name="user" class="user" type="text" required="required" />
-
-          <div class="field-space">
-            <label for="firstname">Firstname:</label>
-            <input name="firstname" class="firstname" type="text" required="required" />
-          </div>
-
-          <div class="field-space">
-            <label for="lastname">Lastname:</label>
-            <input name="lastname" class="lastname" type="text" required="required" />
-          </div>
-
-          <div class="field-space">
-            <label for="email">E-Mail:</label>
-            <input name="email" class="email" type="email" required="required" />
-          </div>
-
-          <div class="field-space">
-            <label for="country">Country:</label>
-            <input name="country" class="country" type="text" required="required" />
-          </div>
-
-          <div class="field-space">
-            <label for="city">City:</label>
-            <input name="city" class="city" type="text" required="required" />
-          </div>
-
-          <div class="field-space">
-            <label for="company">Company:</label>
-            <input name="company" class="company" type="text" required="required" />
-          </div>
-
-          <div class="field-space">
-            <label for="department">Department:</label>
-            <input name="department" class="department" type="text" required="required" />
-          </div>
-
-        </div>
-
-        <div class="signup-form-right">
-          <p class="question">Do you use Matterhorn?</p>
-          <p class="answer">
-            <input type="radio" name="usematterhorn" required="required" value="1" onclick="javascript:$('.answer-no').hide();$('.answer-yes').show();" />Yes
-            <input type="radio" name="usematterhorn" required="required" value="0" onclick="javascript:$('.answer-yes').hide();$('.answer-no').show();" />No
-          </p>
-
-          <div class="answer-yes question-container" style="display: none;">
-            <p class="question">How many rooms are in use?</p>
-            <p class="answer">
-              <select name="installations">
-                <option selected>---</option>
-                <option>1-5</option>
-                <option>6-10</option>
-                <option>11-20</option>
-                <option>21-50</option>
-                <option>51-100</option>
-              </select>
-            </p>
-          </div>
-
-          <div class="answer-no question-container" style="display:none;">
-            <p class="question">When are you planning to use MH?</p>
-            <p class="answer">
-              <select name="adoptiontime">
-                <option selected>---</option>
-                <option>1 week</option>
-                <option>1 month</option>
-                <option>6 month</option>
-                <option>1 year</option>
-                <option>2 years</option>
-              </select>
-            </p>
-          </div>
-
-        </div>
-        <div class="clear"></div>
-
-        <div class="signup-buttons">
-			 <div class="agree"><input type="checkbox" name="agreebox"
-				 class="agreebox" />I acknowlegde that this account is for personal
-			 or educational use. I'm not allowed to share this account with others
-		 and to use it for commercial purposes.</div>
-
-          <div class="captcha"><label for="captcha">{{ rand[0] }}+{{ rand[1] }}=</label>
-				 <input required="required" type="text" name="captcha" id="captcha" /></div>
-          <input type="hidden" value="{{ rand[2] }}" name="correct_result" id="correct_result" />
-
-          <input type="submit" class="button signupsubmit" name="signupsubmit" value="Sign up">
-          <input type="button" class="button-grey close-button" value="close" onClick="$.fancybox.close()">
-        </div>
-
-      </form>
-
-
-
-      </div>
-
-    </div>
-
-  <!-- end .box -->
-  </div>
+	</div>
 
 
 
