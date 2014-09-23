@@ -191,6 +191,7 @@ def admin(who='new'):
 	if who == 'new':
 		return render_template('adminnew.html', config=config, user=user,
 				newusercount=len(user))
+	user.sort(key=lambda u: u[0].lower())
 	return render_template('adminall.html', config=config, user=user,
 			newusercount=len([ u for u in user if not u[14]]),
 			usercount=len(user))

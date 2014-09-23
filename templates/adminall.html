@@ -16,33 +16,46 @@ function checkDelete(u) {
 	}
 	return true;
 }
+
+function search() {
+	var value = $('#search').val().toLowerCase();
+	$('.element').each(function(k, v) {
+		var name  = $(v).find('div.name').html().toLowerCase();
+		var email = $(v).find('div.email a').html().toLowerCase();
+		if (name.indexOf(value) >= 0 || email.indexOf(value) >= 0) {
+			$(v).show();
+		} else {
+			$(v).hide();
+		}
+	});
+}
 </script>
 </head>
 
 <body>
 <div class="header">
-	<div class="admintip">Admin view <a href="{{ url_for('home') }}">Go to repository</a></div>  
+	<div class="admintip">Admin view <a href="{{ url_for('home') }}">Go to repository</a></div>
 	<h1>
 		<a href="{{ url_for('home') }}" class="headline">
 			<img src="{{ url_for('static', filename='img/logo.png') }}" />
-			Matterhorn Repo    
-		</a> 
+			Matterhorn Repo
+		</a>
 
 		<span class="registered_users">{{ usercount }} User</span>
 
 	</h1>
 
 	<div class="switchview-container">
-		<a href="{{ url_for('admin', who='new') }}" class="switchview switchview-active">New Users ({{ newusercount }})</a> 
-		<a href="{{ url_for('admin', who='all') }}" class="switchview">All Users</a>          		
-		<!-- <a href="export.php" class="switchview">Export Email</a>      		 -->
+		<a href="{{ url_for('admin', who='new') }}" class="switchview switchview-active">New Users ({{ newusercount }})</a>
+		<a href="{{ url_for('admin', who='all') }}" class="switchview">All Users</a>
 		<div class="clear"></div>
 	</div>
 
-</div>  
+</div>
 
-<div class="container"> 
-	<?php echo ($userelement);?>    
+
+<div class="container">
+	<input id=search type=text placeholder=search style="margin: 10px; width: 562px;" onkeyup="search();" />
 	{% for u in user %}
 	<div class='element'>
 		<table>
