@@ -73,6 +73,35 @@ def home():
 	return render_template('index.html', config=config)
 
 
+@app.route('/matterhorn.repo', methods=['GET', 'POST'])
+@app.route('/matterhorn-testing.repo', methods=['GET'])
+def repofile():
+	if not request.authorization:
+		return '', 401
+	user, passwd = request.authorization.username, request.authorization.password
+	if not user:
+		return '', 401
+	try:
+		with sqlite3.connect('users.db') as con:
+			cur = con.cursor()
+			cur.execute('''select username from user
+					where username=? and password=? and repoaccess''',
+					(user, passwd))
+			if not cur.fetchone():
+				return '', 400
+	except:
+		return '', 401
+	
+	# Get specs
+	tpl     = request.path.lstrip('/')
+	os      = request.form.get('os', 'el')
+	version = request.form.get('version', '6')
+
+	print tpl, user, passwd, os
+	return render_template(tpl, user=user, passwd=passwd, os=os,
+			version=version)
+
+
 @app.route('/auth', methods=['GET'])
 def auth():
 	try:

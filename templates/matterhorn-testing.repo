@@ -1,0 +1,19 @@
+[matterhorn-testing]
+name = Matterhorn  {{ os }} {{ version }} Test Repository
+baseurl  = http://{{ user }}:{{ passwd }}@vm385.rz.uos.de/rpms/testing/{{ os }}/{{ version }}/x86_64
+enabled  = 1
+protect  = 0
+gpgcheck = 0
+
+[matterhorn-testing-noarch]
+name = Matterhorn  {{ os }} {{ version }} Test Repository - noarch
+baseurl  = http://{{ user }}:{{ passwd }}@vm385.rz.uos.de/rpms/testing/{{ os }}/{{ version }}/noarch
+enabled  = 1
+protect  = 0
+gpgcheck = 0
+
+[matterhorn-testing-debuginfo]
+name = Matterhorn  {{ os }} {{ version }} Test Repository - debuginfo
+baseurl  = http://{{ user }}:{{ passwd }}@vm385.rz.uos.de/rpms/testing/{{ os }}/{{ version }}/debuginfo
+enabled  = 0
+protect  = 0

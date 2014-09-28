@@ -1,48 +1,38 @@
 <!DOCTYPE html>
 <html>
-  <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <title>Matterhorn Binary RPM Repository</title>
-  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-  <link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
-  </head>
-  
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Matterhorn Binary RPM Repository</title>
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+<link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+</head>
+
 <body>
-  
-  <div class="header">
-	  {%if admin %}
-	  <div class='admintip'>Repository<a href="{{ url_for('admin') }}">Go to Admin view</a></div>
-		{%endif%}
-      <a href="{{ url_for('logout') }}" style="float: right;" class="switchview">Logout</a>
-  <h1>
-	  <a href="{{ url_for('home') }}" class="headline">
-		<img src="{{ url_for('static', filename='img/logo.png') }}" />
-      Matterhorn Repo   
-    </a>
-  </h1>
-    
-  </div>  
-   
-  <div class="container login-container"> 
+
+<div class="header">
+	{%if admin %}
+	<div class='admintip'>Repository<a href="{{ url_for('admin') }}">Go to Admin view</a></div>
+	{%endif%}
+	<a href="{{ url_for('logout') }}" style="float: right;" class="switchview">Logout</a>
+	<h1>
+		<a href="{{ url_for('home') }}" class="headline">
+			<img src="{{ url_for('static', filename='img/logo.png') }}" />
+			Matterhorn Repo
+		</a>
+	</h1>
+
+</div>
+
+<div class="container login-container">
 
 	<h3 class="repodescription">Table of contents</h3>
 	<div class="repodescription">
 		<ul style="margin-left: 30px;">
 			<li><a href="#about">About</a></li>
-			<li><a href="#news">News</a></li>
-			<li><a href="#installation">Installation</a>
-<!--
-				<ul style="margin-left: 25px;">
-					<li><a href="#installation_centos">CentOS</a></li>
-					<li><a href="#installation_fedora">Fedora</a></li>
-				</ul>
--->
-			</li>
+			<li><a href="#installation">Installation</a></li>
 			<li><a href="#testing">Testing repository</a></li>
 			<li><a href="#sources">Sources</a></li>
-<!--
-			<li><a href="#dist-install">Installing CentOS 6.3 GNU/Linux</a></li>
--->
 			<li><a href="#troubleshooting">Troubleshooting</a></li>
 		</ul>
 	</div>
@@ -52,201 +42,162 @@
 		The following Linux distributions are currently supported:
 		<p><small>Stable</small></p>
 		<ul style="margin-left: 30px;">
-			<li><span>CentOS 5.x</span>           <small>deprecated; MH 1.3 only</small></li>
-			<li><span>CentOS 6.x</span>           <small></small></li>
-			<li><span>Scientific Linux 5.x</span> <small>deprecated; MH 1.3 only</small></li>
-			<li><span>Scientific Linux 6.x</span> <small></small></li>
+			<li>CentOS 6.x, 7.x</li>
+			<li>Scientific Linux 6.x, 7.x</li>
+			<li>RedHat Enterprise Linux 6.x, 7.x</li>
+			<li>Fedora 20 <small>(Testing only)</small></li>
 		</ul>
-		<p><small>Testing</small></p>
-		<ul style="margin-left: 30px;">
-			<li><span>CentOS 6.x</span>           <small></small></li>
-			<li><span>Scientific Linux 6.x</span> <small></small></li>
-			<li><span>Fedora 17</span>            <small></small></li>
-			<li><span>Fedora 18</span>            <small></small></li>
-			<li><span>Fedora 19</span>            <small></small></li>
-			<li><span>Fedora 19</span>            <small></small></li>
-		</ul>
-		It is, however, quite likely that it will also work on similar systems like 
-		Red Hat Enterprise Linux.
-	</div>
-
-	<h3 class="repodescription"><a name="news">News</a></h3>
-	<div class="repodescription">
-		<p>If you want to be informed about updates in the repository, you might 
-		want to subscribe to the</p>
-		<p>&nbsp;</p>
-		<div style="margin-left: 30px;">
-				<a href="http://lernfunk.de/repo/news.xml" style="text-decoration: none;">
-					<img src="feed.png" style="width: 20px; margin-bottom:-5px;" />
-					Repository Atom News Feed
-				</a>
-		</div>
 	</div>
 
 	<h3 class="repodescription"><a name="installation">Installation</a></h3>
 
 
-<!--
 	<div class="repodescription">
-		Warning: Matterhorn has
-	</div>
--->
-
-
-	<div class="repodescription">
-		A detailed description of the installation process can be found in the 
+		A detailed description of the installation process can be found in the
 		Matterhorn Release Wiki:
-		<a style="margin-left:24px;" href="https://opencast.jira.com/wiki/display/MHTRUNK/Install">https://opencast.jira.com/wiki/display/MHTRUNK/Install</a>
+		<a style="margin-left:24px;"
+			href="https://opencast.jira.com/wiki/display/MHTRUNK/Install"
+			>https://opencast.jira.com/wiki/display/MHTRUNK/Install</a>
 	</div>
 
 
 	<h4 class="repodescription">In short:</h4>
 
 
-	<div class="repodescription">On <a name="installation_centos">CentOS</a> follow this steps:</div>
-    <div class="repocontent">
+	<div class="repodescription">CentOS/RHEL/Scientific Linux 6.x</a></div>
+	<div class="repocontent">
 		<pre>
 # Add matterhorn repository.
 cd /etc/yum.repos.d
-curl -O http://lernfunk.de/matterhorn-repo/matterhorn.repo \
-  -u <?php echo $_SERVER['PHP_AUTH_USER'].':'.$_SERVER['PHP_AUTH_PW']; ?> 
+curl -O http://vm385.rz.uos.de/matterhorn.repo \
+   -d os=el -d version=6 \
+   -u [YOUR_USERNAME]:[YOUR_PASSWORD]
 
 # Add epel repository.
 yum install epel-release
 
-# Install 3rd-party-tools.
-# YUM will handle the dependencies for you.
-# You dont need this if you install matterhorn from the
-# repo, too.
-# yum install ffmpeg qt_sbtl_embedder.x86_64 \
-#   tesseract.x86_64 mediainfo.x86_64
-
 # Install matterhorn with all it's dependencies.
-yum install opencast-matterhorn14
-
-# You can add additional language packs for tesseract
-# like this:
-yum install tesseract-langpack-deu.noarch \
-  tesseract-langpack-deu-frak.noarch
-</pre>
-	 </div>     
+yum install opencast-matterhorn15
+		</pre>
+	</div>
 
 
-	<div class="repodescription">It is slightly different for <a name="installation_fedora">Fedora</a>:</div>
-    <div class="repocontent">
+	<div class="repodescription">CentOS/RHEL/Scientific Linux 7.x</div>
+	<div class="repocontent">
 		<pre>
 # Add matterhorn repository.
 cd /etc/yum.repos.d
-curl -O http://lernfunk.de/matterhorn-repo/matterhorn-testing.repo \
-  -d os=Fedora -u <?php echo $_SERVER['PHP_AUTH_USER'].':'.$_SERVER['PHP_AUTH_PW']; ?> 
+curl -O http://vm385.rz.uos.de/matterhorn.repo \
+   -d os=el -d version=7 \
+   -u [YOUR_USERNAME]:[YOUR_PASSWORD]
+
+# Add epel repository.
+yum install epel-release
+
+# Install matterhorn with all it's dependencies.
+yum install opencast-matterhorn15
+		</pre>
+	</div>
+
+
+	<div class="repodescription">Fedora</div>
+	<div class="repocontent">
+		<pre>
+# Add matterhorn repository.
+cd /etc/yum.repos.d
+curl -O http://vm385.rz.uos.de/matterhorn.repo \
+   -d 'version=$releasever' -d os=fc \
+   -u [YOUR_USERNAME]:[YOUR_PASSWORD]
 
 # Add rpmfusion repository.
 yum localinstall --nogpgcheck \
   http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
   http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-# Install 3rd-party-tools.
-# YUM will handle the dependencies for you.
-# You dont need this if you install matterhorn from the
-# repo, too.
-# yum install ffmpeg qt_sbtl_embedder.x86_64 \
-#   tesseract.x86_64 mediainfo.x86_64
-
 # Install matterhorn with all it's dependencies.
-yum install opencast-matterhorn14
-
-# You can add additional language packs for tesseract
-# like this:
-yum install tesseract-langpack-deu.noarch \
-  tesseract-langpack-deu-frak.noarch
-</pre>
-    </div>     
+yum install opencast-matterhorn15
+		</pre>
+	</div>
 
 
 	<h3 class="repodescription"><a name="testing">Testing repository</a></h3>
 	<div class="repodescription">
-		If you want the newest updates and package build you can enable the 
-		Opencast Matterhorn Testing Repositories. However, the probability that 
-		something is not working right if you pull the RPMs from here is higher. 
+		If you want the newest updates and package build you can enable the
+		Opencast Matterhorn Testing Repositories. However, the probability that
+		something is not working right if you pull the RPMs from here is higher.
 		So you should <i>not</i> use this for productive systems.
 	</div>
 	<div class="repodescription">
-		To enable the testing repository first install the regular repositories and then follow these steps:
+		To enable the testing repository first install the regular repositories
+		and then follow these steps:
 	</div>
-    <div class="repocontent">
+	<div class="repodescription">CentOS/RHEL/Scientific Linux 6.x</div>
+	<div class="repocontent">
 		<pre>
+# Add matterhorn repository.
 cd /etc/yum.repos.d
-
-vim matterhorn.repo &larr; Of cause you can use your
-                      favorite editor here
-
-Find the sections matterhorn-testing and
-matterhorn-testing-noarch and set enabled = 1 
-
-Save the file.
-Now packages should be pulled from the testing
-repository, too.
-</pre>
-    </div>     
+curl -O http://vm385.rz.uos.de/matterhorn-testing.repo \
+   -d version=6 -d os=el \
+   -u [YOUR_USERNAME]:[YOUR_PASSWORD]
+		</pre>
+	</div>
+	<div class="repodescription">CentOS/RHEL/Scientific Linux 7.x</div>
+	<div class="repocontent">
+		<pre>
+# Add matterhorn repository.
+cd /etc/yum.repos.d
+curl -O http://vm385.rz.uos.de/matterhorn-testing.repo \
+   -d version=7 -d os=el \
+   -u [YOUR_USERNAME]:[YOUR_PASSWORD]
+		</pre>
+	</div>
+	<div class="repodescription">Fedora</div>
+	<div class="repocontent">
+		<pre>
+# Add matterhorn repository.
+cd /etc/yum.repos.d
+curl -O http://vm385.rz.uos.de/matterhorn-testing.repo \
+   -d 'version=$releasever' -d os=fc \
+   -u [YOUR_USERNAME]:[YOUR_PASSWORD]
+		</pre>
+	</div>
 
 
 	<h3 class="repodescription"><a name="sources">Sources</a></h3>
 	<div class="repodescription">
-		If you want to build your own RPM repository you can get the source RPMs from 
-		<a href="http://lernfunk.de/matterhorn-repo/SRPMS/">http://lernfunk.de/matterhorn-repo/SRPMS/</a>.
-		Additional documentation and the SPEC files can be found at 
+		If you want to build your own RPM repository you can get the source RPMs from
+		<a href="http://vm385.rz.uos.de/srpms/">http://vm385.rz.uos.de/srpms/</a>.
+		Additional documentation and the SPEC files can be found at
 		<a href="https://github.com/lkiesow/matterhorn-rpms">https://github.com/lkiesow/matterhorn-rpms</a>.
 	</div>
-
-
-<!--
-	<h3 class="repodescription"><a name="dist-install">Installing CentOS 6.3 GNU/Linux</a></h3>
-	<div class="repodescription">
-		This is a suggestion about how to install CentOS 6.3:
-	</div>
-	<div class="repodescription">
-		<ol style="padding-left: 40px;">
-			<li>Download CentOS 6.3-ISO: <a 
-				href="http://ftp.hosteurope.de/mirror/centos.org/6.3/isos/x86_64/CentOS-6.3-x86_64-netinstall.iso"
-				>CentOS-6.3-x86_64-netinstall.iso</a>.</li>
-			<li>Boot from CD</li>
-			<li>When asked what type of media contains the installation image select “URL”.</li>
-			<li>After the network configuration choose a source from the CentOS homepage, 
-				For example <a href="http://ftp.hosteurope.de/mirror/centos.org/6.3/os/x86_64/"
-				>http://ftp.hosteurope.de/mirror/centos.org/6.3/os/x86_64/</a>.</li>
-			<li>The graphical installation program should now start up.</li>
-			<li>For VMs and testing systems I recommend to manually define a single primary partition.</li>
-			<li>When asked for the installation type, I recommend to use “Basic Server”.</li>
-			<li>If you want a graphical user interface, install the KDE or XFCE desktop environment. 
-				The (old) Gnome which comes with CentOS should not be used if you want to install the 
-				Matterhorn capture agent.</li>
-		</ol>
-		</ol>
-	</div>
--->
 
 	<h3 class="repodescription"><a name="troubleshooting">Troubleshooting</a></h3>
 
 	<div class="repodescription">
-		If you encounter any trouble during the installation process check if all 
-		repositories are installed and enabled properly. Some distributions for 
-		example come with a preinstalled but disabled epel repository. The 
+		If you encounter any trouble during the installation process check if all
+		repositories are installed and enabled properly. Some distributions for
+		example come with a preinstalled but disabled epel repository. The
 		installation of the epel-release package will <em>not</em> fix this.
 	</div>
 	<div class="repodescription">
 		You can check what repositories are installed and enabled by executing
-		<span style="font-family: monospace;">yum repolist enabled</span> which 
+		<span style="font-family: monospace;">yum repolist enabled</span> which
 		should give you a list with epel, matterhorn and matterhorn-noarch in it.
 	</div>
 	<div class="repodescription">
-		If epel was preinstalled but disabled on your system, you can obviously 
-		skip the installation of the epel-release package, although an installation 
-		will not harm your system. You just need to enable the system by editing the 
+		If epel was preinstalled but disabled on your system, you can obviously
+		skip the installation of the epel-release package, although an installation
+		will not harm your system. You just need to enable the system by editing the
 		configuration file <span style="font-family: monospace">/etc/yum.repo.d/epel.repo</span>
 		and set the property <span style="font-family: monospace">enabled</span> to 1.
 	</div>
-         
-  </div>
-  </body>
+	<div class="repodescription">
+		If you get errors that Matterhorn dependencies are missing, make sure
+		that you are actually running an OS with x86_64 architecture. There is no
+		repository for other architectures.
+	</div>
+
+</div>
+</body>
 
 </html>
