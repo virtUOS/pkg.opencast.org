@@ -74,7 +74,7 @@ def home():
 
 
 @app.route('/matterhorn.repo', methods=['GET', 'POST'])
-@app.route('/matterhorn-testing.repo', methods=['GET'])
+@app.route('/matterhorn-testing.repo', methods=['GET', 'POST'])
 def repofile():
 	if not request.authorization:
 		return '', 401
@@ -91,7 +91,7 @@ def repofile():
 				return '', 400
 	except:
 		return '', 401
-	
+
 	# Get specs
 	tpl     = request.path.lstrip('/')
 	os      = request.form.get('os', 'el')
