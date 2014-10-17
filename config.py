@@ -8,7 +8,7 @@ sessionkey = 'bdkfHvkVt(r8%ZGIUZGTRHg'
 
 # EMAIL TO USER */
 
-repourl      = "http://www.lernfunk.de/repo/"
+repourl      = "http://repo.virtuos.uos.de/"
 mailsender   = "virtuos@uni-osnabrueck.de"
 mailtopic    = "Registration: Matterhorn RPM Repo"
 mailtext     = '''Hello %(firstname)s %(lastname)s,
@@ -23,9 +23,9 @@ For more information, please visit
 
 # EMAIL TO ADMIN */
 
-adminurl          = "http://www.lernfunk.de/repo/admin/"
-#adminmailadress  = "rrolf@uni-osnabrueck.de"
-adminmailadress   = "lkiesow@uos.de"
+adminurl          = "http://repo.virtuos.uos.de/admin/"
+adminmailadress  = "rrolf@uni-osnabrueck.de"
+#adminmailadress   = "lkiesow@uos.de"
 adminmailtopic    = "%(username)s registered on Matterhorn CentOS Repo"
 adminmailtext     = '''Hello Admin,
 %(username)s (%(firstname)s %(lastname)s) signed-up for the Matterhorn RPM Repo.
