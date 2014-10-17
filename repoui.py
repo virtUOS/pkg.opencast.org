@@ -183,6 +183,7 @@ def success():
 @app.route('/admin', methods=['GET', 'POST'])
 @app.route('/admin/<who>', methods=['GET', 'POST'])
 def admin(who='new'):
+	username, admin, repoaccess = [None]*3
 	try:
 		username, admin, repoaccess = session.get('login')
 	except:
