@@ -227,6 +227,34 @@ def admin(who='new'):
 			usercount=len(user))
 
 
+@app.route('/csv', methods=['GET'])
+def csv():
+	username, admin, repoaccess = [None]*3
+	try:
+		username, admin, repoaccess = session.get('login')
+	except:
+		pass
+	if not username or not admin:
+		return redirect(url_for('home'))
+
+	user = []
+	# Get user
+	with sqlite3.connect('users.db') as con:
+		cur = con.cursor()
+		cur.execute('select * from user')
+		user = cur.fetchall()
+
+	user.sort(key=lambda u: u[0].lower())
+
+	result = 'username, firstname, lastname, password, email, country, city, ' \
+			+ 'company, department, created, usematterhorn, installations, ' \
+			+ 'adoptiontime, admin, repoaccess, deleteaccess, comment\n'
+
+	for u in user:
+		result += '"' + '", "'.join([str(x) for x in u]) + '"\n'
+	return Response(result, content_type='application/octet-stream')
+
+
 
 @app.route('/logout')
 def logout():

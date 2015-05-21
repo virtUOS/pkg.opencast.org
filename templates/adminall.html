@@ -48,6 +48,7 @@ function search() {
 	<div class="switchview-container">
 		<a href="{{ url_for('admin', who='new') }}" class="switchview switchview-active">New Users ({{ newusercount }})</a>
 		<a href="{{ url_for('admin', who='all') }}" class="switchview">All Users</a>
+		<a href="{{ url_for('csv') }}"              class="switchview">Export (CSV)</a>
 		<div class="clear"></div>
 	</div>
 
