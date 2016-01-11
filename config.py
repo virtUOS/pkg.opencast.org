@@ -23,7 +23,7 @@ For more information, please visit
 
 # EMAIL TO ADMIN */
 
-adminurl          = "http://repo.virtuos.uos.de/admin/"
+adminurl          = "http://repo.virtuos.uos.de/admin"
 adminmailadress  = "rrolf@uni-osnabrueck.de"
 #adminmailadress   = "lkiesow@uos.de"
 adminmailtopic    = "%(username)s registered on Matterhorn CentOS Repo"
@@ -56,7 +56,7 @@ termsofuseuerror = ('Sign-up failed', '''There was an error during the sign up
 		'Go back')
 dberror         = ('Database error', '''An error occurred. The connection to
 		the database could not be established. This should not have happened.
-		Please report this and try again later.''', 'Go back')
+		Please report this to lkiesow@uos.de and try again later.''', 'Go back')
 loginerror      = ('Log-in failed', '''The log-in failed. Please verify that
 		you used the correct username and password and try again.''', 'Go back')
 forgotmailerror = ('Password recovery failed', '''There is no active user with
