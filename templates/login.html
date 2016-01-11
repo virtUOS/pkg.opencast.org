@@ -102,21 +102,7 @@ yum install opencast-matterhorn15
 
 	<div class="repodescription">Fedora</div>
 	<div class="repocontent">
-		<pre>
-# Add matterhorn repository.
-cd /etc/yum.repos.d
-curl -O http://repo.virtuos.uos.de/matterhorn.repo \
-   -d 'version=$releasever' -d os=fc \
-   -u [YOUR_USERNAME]:[YOUR_PASSWORD]
-
-# Add rpmfusion repository.
-yum localinstall --nogpgcheck \
-  http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
-  http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-
-# Install matterhorn with all it's dependencies.
-yum install opencast-matterhorn15
-		</pre>
+		Fedora is available from the testing repository only.
 	</div>
 
 
@@ -159,6 +145,14 @@ cd /etc/yum.repos.d
 curl -O http://repo.virtuos.uos.de/matterhorn-testing.repo \
    -d 'version=$releasever' -d os=fc \
    -u [YOUR_USERNAME]:[YOUR_PASSWORD]
+
+# Add rpmfusion repository.
+yum localinstall --nogpgcheck \
+  http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+  http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+# Install matterhorn with all it's dependencies.
+yum install opencast-matterhorn15
 		</pre>
 	</div>
 
