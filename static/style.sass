@@ -1,0 +1,1011 @@
+/* Matterhorn Repository
+
+/*import Lato Font
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700)
+
+*
+  margin: 0
+  padding: 0
+  outline: none
+  border: none
+
+.clear
+  clear: both
+
+.show
+  display: block !important
+
+html
+  background-color: #ffffff
+  font-family: "Lato", sans-serif !important
+  height: 100%
+
+body
+  /*background: url("img/circle.png") no-repeat 50% 0
+  height: 100%
+
+h1, h2
+  letter-spacing: 0px
+  font-weight: 400
+  font-style: normal
+  font-size: 228.5%
+
+h3, h4
+  letter-spacing: 0px
+  font-weight: 400
+  font-style: normal
+  font-size: 150.5%
+
+h5
+  margin: 20px 0px
+  font-size: 110.5%
+
+ul li span
+  display: inline-block
+  min-width: 175px
+
+a
+  color: #47b07b
+  text-decoration: none
+
+p
+  margin: 30px 0px
+
+pre
+  overflow-x: auto
+
+table
+  /*width: auto!important
+
+ul
+  list-style: none
+
+.new-users
+  h4
+    margin-bottom: 20px
+  input[type="radio"]
+    display: none
+    &:checked + label
+      color: #47b07b
+      font-weight: bold
+  label:focus
+    color: #47b07b
+
+.newusercount
+  background-color: #26455E
+  color: #fff
+  padding: 1px 6px
+  border-radius: 5px
+  text-align: center
+  border-radius: 20px
+  font-size: 13px
+
+.actions label
+  margin-right: 20px
+  cursor: pointer
+  font-size: 21px
+  &:last-child
+    margin-right: 0px
+
+
+.userinfoline label
+  font-weight: 700
+
+.new-users-table
+  background-color: rgba(255, 255, 255, 0) !important
+  td
+    padding: 0px !important
+  label
+    font-weight: 700
+
+.delete-button-new
+  padding: 3px
+  background-color: #e74c3c
+  width: 102px
+  color: #fff
+  text-align: center
+  margin-top: 5px
+  cursor: pointer
+
+
+
+.delete-button
+  background-color: rgba(255, 255, 255, 0)
+  font-size: 16px
+  &:hover
+    color: #C82647
+    cursor: pointer
+
+.admin-button
+  width: 127px
+  background-color: #24425d
+  margin-right: 0px !important
+
+.user-button
+  width: 119px
+  background-color: #24425d
+
+.header
+  width: 600px
+  margin: 0px auto 0px
+  img
+    padding-right: 5px
+  h1
+    font-weight: normal
+    color: #ffffff
+    padding-top: 20px
+
+h1 a
+  color: #ffffff
+  text-decoration: none
+
+.dark
+  background-color: #F3F5F7
+
+/*.light {
+ *  background-color: #ffffff!important
+ *}
+
+.wrapper
+  padding: 80px 0px 80px 0px
+
+.wrapper-inner
+  width: 1200px
+  margin: 0px auto
+  img
+    margin-bottom: 20px
+
+.sign-up-box
+  display: none
+  z-index: 200
+  position: absolute
+  left: 50%
+  margin-left: (-250px) !important
+
+.menu a
+  color: #24435D
+
+.menu-box
+  color: #000000
+  font-size: 16px
+  float: left
+  padding: 27px 0px
+  text-align: center
+  cursor: pointer
+  width: 110px
+  border-bottom: 3px solid #e2e2e2
+  &:hover
+    border-bottom: 3px solid #47b07b
+  i
+    font-size: 34px
+  a
+    color: #000000
+    text-decoration: none
+
+.search-box
+  float: left
+  margin-left: 655px
+  border-bottom: 3px solid #e2e2e2
+
+.search
+  background-color: transparent
+  border-width: 0px 0px 0px 0px
+  border-style: solid
+  border-radius: 0px
+  height: 58px
+  color: #000000
+  padding-left: 8px
+  font-size: 16px
+
+.search-box
+  &:hover, &:focus
+    border-bottom: 3px solid #47b07b
+
+.active
+  border-bottom: 3px solid #47b07b !important
+
+.dashboard-header
+  background-color: #e2e2e2
+  border-radius: 4px 4px 0px 0px
+
+.linux-versions
+  width: 300px
+  text-align: center
+  padding: 20px 0px
+  float: left
+
+.versions
+  margin-top: 50px
+
+.refresh
+  width: 30px
+  height: 30px
+  float: right
+  display: block
+  &:active
+    position: relative
+    top: 1px
+
+.switchview
+  font-size: 16px
+  display: block
+  text-decoration: none
+  float: left
+  margin: 14px 6px 0px 0px
+  width: 120px
+  text-align: center
+  color: #333333
+  padding: 4px 0px
+  background: #ededed
+  background: url(data:image/svg+xmlbase64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2VkZWRlZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlMGUwZTAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+)
+  background: -moz-linear-gradient(top, #f2f2f2 0%, #eaeaea 100%)
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f2f2f2), color-stop(100%, #eaeaea))
+  background: -webkit-linear-gradient(top, #f2f2f2 0%, #eaeaea 100%)
+  background: -o-linear-gradient(top, #f2f2f2 0%, #eaeaea 100%)
+  background: -ms-linear-gradient(top, #f2f2f2 0%, #eaeaea 100%)
+  background: linear-gradient(to bottom, #f2f2f2 0%, #eaeaea 100%)
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', endColorstr='#eaeaea',GradientType=0 )
+  border-radius: 3px
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.7)
+  -moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.7)
+  -webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.7)
+  -o-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.7)
+  border: 1px solid #333333
+  &:active
+    position: relative
+    top: 1px
+
+.switchview-active
+  box-shadow: 0px 0px 10px rgba(255, 178, 0, 0.6)
+  -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6)
+  -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6)
+  -o-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6)
+  border-color: #FFB200
+
+.registered_users
+  float: right
+
+.box
+  background: #f2f2f2
+  background: url(data:image/svg+xmlbase64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2YyZjJmMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlYWVhZWEiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+)
+  background: -moz-linear-gradient(top, #f2f2f2 0%, #eaeaea 100%)
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f2f2f2), color-stop(100%, #eaeaea))
+  background: -webkit-linear-gradient(top, #f2f2f2 0%, #eaeaea 100%)
+  background: -o-linear-gradient(top, #f2f2f2 0%, #eaeaea 100%)
+  background: -ms-linear-gradient(top, #f2f2f2 0%, #eaeaea 100%)
+  background: linear-gradient(to bottom, #f2f2f2 0%, #eaeaea 100%)
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', endColorstr='#eaeaea',GradientType=0 )
+  width: 450px
+  margin: 60px auto
+  border-radius: 5px 5px 5px 5px
+  -moz-border-radius: 5px
+  -webkit-border-radius: 5px
+  -o-border-radius: 5px
+  -ms-border-radius: 5px 5px 5px 5px
+  perspective: 1500
+
+.navigation a
+  font-weight: bold
+  text-decoration: none
+  font-size: 24px
+  display: block
+  width: 174px
+  text-align: center
+  padding: 18px 0px
+
+.login-link
+  float: left
+
+.signup-link
+  float: right
+
+.login-inactive
+  background-color: #cfcfcf
+  color: #999999
+  border-bottom-right-radius: 4px
+  border-top-left-radius: 4px
+  box-shadow: inset -3px -3px 5px rgba(0, 0, 0, 0.15)
+  -moz-box-shadow: inset -3px -3px 5px rgba(0, 0, 0, 0.15)
+  -webkit-box-shadow: inset -3px -3px 5px rgba(0, 0, 0, 0.15)
+  -o-box-shadow: inset -3px -3px 5px rgba(0, 0, 0, 0.15)
+  text-shadow: 0px 1px 0px #ffffff
+  -moz-text-shadow: 0px 1px 0px #ffffff
+  -webkit-text-shadow: 0px 1px 0px #ffffff
+  -o-text-shadow: 0px 1px 0px #ffffff
+  border-bottom: 1px solid #999999
+  border-right: 1px solid #999999
+  width: 174px
+  float: left
+
+.signup-inactive
+  background-color: #cfcfcf
+  color: #999999
+  border-top-right-radius: 4px
+  border-bottom-left-radius: 4px
+  box-shadow: inset 3px -3px 5px rgba(0, 0, 0, 0.15)
+  -moz-box-shadow: inset 3px -3px 5px rgba(0, 0, 0, 0.15)
+  -webkit-box-shadow: inset 3px -3px 5px rgba(0, 0, 0, 0.15)
+  -o-box-shadow: inset 3px -3px 5px rgba(0, 0, 0, 0.15)
+  text-shadow: 0px 1px 0px #ffffff
+  -moz-text-shadow: 0px 1px 0px #ffffff
+  -webkit-text-shadow: 0px 1px 0px #ffffff
+  -o-text-shadow: 0px 1px 0px #ffffff
+  border-bottom: 1px solid #999999
+  border-left: 1px solid #999999
+
+/* ########## BUTTON ##########
+
+.button
+  background-color: #24425d
+  -moz-border-radius: 5px
+  -webkit-border-radius: 5px
+  border-radius: 5px
+  display: inline-block
+  color: #ffffff
+  font-size: 20px
+  font-weight: normal
+  padding: 9px 0px
+  text-decoration: none
+  transition: all 0.6s
+  &:hover
+    background-color: #152842
+    cursor: pointer
+    transition: all 0.6s
+  &:active
+    position: relative
+    top: 1px
+
+.button-grey
+  -moz-box-shadow: inset 0px 1px 0px 0px #ffffff
+  -webkit-box-shadow: inset 0px 1px 0px 0px #ffffff
+  box-shadow: inset 0px 1px 0px 0px #ffffff
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf))
+  background: -moz-linear-gradient(center top, #ededed 5%, #dfdfdf 100%)
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf')
+  background-color: #ededed
+  -moz-border-radius: 4px
+  -webkit-border-radius: 4px
+  border-radius: 4px
+  border: 1px solid #dcdcdc
+  display: inline-block
+  color: #777777
+  font-family: 'Electrolize', Arial, sans-serif
+  font-size: 20px
+  font-weight: normal
+  padding: 9px 0px
+  text-decoration: none
+  text-shadow: 1px 1px 0px #ffffff
+  &:hover
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed))
+    background: -moz-linear-gradient(center top, #dfdfdf 5%, #ededed 100%)
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed')
+    background-color: #dfdfdf
+  &:active
+    position: relative
+    top: 1px
+
+/* ########## GENERAL TEXT FIELDS SETTINGS ##########
+
+.text-wrapper
+  padding: 40px 40px 20px
+  min-height: 240px
+  img
+    margin-bottom: 50px
+
+.field-space
+  margin-top: 15px
+
+.field-space-right
+  float: left
+  width: 90%
+
+.field-space-left
+  float: left
+  width: 10%
+
+input
+  width: 250px
+  padding: 8px
+  margin-top: 5px
+  font-size: 20px
+  border-radius: 4px
+  border: 1px solid #aaaaaa
+  width: 100%
+  height: 42px
+  box-sizing: border-box
+  border-radius: 5px
+  border: 1px solid #ccc
+  margin-bottom: 10px
+  font-size: 14px
+  padding: 0 20px 0 50px
+  outline: none
+  &#username
+    background: #fff url('/static/img/user.png') 20px top no-repeat
+    background-size: 16px 80px
+    &:focus
+      background: #fff url('/static/img/user.png') 20px bottom no-repeat
+      background-size: 16px 80px
+  &#password
+    background: #fff url('/static/img/lock.png') 20px top no-repeat
+    background-size: 16px 80px
+    &:focus
+      background: #fff url('/static/img/lock.png') 20px bottom no-repeat
+      background-size: 16px 80px
+
+select
+  width: 104px
+  margin-left: -2px
+  padding: 0px 0px
+  margin-top: 20px
+  height: 23px
+
+.userinfo
+  input, select
+    width: 240px
+    font-size: smaller
+
+input:focus
+  border-color: #47B07B
+
+.nav
+  width: 100%
+
+.nav-wrapper
+  width: 1200px
+  margin: 0px auto
+  img
+    height: 43px
+    margin-top: 15px
+    margin-bottom: 15px
+
+fieldset label
+  cursor: pointer
+  margin-right: 20px
+  font-size: 20px
+  &:last-child
+    margin-right: 0px
+
+.menu
+  float: right
+  a
+    text-decoration: none
+  div
+    float: right
+    height: 73px
+    width: 110px
+    text-align: center
+    line-height: 62px
+    border-top: 3px solid #ffffff
+    cursor: pointer
+    &:hover
+      border-top: 3px solid #47b07b
+
+.banner
+  background-image: url("img/software.jpg")
+  color: #fff
+  text-align: center
+  padding: 96px
+
+  div
+    font-size: 46px
+    margin: 20px 0
+  p
+    width: 650px
+    margin: 0px auto
+
+.userinfoline
+  padding-left: 2px
+
+/* ########## LOGIN TEXT FIELDS ##########
+
+.login-button
+  margin-top: 20px
+  width: 100%
+  text-align: center
+  padding: 10px
+  height: 47px
+
+.signup-button
+  margin-top: 45px
+  width: 270px
+  text-align: center
+  margin-left: 183px
+  text-decoration: none
+
+.forgot a
+  color: #023160
+  font-size: 12px
+
+.forgot-card
+  background-color: #ffffff
+  color: #000
+  width: 450px
+  height: 365px
+  border-radius: 6px
+  z-index: 100
+  display: none
+  input
+    background-color: rgba(255, 255, 255, 0)
+    padding-left: 8px !important
+    &:focus
+      border-color: #47B07B
+
+.forgot-card-header
+  background-color: #f5f5f5
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.14)
+  padding: 20px 15px
+  border-radius: 6px 6px 0px 0px
+  span
+    color: #000
+    opacity: 0.4
+    font-size: 26px
+    cursor: pointer
+
+.forgot-card p
+  margin: 10px 0px
+
+.forgot-button
+  cursor: pointer
+  font-size: 14px !important
+
+.black-overlay
+  background: #000000
+  opacity: 0.8
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  z-index: 99
+  display: none
+
+.button-recover
+  background-color: #24425d !important
+  color: #fff
+  cursor: pointer
+
+/* ########## SIGNUP FORM ##########
+
+#signup-form
+  width: 700px
+  padding-bottom: 3px
+  input
+    font-size: 16px
+    padding: 6px
+  label
+    display: block
+    float: left
+    width: 92px
+    text-align: right
+    padding: 8px
+
+.captcha
+  label
+    width: auto !important
+  input
+    width: 50px !important
+    margin: 0px !important
+
+#signup-form .button
+  width: 100px
+
+.signup-form-left
+  float: left
+  width: 380px
+
+.signup-form-right
+  float: right
+  width: 260px
+  input
+    width: 50px
+
+.signup-buttons
+  float: right
+  width: 250px
+  margin-top: -140px
+  font-size: 14px
+
+.agree
+  padding-bottom: 10px
+
+.agreebox
+  width: 40px
+
+.close-button
+  width: 100px
+
+.answer
+  padding-top: 8px
+  select
+    /*padding: 6px
+    /*margin-left: 20px
+    font-size: 16px
+    border-radius: 4px
+    border: 1px solid #aaaaaa
+    font-family: 'Electrolize', Arial, sans-serif
+  label
+    margin-top: 10px
+
+.question-container
+  margin-top: 25px
+
+/* ########## ADMIN ##########
+
+.container
+  width: 600px
+  background: #f2f2f2
+  background: url(data:image/svg+xmlbase64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2YyZjJmMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlYWVhZWEiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+)
+  background: -moz-linear-gradient(top, #f2f2f2 0%, #eaeaea 100%)
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f2f2f2), color-stop(100%, #eaeaea))
+  background: -webkit-linear-gradient(top, #f2f2f2 0%, #eaeaea 100%)
+  background: -o-linear-gradient(top, #f2f2f2 0%, #eaeaea 100%)
+  background: -ms-linear-gradient(top, #f2f2f2 0%, #eaeaea 100%)
+  background: linear-gradient(to bottom, #f2f2f2 0%, #eaeaea 100%)
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', endColorstr='#eaeaea',GradientType=0 )
+  margin: 35px auto 40px
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6)
+  -moz-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6)
+  -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6)
+  -o-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6)
+  border-radius: 4px 4px 4px 4px
+  -moz-border-radius: 4px
+  -webkit-border-radius: 4px
+  -o-border-radius: 4px
+  -ms-border-radius: 4px 4px 4px 4px
+
+.login-container
+  padding-bottom: 20px
+
+.element
+  padding: 15px 10px
+  /*border-bottom: 1px solid #ccc
+
+.name
+  font-weight: 700
+
+.icon-container
+  text-align: right
+
+.column1
+  width: 50px
+
+.column2
+  width: 160px
+
+.column3
+  width: 320px
+
+.column4
+  width: 50px
+
+.icon
+  display: block
+  padding: 10px 20px
+  float: right
+
+.no-icon
+  background: url(img/no.png) no-repeat right center
+  margin-right: 5px
+
+.more-button
+  display: block
+  float: left
+  padding: 1px 6px
+  background: #ededed
+  background: url(data:image/svg+xmlbase64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2VkZWRlZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlMGUwZTAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+)
+  background: -moz-linear-gradient(top, #ededed 0%, #e0e0e0 100%)
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ededed), color-stop(100%, #e0e0e0))
+  background: -webkit-linear-gradient(top, #ededed 0%, #e0e0e0 100%)
+  background: -o-linear-gradient(top, #ededed 0%, #e0e0e0 100%)
+  background: -ms-linear-gradient(top, #ededed 0%, #e0e0e0 100%)
+  background: linear-gradient(to bottom, #ededed 0%, #e0e0e0 100%)
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededed', endColorstr='#e0e0e0',GradientType=0 )
+  border: 1px solid #999
+  border-radius: 3px
+  &:hover
+    cursor: pointer
+  &:active
+    position: relative
+    top: 1px
+
+.radio
+  width: 30px
+  input
+    height: 11px
+
+.userinfo
+  padding: 20px 40px 10px
+  span
+    display: block
+  label
+    width: 115px
+    display: inline-block
+
+.userstatistics
+  margin-top: 55px
+
+.admintip
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5)
+  color: #ffffff
+  padding: 3px 20px
+  text-align: center
+  a
+    color: #FFB200
+    text-decoration: none
+    padding-left: 30px
+
+.submitbutton
+  /*border-top: 1px solid #182A41
+  display: none
+  input
+    width: 600px
+    margin-top: 0px
+    border: none
+    border-top-right-radius: 0
+    border-top-left-radius: 0
+    color: #ffffff
+    background: rgb(90, 159, 244)
+    background: url(data:image/svg+xmlbase64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzVhOWZmNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0MDcxYWQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+)
+    background: -moz-linear-gradient(top, rgba(90, 159, 244, 1) 0%, rgba(64, 113, 173, 1) 100%)
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(90, 159, 244, 1)), color-stop(100%, rgba(64, 113, 173, 1)))
+    background: -webkit-linear-gradient(top, rgba(90, 159, 244, 1) 0%, rgba(64, 113, 173, 1) 100%)
+    background: -o-linear-gradient(top, rgba(90, 159, 244, 1) 0%, rgba(64, 113, 173, 1) 100%)
+    background: -ms-linear-gradient(top, rgba(90, 159, 244, 1) 0%, rgba(64, 113, 173, 1) 100%)
+    background: linear-gradient(to bottom, rgba(90, 159, 244, 1) 0%, rgba(64, 113, 173, 1) 100%)
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5a9ff4', endColorstr='#4071ad',GradientType=0 )
+    &:hover
+      cursor: pointer
+
+/* ########## LOGIN ##########
+
+.repocontent
+  padding: 20px 20px 20px 0px
+  color: #111111
+  background-color: #e2e2e2
+  margin-bottom: 90px
+
+.repodescription
+  padding: 20px 40px 10px
+
+.loginlabel
+  display: block
+
+.loginform
+  margin-top: -10px
+
+.admin-selector label
+  border: 1px solid silver
+  padding: 3px
+  margin-right: 5px
+
+.useraction
+  margin-top: 10px
+
+/* SIGN-UP PAGE
+
+#signup-page
+  input
+    font-size: 16px
+    padding: 6px
+    padding-left: 10px
+  label
+    /*display: inline-block
+    min-width: 92px
+    text-align: right
+  input
+    &[type=radio], &[type=checkbox]
+      width: auto
+  label.radio
+    min-width: 50px
+  .answer
+    display: none
+  .button
+    width: 100%
+    margin-bottom: 15px
+  .field-space
+    margin-top: 8px
+
+/*Bootstrap Table CSS
+
+table
+  border-collapse: collapse
+  border-spacing: 0
+  background-color: #F3F5F7 !important
+  color: #474747
+
+td, th
+  padding: 20px 8px !important
+
+*
+  -webkit-box-sizing: border-box
+  -moz-box-sizing: border-box
+  box-sizing: border-box
+  &:before, &:after
+    -webkit-box-sizing: border-box
+    -moz-box-sizing: border-box
+    box-sizing: border-box
+
+table
+  background-color: transparent
+
+caption
+  padding-top: 8px
+  padding-bottom: 8px
+  color: #777777
+  text-align: left
+
+th
+  text-align: left
+
+.table
+  width: 100%
+  max-width: 100%
+  margin-bottom: 20px
+  >
+    thead > tr > th, tbody > tr > th, tfoot > tr > th, thead > tr > td, tbody > tr > td, tfoot > tr > td
+      padding: 8px
+      line-height: 1.42857143
+      vertical-align: top
+      /*border-top: 1px solid #dddddd
+    thead > tr > th
+      vertical-align: bottom
+      /*border-bottom: 2px solid #dddddd
+    caption + thead > tr:first-child > th, colgroup + thead > tr:first-child > th, thead:first-child > tr:first-child > th, caption + thead > tr:first-child > td, colgroup + thead > tr:first-child > td, thead:first-child > tr:first-child > td
+      border-top: 0
+    tbody + tbody
+      /*border-top: 2px solid #dddddd
+  .table
+    background-color: #ffffff
+
+.table-condensed >
+  thead > tr > th, tbody > tr > th, tfoot > tr > th, thead > tr > td, tbody > tr > td, tfoot > tr > td
+    padding: 5px
+
+.table-bordered
+  /*border: 1px solid #dddddd
+  >
+    thead > tr > th, tbody > tr > th, tfoot > tr > th, thead > tr > td, tbody > tr > td, tfoot > tr > td
+      /*border: 1px solid #dddddd
+    thead > tr >
+      th, td
+        border-bottom-width: 2px
+
+.table-striped > tbody > tr:nth-of-type(odd)
+  background-color: #FFFFFF
+
+.table-hover > tbody > tr:hover
+  background-color: #f5f5f5
+
+table
+  col[class*="col-"]
+    position: static
+    float: none
+    display: table-column
+  td[class*="col-"], th[class*="col-"]
+    position: static
+    float: none
+    display: table-cell
+
+.table >
+  thead > tr > td.active, tbody > tr > td.active, tfoot > tr > td.active, thead > tr > th.active, tbody > tr > th.active, tfoot > tr > th.active, thead > tr.active > td, tbody > tr.active > td, tfoot > tr.active > td, thead > tr.active > th, tbody > tr.active > th, tfoot > tr.active > th
+    background-color: #f5f5f5
+
+.table-hover > tbody > tr
+  >
+    td.active:hover, th.active:hover
+      background-color: #e8e8e8
+  &.active:hover > td, &:hover > .active, &.active:hover > th
+    background-color: #e8e8e8
+
+.table >
+  thead > tr > td.success, tbody > tr > td.success, tfoot > tr > td.success, thead > tr > th.success, tbody > tr > th.success, tfoot > tr > th.success, thead > tr.success > td, tbody > tr.success > td, tfoot > tr.success > td, thead > tr.success > th, tbody > tr.success > th, tfoot > tr.success > th
+    background-color: #dff0d8
+
+.table-hover > tbody > tr
+  >
+    td.success:hover, th.success:hover
+      background-color: #d0e9c6
+  &.success:hover > td, &:hover > .success, &.success:hover > th
+    background-color: #d0e9c6
+
+.table >
+  thead > tr > td.info, tbody > tr > td.info, tfoot > tr > td.info, thead > tr > th.info, tbody > tr > th.info, tfoot > tr > th.info, thead > tr.info > td, tbody > tr.info > td, tfoot > tr.info > td, thead > tr.info > th, tbody > tr.info > th, tfoot > tr.info > th
+    background-color: #d9edf7
+
+.table-hover > tbody > tr
+  >
+    td.info:hover, th.info:hover
+      background-color: #c4e3f3
+  &.info:hover > td, &:hover > .info, &.info:hover > th
+    background-color: #c4e3f3
+
+.table >
+  thead > tr > td.warning, tbody > tr > td.warning, tfoot > tr > td.warning, thead > tr > th.warning, tbody > tr > th.warning, tfoot > tr > th.warning, thead > tr.warning > td, tbody > tr.warning > td, tfoot > tr.warning > td, thead > tr.warning > th, tbody > tr.warning > th, tfoot > tr.warning > th
+    background-color: #fcf8e3
+
+.table-hover > tbody > tr
+  >
+    td.warning:hover, th.warning:hover
+      background-color: #faf2cc
+  &.warning:hover > td, &:hover > .warning, &.warning:hover > th
+    background-color: #faf2cc
+
+.table >
+  thead > tr > td.danger, tbody > tr > td.danger, tfoot > tr > td.danger, thead > tr > th.danger, tbody > tr > th.danger, tfoot > tr > th.danger, thead > tr.danger > td, tbody > tr.danger > td, tfoot > tr.danger > td, thead > tr.danger > th, tbody > tr.danger > th, tfoot > tr.danger > th
+    background-color: #f2dede
+
+.table-hover > tbody > tr
+  >
+    td.danger:hover, th.danger:hover
+      background-color: #ebcccc
+  &.danger:hover > td, &:hover > .danger, &.danger:hover > th
+    background-color: #ebcccc
+
+.table-responsive
+  overflow-x: auto
+  min-height: 0.01%
+
+@media screen and (max-width: 767px)
+  .table-responsive
+    width: 100%
+    margin-bottom: 15px
+    overflow-y: hidden
+    -ms-overflow-style: -ms-autohiding-scrollbar
+    border: 1px solid #dddddd
+    >
+      .table
+        margin-bottom: 0
+        >
+          thead > tr > th, tbody > tr > th, tfoot > tr > th, thead > tr > td, tbody > tr > td, tfoot > tr > td
+            white-space: nowrap
+      .table-bordered
+        border: 0
+        >
+          thead > tr > th:first-child, tbody > tr > th:first-child, tfoot > tr > th:first-child, thead > tr > td:first-child, tbody > tr > td:first-child, tfoot > tr > td:first-child
+            border-left: 0
+          thead > tr > th:last-child, tbody > tr > th:last-child, tfoot > tr > th:last-child, thead > tr > td:last-child, tbody > tr > td:last-child, tfoot > tr > td:last-child
+            border-right: 0
+          tbody > tr:last-child > th, tfoot > tr:last-child > th, tbody > tr:last-child > td, tfoot > tr:last-child > td
+            border-bottom: 0
+
+.clearfix
+  &:before
+    content: " "
+    display: table
+  &:after
+    content: " "
+    display: table
+    clear: both
+
+.center-block
+  display: block
+  margin-left: auto
+  margin-right: auto
+
+.pull-right
+  float: right !important
+
+.pull-left
+  float: left !important
+
+.hide
+  display: none !important
+
+.show
+  display: block !important
+
+.invisible
+  visibility: hidden
+
+.text-hide
+  font: 0/0 a
+  color: transparent
+  text-shadow: none
+  background-color: transparent
+  border: 0
+
+.hidden
+  display: none !important
+
+.affix
+  position: fixed

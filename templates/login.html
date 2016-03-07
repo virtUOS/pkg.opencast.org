@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>Opencast Binary RPM Repository</title>
+<title>Matterhorn Binary RPM Repository</title>
 <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 <link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -10,7 +10,7 @@
 
 <body>
 
-<div class="header">
+<!-- <div class="header">
 	{%if admin %}
 	<div class='admintip'>Repository<a href="{{ url_for('admin') }}">Go to Admin view</a></div>
 	{%endif%}
@@ -18,83 +18,171 @@
 	<h1>
 		<a href="{{ url_for('home') }}" class="headline">
 			<img src="{{ url_for('static', filename='img/logo.png') }}" />
-			Opencast RPM Repo
+			Matterhorn Repo
 		</a>
 	</h1>
 
+</div> -->
+
+<div class="nav">
+	<div class="nav-wrapper">
+		<a href="{{ url_for('home') }}" class="headline"><img src="{{ url_for('static', filename='img/logo.png') }}" /></a>
+		<div class="menu">
+			<a href="{{ url_for('logout') }}"><div>Logout</div></a>
+			{%if admin %}
+			<a href="{{ url_for('admin') }}"><div>Admin view</div></a>
+			{%endif%}
+		</div>
+	</div>
+</div>
+<div class="banner">
+	<div>Opencast Repository</div>
+	<p>Opencast is an open source solution for automated video capture and distribution at scale. Build custom capture, processing, scheduling.</p>
+	<a href="#"></a>
 </div>
 
-<div class="container login-container">
+<div class="wrapper dark">
+	<div class="wrapper-inner">
+		<h2>Installation</h2>
 
-	<h3 class="repodescription">Table of contents</h3>
-	<div class="repodescription">
-		<ul style="margin-left: 30px;">
-			<li><a href="#about">About</a></li>
-			<li><a href="#installation">Installation</a></li>
-			<li><a href="#testing">Testing repository</a></li>
-			<li><a href="#sources">Sources</a></li>
-			<li><a href="#troubleshooting">Troubleshooting</a></li>
+		<h5>About</h5>
+
+		<p>
+				The following Linux distributions are currently supported:
+		</p>
+		<ul>
+			<li> CentOS 6x, 7x</li>
+			<li> Scientific Linux 6.x, 7.x</li>
+			<li> RedHat Enterprise Linux 6.x, 7.x</li>
+			<li> Fedora 20 (Testing only)</li>
 		</ul>
+
+
+		<p>
+			A detailed description of the installation process can be found in the  <a href="https://opencast.jira.com/wiki/display/MHTRUNK/Install">Matterhorn Release Wiki</a>:<br/>
+		</p>
+
+		<h5>CentOS/RHEL/Scientific Linux 6.x</h5>
+		<div class="repocontent light">
+			<pre>
+	# Add matterhorn repository.
+	cd /etc/yum.repos.d
+	curl -O http://repo.virtuos.uos.de/matterhorn.repo \
+	   -d os=el -d version=6 \
+	   -u [YOUR_USERNAME]:[YOUR_PASSWORD]
+
+	# Add epel repository.
+	yum install epel-release
+
+	# Install matterhorn with all it's dependencies.
+	yum install opencast-matterhorn15
+			</pre>
+		</div>
+
+		<h5>CentOS/RHEL/Scientific Linux 7.x</h5>
+		<div class="repocontent light">
+			<pre>
+	# Add matterhorn repository.
+	cd /etc/yum.repos.d
+	curl -O http://repo.virtuos.uos.de/matterhorn.repo \
+	   -d os=el -d version=7 \
+	   -u [YOUR_USERNAME]:[YOUR_PASSWORD]
+
+	# Add epel repository.
+	yum install epel-release
+
+	# Install matterhorn with all it's dependencies.
+	yum install opencast-matterhorn15
+			</pre>
+		</div>
+
+		<h5>Fedora</h5>
+			<div class="repocontent light">
+				<pre>
+	Fedora is available from the testing repository only.
+				</pre>
+			</div>
 	</div>
+</div>
 
-	<h3 class="repodescription"><a name="about">About</a></h3>
-	<div class="repodescription">
-		The following Linux distributions are currently supported:
-		<p><small>Stable</small></p>
-		<ul style="margin-left: 30px;">
-			<li>CentOS 6.x, 7.x</li>
-			<li>Scientific Linux 6.x, 7.x</li>
-			<li>RedHat Enterprise Linux 6.x, 7.x</li>
-			<li>Fedora (latest stable) <small>(Testing only)</small></li>
-		</ul>
+
+<div class="wrapper light">
+	<div class="wrapper-inner">
+
+			<h2>Testing repository</h2>
+
+			<p>If you want the newest updates and package build you can enable the Opencast Matterhorn Testing Repositories. However, the probability that something is not working right if you pull the RPMs from here is higher. So you should not use this for productive systems.</p>
+			<p>To enable the testing repository first install the regular repositories and then follow these steps:</p>
+
+			<h5>CentOS/RHEL/Scientific Linux 6.x</h5>
+			<div class="repocontent">
+				<pre>
+		# Add matterhorn repository.
+		cd /etc/yum.repos.d
+		curl -O http://repo.virtuos.uos.de/matterhorn-testing.repo \
+			 -d version=6 -d os=el \
+			 -u [YOUR_USERNAME]:[YOUR_PASSWORD]
+				</pre>
+			</div>
+
+			<h5>CentOS/RHEL/Scientific Linux 7.x</h5>
+			<div class="repocontent">
+				<pre>
+		# Add matterhorn repository.
+		cd /etc/yum.repos.d
+		curl -O http://repo.virtuos.uos.de/matterhorn-testing.repo \
+			 -d version=7 -d os=el \
+			 -u [YOUR_USERNAME]:[YOUR_PASSWORD]
+				</pre>
+			</div>
+
+			<h5>Fedora</h5>
+			<div class="repocontent">
+				<pre>
+		# Add matterhorn repository.
+		cd /etc/yum.repos.d
+		curl -O http://repo.virtuos.uos.de/matterhorn-testing.repo \
+		   -d 'version=$releasever' -d os=fc \
+		   -u [YOUR_USERNAME]:[YOUR_PASSWORD]
+
+		# Add rpmfusion repository.
+		yum localinstall --nogpgcheck \
+		  http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+		  http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+		# Install matterhorn with all it's dependencies.
+		yum install opencast-matterhorn15
+				</pre>
+			</div>
+
 	</div>
+</div>
 
-	<h3 class="repodescription"><a name="installation">Installation</a></h3>
+<div class="wrapper dark">
+	<div class="wrapper-inner">
 
+		<h2>Sources</h2>
+		<p>If you want to build your own RPM repository you can get the source RPMs from <a href="http://repo.virtuos.uos.de/srpms/">here</a>. Additional documentation and the SPEC files can be found at <a href="https://github.com/lkiesow/matterhorn-rpms">GitHub</a>.</p>
 
-	<div class="repodescription">
-		A detailed description of the installation process can be found in the
-    Opencast Administrator Guides at
-		<a style="margin-left:24px;"
-			href="https://docs.opencast.org/latest/admin/installation/#installation-from-repository"
-      >https://docs.opencast.org/latest/admin/installation/</a>
 	</div>
+</div>
 
+<div class="wrapper light">
+	<div class="wrapper-inner">
 
+		<h2>Troubleshooting</h2>
+		<p>
+			If you encounter any trouble during the installation process check if all repositories are installed and enabled properly. Some distributions for example come with a preinstalled but disabled epel repository. The installation of the epel-release package will not fix this.
+			You can check what repositories are installed and enabled by executing yum repolist enabled which should give you a list with epel, matterhorn and matterhorn-noarch in it.
+		</p>
 
+		<p>
+			If epel was preinstalled but disabled on your system, you can obviously skip the installation of the epel-release package, although an installation will not harm your system. You just need to enable the system by editing the configuration file /etc/yum.repo.d/epel.repo and set the property enabled to 1.
+			If you get errors that Matterhorn dependencies are missing, make sure that you are actually running an OS with x86_64 architecture. There is no repository for other architectures.
+		</p>
 
-	<h3 class="repodescription"><a name="sources">Sources</a></h3>
-	<div class="repodescription">
-		If you want to build your own RPM repository you can get the source RPMs from
-		<a href="http://repo.virtuos.uos.de/srpms/">http://repo.virtuos.uos.de/srpms/</a>.
-		Additionally, the RPM Spec files can be found at
-		<a href="https://github.com/lkiesow/opencast-rpm-specs">https://github.com/lkiesow/opencast-rpm-specs</a>.
 	</div>
-
-	<h3 class="repodescription"><a name="troubleshooting">Troubleshooting</a></h3>
-
-	<div class="repodescription">
-    If you encounter any problems during the installation process check if all repositories are installed and enabled
-    properly. Some distributions for example come with a pre-installed but disabled epel repository. The
-		installation of the epel-release package will <em>not</em> fix this.
-	</div>
-	<div class="repodescription">
-		You can check what repositories are installed and enabled by executing
-		<span style="font-family: monospace;">yum/dnf repolist enabled</span> which
-		should give you a list with epel, matterhorn and matterhorn-noarch in it.
-	</div>
-	<div class="repodescription">
-		If epel was preinstalled but disabled on your system, you can obviously
-		skip the installation of the epel-release package, although an installation
-		will not harm your system. You just need to enable the system by editing the
-		configuration file <span style="font-family: monospace">/etc/yum.repo.d/epel.repo</span>
-		and set the property <span style="font-family: monospace">enabled</span> to 1.
-	</div>
-	<div class="repodescription">
-		If you get errors that Opencast dependencies are missing, make sure
-		that you are actually running an OS with x86_64 architecture. There is no
-		repository for other architectures.
-	</div>
+</div>
 
 </div>
 </body>

@@ -1,76 +1,166 @@
 <!DOCTYPE html>
-<html>
+<html style="background-color:#EFF3F6;">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title>Admin | Matterhorn Repository</title>
 <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='simple-line-icons.css') }}" />
 <link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
 <script type="text/javascript">
-function checkDelete() {
-	if ($('.radio[value=delete]:checked').length) {
-		if (!confirm('Are you sure, you want to delete some of the requests?')) {
-			return false;
-		}
+
+	var i = 0;
+
+ // enable this disable each other select
+	function inputDisable( f ) {
+		var user = f;
+		var tuser = "#target" + f;
+		var doptions = "#delete-options" + f;
+
+		//
+
+		$( '.select' ).each( function() {
+			$( this ).prop( "disabled", true );
+		});
+
+		$( '.delete-options' ).each(function(){
+			$( this ).css( "display", "none" );
+		});
+
+		$( tuser ).removeProp( "disabled" ); //enable current users delete section
+		$( doptions ).css( "display", "block" ); // display current user
 	}
-	return true;
-}
+
 </script>
 </head>
 
 <body>
-<div class="header">
-	<div class="admintip">Admin view <a href="{{ url_for('home') }}">Go to repository</a></div>
-	<h1>
-		<a href="{{ url_for('home') }}" class="headline">
-			<img src="{{ url_for('static', filename='img/logo.png') }}" />
-			Matterhorn Repo
-		</a>
-	</h1>
-
-	<div class="switchview-container">
-		<a href="{{ url_for('admin', who='new') }}" class="switchview switchview-active">New Users ({{ newusercount }})</a>
-		<a href="{{ url_for('admin', who='all') }}" class="switchview">All Users</a>
-		<a href="{{ url_for('csv') }}"              class="switchview">Export (CSV)</a>
-		<div class="clear"></div>
-	</div>
-</div>
-
-<div class="container">
-	<form method='POST' action='{{ url_for('admin') }}' onsubmit="return checkDelete();">
-		{% for u in user %}
-		<div class='element'>
-			<div class='icon-container admin-selector'>
-				<label><input type='radio' name='{{ u[0] }}' title='Set Admin Rights' value=ignore class='radio' checked />No Action</label>
-				<label><input type='radio' name='{{ u[0] }}' title='Set Admin Rights' value=admin class='radio' />Admin</label>
-				<label><input type='radio' name='{{ u[0] }}' title='Set Reposity Access' value=user class='radio' />User</label>
-				<label><input type='radio' name='{{ u[0] }}' title='Set Reposity Access' value=delete class='radio' />Delete</label>
-			</div>
-			<div class='name'>{{ u[0] }}</div>
-			<div class='clear'>
-				<div class='userinfo'>
-					<span class='userinfoline'><label>Name:</label>{{ u[1] }} {{ u[2] }}</span>
-					<span class='userinfoline'><label>E-Mail:</label>{{ u[4] }}</span>
-					<span class='userinfoline'><label>City:</label>{{ u[6] }}, {{ u[5] }}</span>
-					<span class='userinfoline'><label>Company:</label>{{ u[8] }}, {{ u[7] }}</span>
-					<div class='userstatistics'>
-						{% if u[10] %}
-						Is using Matterhorn in {{ u[11] }} rooms.
-						{% else %}
-						Not using Matterhorn. Is planning to install in {{ u[12] }}.
-						{% endif %}
-					</div>
-				</div>
+	<div class="nav" style="background-color:#ffffff;">
+		<div class="nav-wrapper">
+			<a href="{{ url_for('home') }}" class="headline"><img src="{{ url_for('static', filename='img/logo.png') }}" /></a>
+			<div class="menu">
+				<div><a href="{{ url_for('home') }}">Repository</a></div>
+				<div><a href="{{ url_for('logout') }}">Logout</a></div>
 			</div>
 		</div>
-		{% else %}
-		<div class='element'>No open requests.</div>
-		<hr />
-		{% endfor %}
+	</div>
 
-		<div class='submitbutton'><input type='submit' value='Save changes' /></div>
-	</form>
-</div>
+	<div class="wrapper-menu-dashboard" style="padding-top:50px;">
+		<div class="wrapper-inner dashboard-header">
+
+				<div class="menu-box active">
+					<a href="{{ url_for('admin', who='new') }}">
+						<div>New users <span class="newusercount">{{ newusercount }}</span></div>
+					</a>
+				</div>
+
+				<div class="menu-box">
+					<a href="{{ url_for('admin', who='all') }}">
+						<div>All users</div>
+					</a>
+				</div>
+
+				<div class="menu-box">
+					<a href="{{ url_for('csv') }}">
+						<div>Export</div>
+					</a>
+				</div>
+
+				<div class="search-box">
+					<span class="icon-magnifier"></span><input id=search class="search" type=text placeholder="Search for a user" style="width: 199px;" onkeyup="search();" />
+				</div>
+
+				<div style="clear:both"></div>
+		</div>
+	</div>
+
+	<div class="wrapper" style="padding:0px!important;">
+		<div class="wrapper-inner" style="background-color:#FFFFFF;padding:50px 0px;">
+
+			<form class="delete-options-disable" method='POST' action='{{ url_for('admin') }}'>
+				<table class="table table-bordered table-striped new-users">
+
+					<tr id="target">
+						<th style="padding-left:20px!important;">Name</th>
+						<th>E-Mail</th>
+						<th>country</th>
+						<th>Company</th>
+						<th>Information</th>
+						<th width="130px">Actions</th>
+				 </tr>
+
+				 	{% for u in user %}
+
+						<tr>
+								<td class="name" style="padding-left:20px!important;">{{ u[1] }} {{ u[2] }}</td>
+								<td>{{ u[4] }}</td>
+								<td>{{ u[6] }} {{ u[5] }}</td>
+								<td>{{ u[8] }} {{ u[7] }}</td>
+								<td>
+
+										{% if u[10] %}
+										Is using Matterhorn in {{ u[11] }} rooms.
+										{% else %}
+										Not using Matterhorn. Is planning to install in {{ u[12] }}.
+										{% endif %}
+
+								</td>
+
+								<td class="actions">
+									<div id="actions{{ u[0] }}">
+										<!-- insert avtion buttons -->
+										<!-- <input id='rad2{{ u[0] }}' type='radio' name='{{ u[0] }}'onclick='submit{{ u[0] }}()' title='Set Admin Rights' value=admin class='radio' /><label for='rad2{{ u[0] }}'><span class='icon-color icon-user'></span></label> -->
+										<input id='rad3{{ u[0] }}' type='radio' name='{{ u[0] }}'onclick='submit{{ u[0] }}()' title='Set Repository Access' value=user class='radio' /><label for='rad3{{ u[0] }}'><span class='icon-color icon-users'></span></label>
+										<input id='rad4{{ u[0] }}' type='radio' name='{{ u[0] }}'onclick='handle{{ u[0] }}()' title='Delete User' value=delete class='radio'/><label for='rad4{{ u[0] }}'><span class='icon-color icon-trash'></span></label>
+									</div>
+
+									<div class="delete-options"  id="delete-options{{ u[0] }}" style="display:none;">
+										<select class="select" id="target{{ u[0] }}" name="delete-options" disabled>
+											<option value="delete0">-</option>
+									    <option value="delete1">Delete 1</option>
+									    <option value="delete2">Delete 2</option>
+									    <option value="delete3">Delete 3</option>
+									  </select>
+
+										<div class="delete-button-new" onClick="submit{{ u[0] }}()">Delete</div>
+									</div>
+
+								</td>
+								<div class='submitbutton'><input type='submit' style="display:none;" id="input{{ u[0] }}" value='Save changes' /></div>
+						</tr>
+
+						<!-- Insert Action Buttons -->
+						<script type="text/javascript">
+
+							function handle{{ u[0] }}() {
+								var f = "{{ u[0]}}";
+
+								if($('#rad4{{ u[0] }}').is(':checked')) {
+									$('#delete-options{{ u[0] }}').css( "display", "block" );
+
+									//call function to disable inputs and enable selected input
+									inputDisable(f);
+								} else {
+									 $('#delete-options{{ u[0] }}').css( "display", "none" );
+								}
+
+							}
+
+							//pull trigger to shot data into python universe
+							function submit{{ u[0] }}() {
+								$('#input{{ u[0] }}').trigger('click');
+							}
+
+						</script>
+
+					{% endfor %}
+
+				</table>
+
+			</form>
+
+		</div>
+	</div>
 </body>
 </html>
