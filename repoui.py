@@ -1,11 +1,6 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
 
-# Set default encoding to UTF-8
-import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
-
 import config
 
 import sqlite3
@@ -99,7 +94,7 @@ def repofile():
 	os      = request.form.get('os', 'el')
 	version = request.form.get('version', '6')
 
-	print tpl, user, passwd, os
+	#print(tpl, user, passwd, os)
 	return render_template(tpl, user=user, passwd=passwd, os=os,
 			version=version)
 
@@ -195,7 +190,7 @@ def admin(who='new'):
 
 	# Handle save option
 	if request.form:
-		print request.form
+		#print(request.form)
 		with sqlite3.connect('users.db') as con:
 			cur = con.cursor()
 			for k, v in request.form.iteritems():
@@ -253,7 +248,7 @@ def csv():
 			+ 'adoptiontime, admin, repoaccess, deleteaccess, comment\n'
 
 	for u in user:
-		result += '"' + '", "'.join([str(x) for x in u]) + '"\n'
+		result += u'"' + u'", "'.join([unicode(x) for x in u]) + u'"\n'
 	return Response(result, content_type='application/octet-stream')
 
 
