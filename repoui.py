@@ -1,5 +1,6 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
+# vim: noet:ts=4:sw=4:sts=4
 
 # Set default encoding to UTF-8
 import sys
@@ -201,17 +202,18 @@ def admin(who='new'):
 		with sqlite3.connect('users.db') as con:
 			cur = con.cursor()
 			for k, v in request.form.iteritems():
-				cur.execute('''select repoaccess, email, password, firstname, lastname
-						from user where username=?''', (k,))
+				user = unicode(k)
+				cur.execute(u'''select repoaccess, email, password, firstname, lastname
+						from user where username=?''', (user,))
 				data = cur.fetchone()
 				if data and v in ('admin', 'user') and not data[0]:
 					registrationmail(k, data[1], data[2], data[3], data[4])
 				if v == 'user':
-					cur.execute('update user set repoaccess=1, admin=0 where username=?', (k,))
+					cur.execute(u'update user set repoaccess=1, admin=0 where username=?', (user,))
 				elif v == 'admin':
-					cur.execute('update user set repoaccess=1, admin=1 where username=?', (k,))
+					cur.execute(u'update user set repoaccess=1, admin=1 where username=?', (user,))
 				elif v == 'delete':
-					cur.execute('delete from user where username=?', (k,))
+					cur.execute(u'delete from user where username=?', (user,))
 					doptions = request.form['delete-options']
 					deletemail(k, data[1], data[2], data[3], data[4], doptions)
 			con.commit()
@@ -319,10 +321,8 @@ def storeuser():
 		'lastname'  : request.form.get('lastname') })
 
 	server = smtplib.SMTP('smtp.serv.uos.de')
-	server.sendmail(
-			request.form.get('email'),
-			config.adminmailadress,
-			message)
+	for to in config.adminmailadress:
+		server.sendmail(request.form.get('email'), to, message)
 	server.quit()
 	return redirect(url_for('success'))
 

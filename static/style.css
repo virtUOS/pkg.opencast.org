@@ -588,16 +588,13 @@ fieldset label {
   padding: 10px;
   height: 47px; }
 
-/* line 508, style.sass */
-.signup-button {
-  margin-top: 45px;
-  width: 270px;
-  text-align: center;
-  margin-left: 183px;
-  text-decoration: none; }
-
 /* line 515, style.sass */
 .forgot a {
+  cursor: pointer;
+  text-align: center;
+  margin: 10px;
+  text-decoration: none;
+  display: block;
   color: #023160;
   font-size: 12px; }
 
@@ -634,11 +631,6 @@ fieldset label {
 /* line 544, style.sass */
 .forgot-card p {
   margin: 10px 0px; }
-
-/* line 547, style.sass */
-.forgot-button {
-  cursor: pointer;
-  font-size: 14px !important; }
 
 /* line 551, style.sass */
 .black-overlay {

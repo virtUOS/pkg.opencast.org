@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 db_username="matterhorn-rpms"
 db_password="j5QV9DCj4vd5bu8h"
 database="matterhorn-rpms"
@@ -10,13 +11,13 @@ sessionkey = 'bdkfHvkVt(r8%ZGIUZGTRHg'
 
 repourl      = "http://repo.virtuos.uos.de/"
 mailsender   = "mkipp@uni-osnabrueck.de"
-mailtopic    = "Registration: Matterhorn RPM Repo"
+mailtopic    = "Registration: Opencast RPM Repo"
 mailtext     = '''Hello %(firstname)s %(lastname)s,
-Welcome to the Matterhorn RPM Repository.
+Welcome to the Opüencast RPM Repository.
 Here are your credentials for the repo:
 
-	Username: %(username)s
-	Password: %(password)s
+    Username: %(username)s
+    Password: %(password)s
 
 For more information, please visit
  ''' + repourl
@@ -24,20 +25,19 @@ For more information, please visit
 # EMAIL TO ADMIN */
 
 adminurl          = "http://repo.virtuos.uos.de/admin"
-adminmailadress  = "mkipp@uni-osnabrueck.de"
-#adminmailadress   = "lkiesow@uos.de"
-adminmailtopic    = "%(username)s registered on Matterhorn CentOS Repo"
+adminmailadress   = ['lkiesow@uos.de']
+adminmailtopic    = "%(username)s registered on Opüencast CentOS Repo"
 adminmailtext     = '''Hello Admin,
-%(username)s (%(firstname)s %(lastname)s) signed-up for the Matterhorn RPM Repo.
+%(username)s (%(firstname)s %(lastname)s) signed-up for the Opencast RPM Repo.
 
 Visit ''' + adminurl + ''' to activate his account.'''
 
 # EMAIL FORGOT PASSWORD */
 
 mailsender = 'no-reply@virtuos.uos.de'
-forgotmailtopic  = 'Your password for Matterhorn Repository'
+forgotmailtopic  = 'Your password for Opencast Repository'
 forgotmailtext   = '''Hello,
-your login for the Matterhorn RPM Repository:
+your login for the Opencast RPM Repository:
 '''
 
 # TEXT SUCCESSFULL/ERROR REGESTRATION PAGE */
@@ -75,7 +75,9 @@ signupinfotext = "With signing up you will get free access to Matterhorn Repo fo
 passwordsenttext = "We sent a mail with your password to you."
 
 #TEXT DELETE MAIL
-delete0 = "for several reasons."
-delete1 = "for reason one"
-delete2 = "for reason two"
-delete3 = "for reason three"
+delete_reasons = [
+        'Your request could not be accepted..',
+        'Access for non-commercial organizations only.',
+        'Invalid or incomplete data.',
+        'Duplicated account'
+        ]
