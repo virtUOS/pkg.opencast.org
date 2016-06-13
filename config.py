@@ -9,22 +9,22 @@ sessionkey = 'bdkfHvkVt(r8%ZGIUZGTRHg'
 # EMAIL TO USER */
 
 repourl      = "http://repo.virtuos.uos.de/"
-mailsender   = "virtuos@uni-osnabrueck.de"
+mailsender   = "mkipp@uni-osnabrueck.de"
 mailtopic    = "Registration: Matterhorn RPM Repo"
 mailtext     = '''Hello %(firstname)s %(lastname)s,
 Welcome to the Matterhorn RPM Repository.
 Here are your credentials for the repo:
-	
+
 	Username: %(username)s
 	Password: %(password)s
-	
+
 For more information, please visit
  ''' + repourl
 
 # EMAIL TO ADMIN */
 
 adminurl          = "http://repo.virtuos.uos.de/admin"
-adminmailadress  = "rrolf@uni-osnabrueck.de"
+adminmailadress  = "mkipp@uni-osnabrueck.de"
 #adminmailadress   = "lkiesow@uos.de"
 adminmailtopic    = "%(username)s registered on Matterhorn CentOS Repo"
 adminmailtext     = '''Hello Admin,
@@ -73,3 +73,9 @@ signupinfotext = "With signing up you will get free access to Matterhorn Repo fo
 # TEXT FORGOTTEN PASSWORD SENT */
 
 passwordsenttext = "We sent a mail with your password to you."
+
+#TEXT DELETE MAIL
+delete0 = "for several reasons."
+delete1 = "for reason one"
+delete2 = "for reason two"
+delete3 = "for reason three"

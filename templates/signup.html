@@ -5,12 +5,20 @@
 <title>Recover password</title>
 <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 <link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
+<!-- Country JS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/countrySelect.css') }}">
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
 
+<script src="{{ url_for('static', filename='js/countrySelect.js') }}"></script>
 
 <script type="text/javascript">
 $(document).ready(function() {
+
+			// CountryJS
+		  $("#country").countrySelect();
+
 		$('form').submit(function() {
 			if ($(".user").val() == "") {
 				alert("Pleas type your username");
@@ -32,11 +40,11 @@ $(document).ready(function() {
 				$(".email").focus();
 				return false;
 			}
-			if ($(".country").val() == "") {
-				alert("Pleas type your country");
-				$(".country").focus();
-				return false;
-			}
+			// if ($(".country").val() == "") {
+			// 	alert("Pleas type your country");
+			// 	$(".country").focus();
+			// 	return false;
+			// }
 			if ($(".city").val() == "") {
 				alert("Pleas type your city");
 				$(".city").focus();
@@ -53,6 +61,10 @@ $(document).ready(function() {
 				return false;
 			}
 			if (!$('.agreebox').attr('checked')) {
+				alert("You have to agree to the terms of use");
+				return false;
+			}
+			if (!$('.agreebox-term').attr('checked')) {
 				alert("You have to agree to the terms of use");
 				return false;
 			}
@@ -75,57 +87,48 @@ function clickAgree(theForm) {
 
 <body>
 
-<div class="header">
-	<a href="{{ url_for('home') }}">
-		<h1>
-			<img src="{{ url_for('static', filename='img/logo.png') }}" />
-			Matterhorn Repository      
-		</h1>
-	</a>
-</div>
 <div class="box" style="min-width: 500px;">
 	<div class="text-wrapper">
-		<h2>Sign-up</h2>      
+		<a href="{{ url_for('home') }}">
+			<h1>
+				<img src="{{ url_for('static', filename='img/logo.png') }}" />
+			</h1>
+		</a>
+
+		<!-- <h2>Sign-up</h2> -->
+
 		<div id="signup-page" style="margin-top: 20px;">
 			<form name="form2" method="post" action="{{ url_for('storeuser') }}">
 
-
-				<label for="user">Username:</label>
-				<input name="user" class="user" type="text" required="required" />
+				<input name="user" class="user" type="text" required="required" placeholder="Username" />
 
 				<div class="field-space">
-					<label for="firstname">Firstname:</label>
-					<input name="firstname" class="firstname" type="text" required="required" />
+					<input name="firstname" class="firstname" type="text" required="required" placeholder="First Name" />
 				</div>
 
 				<div class="field-space">
-					<label for="lastname">Lastname:</label>
-					<input name="lastname" class="lastname" type="text" required="required" />
+					<input name="lastname" class="lastname" type="text" required="required" placeholder="Last Name"/>
 				</div>
 
 				<div class="field-space">
-					<label for="email">E-Mail:</label>
-					<input name="email" class="email" type="email" required="required" />
+					<input name="email" class="email" type="email" required="required" placeholder="E-Mail" />
 				</div>
 
 				<div class="field-space">
-					<label for="country">Country:</label>
-					<input name="country" class="country" type="text" required="required" />
+					<input type="text" id="country" name="country"  readonly="readonly" placeholder="Country" />
+				</div>
+
+
+				<div class="field-space">
+					<input name="city" class="city" type="text" required="required" placeholder="City" />
 				</div>
 
 				<div class="field-space">
-					<label for="city">City:</label>
-					<input name="city" class="city" type="text" required="required" />
+					<input name="company" class="company" type="text" required="required" placeholder="Company"/>
 				</div>
 
 				<div class="field-space">
-					<label for="company">Company:</label>
-					<input name="company" class="company" type="text" required="required" />
-				</div>
-
-				<div class="field-space">
-					<label for="department">Department:</label>
-					<input name="department" class="department" type="text" required="required" />
+					<input name="department" class="department" type="text" required="required" placeholder="Department"/>
 				</div>
 
 				<div class="field-space">
@@ -146,6 +149,18 @@ function clickAgree(theForm) {
 						<option>51-100</option>
 					</select>
 					</p>
+
+					<label class="questiona">How did you find out about opencast ?</label>
+					<p class="answera">
+					<select name="installations">
+						<option selected>---</option>
+						<option>Congress</option>
+						<option>Meeting</option>
+						<option>Friends</option>
+						<option>Working Partners</option>
+						<option>etc</option>
+					</select>
+					</p>
 				</div>
 
 				<div class="answer-no answer">
@@ -163,12 +178,25 @@ function clickAgree(theForm) {
 				</p>
 
 				<div class="field-space">
-					<label style="text-align: left;">
-						<input type="checkbox" name="agreebox" class="agreebox" value=agree />
+					<div class="field-space-left">
+							<input type="checkbox" name="agreebox" class="agreebox" value=agree style="height:13px;" />
+					</div>
+					<div class="field-space-right">
 						I acknowledge that this account is for personal or
 						educational use only. I'm not allowed to share this account
 						with others and to use it for commercial purposes.
-					</label>
+					</div>
+					<div style="clear:both;"></div>
+				</div>
+
+				<div class="field-space"style="margin-top:20px;">
+					<div class="field-space-left">
+							<input type="checkbox" name="agreebox-term" class="agreebox" value=agree style="height:13px;" />
+					</div>
+					<div class="field-space-right">
+						I agree to the <a href="#">Opencast Terms</a>
+					</div>
+					<div style="clear:both;"></div>
 				</div>
 
 				<div class="field-space">

@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html style="background-color:#EFF3F6;">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title>Admin | Matterhorn Repository</title>
 <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='simple-line-icons.css') }}" />
 <link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
 <script type="text/javascript">
 function checkDelete(u) {
-	if ($('select[name='+u+']').val() == 'delete') {
+	if ($('input:radio[name='+u+']:checked').val() == 'delete') {
 		if (!confirm('Are you sure, you want to delete this user?')) {
 			return false;
 		}
@@ -33,29 +35,112 @@ function search() {
 </head>
 
 <body>
-<div class="header">
-	<div class="admintip">Admin view <a href="{{ url_for('home') }}">Go to repository</a></div>
-	<h1>
-		<a href="{{ url_for('home') }}" class="headline">
-			<img src="{{ url_for('static', filename='img/logo.png') }}" />
-			Matterhorn Repo
-		</a>
 
-		<span class="registered_users">{{ usercount }} User</span>
-
-	</h1>
-
-	<div class="switchview-container">
-		<a href="{{ url_for('admin', who='new') }}" class="switchview switchview-active">New Users ({{ newusercount }})</a>
-		<a href="{{ url_for('admin', who='all') }}" class="switchview">All Users</a>
-		<a href="{{ url_for('csv') }}"              class="switchview">Export (CSV)</a>
-		<div class="clear"></div>
+<div class="nav" style="background-color:#ffffff;">
+	<div class="nav-wrapper">
+		<a href="{{ url_for('home') }}" class="headline"><img src="{{ url_for('static', filename='img/logo.png') }}" /></a>
+		<div class="menu">
+			<div><a href="{{ url_for('home') }}">Repository</a></div>
+			<div><a href="{{ url_for('logout') }}">Logout</a></div>
+		</div>
 	</div>
-
 </div>
 
+<div class="wrapper-menu-dashboard" style="padding-top:50px;">
+	<div class="wrapper-inner dashboard-header">
 
-<div class="container">
+			<div class="menu-box">
+				<a href="{{ url_for('admin', who='new') }}">
+					<div>New users <span class="newusercount">{{ newusercount }}</span></div>
+				</a>
+			</div>
+
+			<div class="menu-box active">
+				<a href="{{ url_for('admin', who='all') }}">
+					<div>All users</div>
+				</a>
+			</div>
+
+			<div class="menu-box">
+				<a href="{{ url_for('csv') }}">
+					<div>Export</div>
+				</a>
+			</div>
+
+			<div class="search-box">
+				<span class="icon-magnifier"></span><input id=search class="search" type=text placeholder="Search for a user" style="width: 199px;" onkeyup="search();" />
+			</div>
+
+			<div style="clear:both"></div>
+	</div>
+</div>
+
+<div class="wrapper" style="padding:0px!important;">
+	<div class="wrapper-inner" style="background-color:#FFFFFF;padding:50px 0px;margin-bottom:50px;">
+
+		<!-- <input id=search type=text placeholder=Search style="width: 400px;" onkeyup="search();" /> -->
+
+		 <table class="table table-bordered table-striped">
+			 <tr>
+			 	<th>Username</th>
+				<th>E-Mail</th>
+				<th style="50px;">Status</th>
+				<th>City</th>
+				<th>Country</th>
+				<th>Company</th>
+				<th>Actions</th>
+			 </tr>
+
+			 {% for u in user %}
+
+			 <tr class="element" id="admin-marker{{ u[0] }}">
+			 	<td class="name">{{ u[0] }}</td>
+				<td class="email">{{ u[4] }}</td>
+				<td>{{ 'Admin' if u[13] else ( 'User' if u[14] else 'Disabled' ) }}</td>
+				<td>{{ u[1] }} {{ u[2] }}</td>
+				<td>{{ u[6] }} {{ u[5] }}</td>
+				<td>{{ u[8] }} {{ u[7] }}</td>
+				<td>
+					<!-- <form method='POST' action="{{ url_for('admin', who='all') }}" onsubmit="return checkDelete('{{ u[0] }}');">
+						<button class="delete-button" type="submit" value=delete><span class="icon-close"></span> Delete</button> <span style="margin-left:20px;" class="icon-user"></span> <span style="margin-left:20px;" class="icon-users"></span>
+					</form> -->
+
+					<form method='POST' action="{{ url_for('admin', who='all') }}" onsubmit="return checkDelete('{{ u[0] }}');">
+						<fieldset id="fieldset{{ u[0] }}">
+
+
+
+						</fieldset>
+						<input id="input{{ u[0] }}" style="display:none;" type=submit value="Save Changes" />
+					</form>
+
+				</td>
+			 </tr>
+
+			 <script type="text/javascript">
+
+				var status = "{{ 'Admin' if u[13] else ( 'User' if u[14] else 'Disabled' ) }}";
+				if (status == 'Admin') {
+					$("#admin-marker{{ u[0] }}").css('border-left', '3px solid red');
+					$("#fieldset{{ u[0] }}").append("<input style='display:none;' id='user{{ u[0] }}' onclick='submit{{ u[0] }}()' type='radio' name='{{ u[0] }}' value=user><label for='user{{ u[0] }}'<span class='icon-users'></span></label>");
+				} else {
+					$("#fieldset{{ u[0] }}").append("<input style='display:none;' id='admin{{ u[0] }}' onclick='submit{{ u[0] }}()' type='radio' name='{{ u[0] }}' value=admin><label for='admin{{ u[0] }}'<span class='icon-user'></span></label>");
+				}
+
+				$("#fieldset{{ u[0] }}").append("<input style='display:none;' id='delete{{ u[0] }}' onclick='submit{{ u[0] }}()' type='radio' name='{{ u[0] }}' value=delete><label for='delete{{ u[0] }}'<span class='icon-trash'></span></label>");
+
+				function submit{{ u[0] }}() {
+					$('#input{{ u[0] }}').trigger('click');
+				}
+			 </script>
+
+			 {% endfor %}
+		 </table>
+
+	 </div>
+</div>
+
+<!-- <div class="container">
 	<input id=search type=text placeholder=search style="margin: 10px; width: 562px;" onkeyup="search();" />
 	{% for u in user %}
 	<div class='element'>
@@ -89,8 +174,7 @@ function search() {
 					{% endif %}
 				</div>
 
-				<div class='useraction'>
-					<form method='POST' action="{{ url_for('admin', who='all') }}" onsubmit="return checkDelete('{{ u[0] }}');">
+ 					<form method='POST' action="{{ url_for('admin', who='all') }}" onsubmit="return checkDelete('{{ u[0] }}');">
 						<select style="font-size: smaller;" name='{{ u[0] }}'>
 							<option value=ignore>–</option>
 							<option value=admin>Grant Administrative Privileges</option>
@@ -105,7 +189,7 @@ function search() {
 	</div>
 	{% endfor %}
 
-</div>
+</div> -->
 
 
 

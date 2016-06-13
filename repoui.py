@@ -1,6 +1,11 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
 
+# Set default encoding to UTF-8
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 import config
 
 import sqlite3
@@ -38,6 +43,9 @@ with sqlite3.connect('users.db') as con:
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
+	randa = random.randrange(1, 49)
+	randb = random.randrange(1, 49)
+	randr = randa + randb
 	user, passwd = request.form.get('username'), request.form.get('password')
 	if user:
 		try:
@@ -65,7 +73,7 @@ def home():
 				admin=admin)
 
 	# No login? Show start page:
-	return render_template('index.html', config=config)
+	return render_template('index.html', config=config, rand=(randa, randb, randr))
 
 
 @app.route('/matterhorn.repo', methods=['GET', 'POST'])
@@ -94,7 +102,7 @@ def repofile():
 	os      = request.form.get('os', 'el')
 	version = request.form.get('version', '6')
 
-	#print(tpl, user, passwd, os)
+	print tpl, user, passwd, os
 	return render_template(tpl, user=user, passwd=passwd, os=os,
 			version=version)
 
@@ -190,7 +198,6 @@ def admin(who='new'):
 
 	# Handle save option
 	if request.form:
-		#print(request.form)
 		with sqlite3.connect('users.db') as con:
 			cur = con.cursor()
 			for k, v in request.form.iteritems():
@@ -205,6 +212,8 @@ def admin(who='new'):
 					cur.execute('update user set repoaccess=1, admin=1 where username=?', (k,))
 				elif v == 'delete':
 					cur.execute('delete from user where username=?', (k,))
+					doptions = request.form['delete-options']
+					deletemail(k, data[1], data[2], data[3], data[4], doptions)
 			con.commit()
 
 
@@ -248,7 +257,7 @@ def csv():
 			+ 'adoptiontime, admin, repoaccess, deleteaccess, comment\n'
 
 	for u in user:
-		result += u'"' + u'", "'.join([unicode(x) for x in u]) + u'"\n'
+		result += '"' + '", "'.join([str(x) for x in u]) + '"\n'
 	return Response(result, content_type='application/octet-stream')
 
 
@@ -335,6 +344,26 @@ def registrationmail(username, email, password, firstname, lastname):
 			'lastname'  : lastname,
 			'username'  : username,
 			'password'  : password}
+
+	server = smtplib.SMTP('smtp.serv.uos.de')
+	server.sendmail(config.mailsender, email, message)
+	server.quit()
+
+def deletemail(username, email, password, firstname, lastname, doptions):
+	#select reason
+	if doptions == 'delete0':
+		text = config.delete0
+	elif doptions == 'delete1':
+		text = config.delete1
+	elif doptions == 'delete2':
+		text = config.delete2
+	elif doptions == 'delete3':
+		text = config.delete3
+
+	header  = 'From: %s\n' % config.mailsender
+	header += 'To: %s\n' % email
+	header += 'Subject: OpencastRepo Accound has been Deleted\n\n'
+	message = header + text
 
 	server = smtplib.SMTP('smtp.serv.uos.de')
 	server.sendmail(config.mailsender, email, message)

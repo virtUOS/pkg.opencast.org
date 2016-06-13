@@ -5,26 +5,37 @@
 <title>Recover password</title>
 <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 <link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$(".main").css({
+		'position' : 'absolute',
+			'left' : '50%',
+			'top' : '50%',
+			'margin-left' : -$('.main').width()/2,
+			'margin-top' : -$('.main').height()/2,
+	});
+});
+</script>
+
 </head>
 
 <body>
 
-<div class="header">
-	<a href="{{ url_for('home') }}">
-		<h1>
-			<img src="{{ url_for('static', filename='img/logo.png') }}" />
-			Matterhorn Repository      
-		</h1>
-	</a>
-</div>
-<div class="box">
+<div class="box main">
 	<div class="text-wrapper">
-		<h2>Recover password</h2>      
-		<div style="margin-top: 30px;">
-			<p>Forgot your password? Please insert your username and email adress:</p>
-			<form method="POST" action="{{ url_for('forgot') }}">
-				<input type="email" name="email" placeholder="Email address…" /><br />
-				<input style="width: 100%; text-align: center;" type="submit" class="button" />
+		<a href="{{ url_for('home') }}">
+			<h1>
+				<img src="{{ url_for('static', filename='img/logo.png') }}" />
+			</h1>
+		</a>
+		<span style="font-size:20px;">Recover password</span>
+		<div style="margin-top: 10px;">
+			<p>Forgot your password? Please insert your E-Mail adress:</p>
+			<form method="POST" action="{{ url_for('forgot') }}" style="margin-top:20px;">
+				<input id="email" type="email" name="email" placeholder="E-Mail address" />
+				<input style="width: 100%; text-align: center; margin-top:20px;" type="submit" class="button" />
 			</form>
 		</div>
 	</div>
