@@ -26,7 +26,15 @@
 $(document).ready(function() {
 
 	// CountryJS
-	$("#country").countrySelect();
+	$("#country").countrySelect({'preferredCountries':['us','de','ch']});
+	$("#country").countrySelect("setCountry", '');
+
+	var isValid = function() {
+		$(this).toggleClass('hascontent', $(this).val() != '');
+	};
+	$('#signup-page input').change(isValid);
+	$('#signup-page input').keyup(isValid);
+	$('#signup-page input').mouseup(isValid);
 
 	// Center Login
 	$(".main").css({
@@ -104,9 +112,9 @@ $(document).ready(function() {
 				<h3>Recover Password</h3>
 
 				<div style="margin-top: 10px;">
-					<p>Please enter your E-Mail address to recover your password.</p>
+					<p>Please enter your email address to recover your password.</p>
 					<form method="POST" action="{{ url_for('forgot') }}" style="margin-top:20px;">
-						<input style="padding-left:11px!important" id="email" type="email" name="email" placeholder="E-Mail address" />
+						<input style="padding-left:11px!important" id="email" type="email" name="email" placeholder="email address" />
 						<input style="width: 100%; text-align: center;" type="submit" class="button-recover" />
 					</form>
 				</div>
@@ -149,111 +157,29 @@ $(document).ready(function() {
 <div id="signup-page" style="margin-top: 20px;padding:0px 10px;">
 	<div class="text-wrapper">
 	<form name="form2" method="post" action="{{ url_for('storeuser') }}">
-		
-		<input name="user" class="user" type="text" required="required" placeholder="Username" />
 
-		<div class="field-space">
-			<input name="firstname" class="firstname" type="text" required="required" placeholder="First Name" />
-		</div>
+		Please fill out the following details about yourself:<br />
+		<small style="color: orange;">Required fields are marked orange.</small>
 
-		<div class="field-space">
-			<input name="lastname" class="lastname" type="text" required="required" placeholder="Last Name"/>
-		</div>
-
-		<div class="field-space">
-			<input name="email" class="email" type="email" required="required" placeholder="E-Mail" />
-		</div>
-
-		<div class="field-space">
-			<input type="text" id="country" name="country"  readonly="readonly" placeholder="Country" style="width:400px!important;margin-bottom:10px!important;" />
-		</div>
-
-
-		<div class="field-space">
-			<input name="city" class="city" type="text" required="required" placeholder="City" />
-		</div>
-
-		<div class="field-space">
-			<input name="company" class="company" type="text" required="required" placeholder="Company"/>
-		</div>
-
-		<div class="field-space">
-			<input name="department" class="department" type="text" required="required" placeholder="Department"/>
-		</div>
-
-		<div class="field-space">
-			<label class="question">Do you use Matterhorn?</label>
-			<label class=radio><input type="radio" name="usematterhorn" required="required" value="1" onclick="$('.answer-no').hide();$('.answer-yes').show();" /> Yes</label>
-			<label class=radio><input type="radio" name="usematterhorn" required="required" value="0" onclick="$('.answer-yes').hide();$('.answer-no').show();" /> No</label>
-		</div>
-
-		<div class="answer-yes answer">
-			<label class="questiona">How many rooms are in use?</label>
-			<p class="answera">
-			<select name="installations">
-				<option selected>---</option>
-				<option>1-5</option>
-				<option>6-10</option>
-				<option>11-20</option>
-				<option>21-50</option>
-				<option>51-100</option>
-			</select>
-			</p>
-
-			<label class="questiona">How did you find out about opencast ?</label>
-			<p class="answera">
-			<select name="installations">
-				<option selected>---</option>
-				<option>Congress</option>
-				<option>Meeting</option>
-				<option>Friends</option>
-				<option>Working Partners</option>
-				<option>etc</option>
-			</select>
-			</p>
-		</div>
-
-		<div class="answer-no answer">
-			<label class="questiona">When are you planning to use MH?</label>
-			<p class="answera">
-			<select name="adoptiontime">
-				<option selected>---</option>
-				<option>1 week</option>
-				<option>1 month</option>
-				<option>6 month</option>
-				<option>1 year</option>
-				<option>2 years</option>
-			</select>
-		</div>
-		</p>
-
-		<div class="field-space">
-			<div class="field-space-left">
-					<input type="checkbox" name="agreebox" class="agreebox" value=agree style="height:13px;" />
-			</div>
-			<div class="field-space-right">
-				I acknowledge that this account is for personal or
-				educational use only. I'm not allowed to share this account
-				with others and to use it for commercial purposes.
-			</div>
-			<div style="clear:both;"></div>
-		</div>
+		<input name="user" pattern="[a-z][a-z]*" class="user" type="text" required placeholder="Username" />
+		<input name="firstname" class="firstname" type="text" required placeholder="First Name" />
+		<input name="lastname" class="lastname" type="text" required placeholder="Last Name"/>
+		<input name="email" class="email" type="email" required placeholder="E-Mail" />
+		<input type="text" id="country" name="country" readonly required placeholder="Country" style="width:400px!important;margin-bottom:10px!important;" />
+		<input name="city" class="city" type="text" required placeholder="City" />
+		<input name="company" class="organization" type="text" required placeholder="Organization"/>
+		<input name="department" class="department" type="text" placeholder="Department"/>
+		<input type=text name=learn-about placeholder="How did you learn about Opencast?" />
+		<textarea rows=3 name=usage placeholder="How are you planning to use/using Opencast?"></textarea>
 
 		<div class="field-space"style="margin-top:20px;">
-			<div class="field-space-left">
-					<input type="checkbox" name="agreebox-term" class="agreebox" value=agree style="height:13px;" />
+			<div class="field-space-left"gt>
+				<input type="checkbox" name="agreebox-term" class="agreebox" value=agree style="width: 20px; margin-top: 0px; border-left: 1px solid orange;" required />
 			</div>
 			<div class="field-space-right">
-				I agree to the <a href="#">Opencast Terms</a>
+				I have read and agree to the <a href=/terms target=opencast-terms>Terms of Service</a> of the Opencast package repository.
 			</div>
 			<div style="clear:both;"></div>
-		</div>
-
-		<div class="field-space">
-			Please solve the following equation:<br />
-			<label style="font-weight: bold;" for="captcha">{{ rand[0] }}+{{ rand[1] }}=</label>
-			<input required="required" type="text" name="captcha" id="captcha" />
-			<input type="hidden" value="{{ rand[2] }}" name="correct_result" id="correct_result" />
 		</div>
 
 		<div class="field-space">

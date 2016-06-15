@@ -173,6 +173,11 @@ def forgot():
 	return redirect(url_for('error', e='forgotsuccess'))
 
 
+@app.route('/terms')
+def terms():
+	return render_template('terms.html', config=config)
+
+
 @app.route('/signup')
 def signup():
 	randa = random.randrange(1, 49)

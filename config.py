@@ -25,7 +25,7 @@ For more information, please visit
 # EMAIL TO ADMIN */
 
 adminurl          = "http://repo.virtuos.uos.de/admin"
-adminmailadress   = ['lkiesow@uos.de']
+adminmailadress   = ['lkiesow@uos.de', 'rrolf@uos.de']
 adminmailtopic    = "%(username)s registered on Opüencast CentOS Repo"
 adminmailtext     = '''Hello Admin,
 %(username)s (%(firstname)s %(lastname)s) signed-up for the Opencast RPM Repo.
