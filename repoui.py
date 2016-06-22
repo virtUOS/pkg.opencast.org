@@ -10,6 +10,7 @@ sys.setdefaultencoding('utf8')
 import config
 
 import sqlite3
+import re
 import random
 import string
 import json
@@ -29,15 +30,13 @@ with sqlite3.connect('users.db') as con:
 		email         TEXT,
 		country       TEXT,
 		city          TEXT,
-		company       TEXT,
+		organization  TEXT,
 		department    TEXT,
 		created       TEXT,
-		usematterhorn BOOL,
-		installations TEXT,
-		adoptiontime  TEXT,
+		usage         TEXT,
+		learned       TEXT,
 		admin         BOOL,
 		repoaccess    BOOL,
-		deleteaccess  TEXT,
 		comment       TEXT)''')
 	con.commit()
 
@@ -178,12 +177,9 @@ def terms():
 	return render_template('terms.html', config=config)
 
 
-@app.route('/signup')
-def signup():
-	randa = random.randrange(1, 49)
-	randb = random.randrange(1, 49)
-	randr = randa + randb
-	return render_template('signup.html', config=config, rand=(randa, randb, randr))
+@app.route('/impressum')
+def impressum():
+	return render_template('impressum.html', config=config)
 
 
 @app.route('/success')
@@ -206,23 +202,23 @@ def admin(who='new'):
 	if request.form:
 		with sqlite3.connect('users.db') as con:
 			cur = con.cursor()
-			for k, v in request.form.iteritems():
-				user = unicode(k)
-				cur.execute(u'''select repoaccess, email, password, firstname, lastname
-						from user where username=?''', (user,))
-				data = cur.fetchone()
-				if data and v in ('admin', 'user') and not data[0]:
-					registrationmail(k, data[1], data[2], data[3], data[4])
-				if v == 'user':
+			user = unicode(request.form.get('user'))
+			action = request.form.get('action')
+			cur.execute(u'''select repoaccess, email, password, firstname, lastname
+					from user where username=?''', (user,))
+			data = cur.fetchone()
+			if data:
+				if action in (u'admin', u'user') and not data[0]:
+					registrationmail(user, data[1], data[2], data[3], data[4])
+				if action == u'user':
 					cur.execute(u'update user set repoaccess=1, admin=0 where username=?', (user,))
-				elif v == 'admin':
+				elif action == u'admin':
 					cur.execute(u'update user set repoaccess=1, admin=1 where username=?', (user,))
-				elif v == 'delete':
+				elif action == u'delete':
 					cur.execute(u'delete from user where username=?', (user,))
-					doptions = request.form['delete-options']
-					deletemail(k, data[1], data[2], data[3], data[4], doptions)
-			con.commit()
-
+					reason = request.form.get(u'reason')
+					deletemail(user, data[1], data[3], data[4], reason)
+				con.commit()
 
 	user = []
 	# Get user
@@ -231,12 +227,12 @@ def admin(who='new'):
 		cur.execute('select * from user where not repoaccess' if who == 'new' else 'select * from user')
 		user = cur.fetchall()
 
+	user.sort(key=lambda u: u[0].lower())
 	if who == 'new':
 		return render_template('adminnew.html', config=config, user=user,
 				newusercount=len(user))
-	user.sort(key=lambda u: u[0].lower())
 	return render_template('adminall.html', config=config, user=user,
-			newusercount=len([ u for u in user if not u[14]]),
+			newusercount=len([ u for u in user if not u[13]]),
 			usercount=len(user))
 
 
@@ -277,24 +273,28 @@ def logout():
 
 @app.route('/storeuser', methods=['POST'])
 def storeuser():
-	if request.form.get('agreebox') != 'agree':
+	if request.form.get('terms') != 'agree':
 		return redirect(url_for('error', e='termsofuseuerror'))
 
-	if request.form.get('captcha') != request.form.get('correct_result'):
-		return redirect(url_for('error', e='captchaerror'))
+	if request.form.get('url'):
+		return redirect(url_for('error', e='boterror'))
 
-	email = request.form.get('email')
-	if not ( email and '@' in email and '.' in email.split('@')[-1] ):
+	if not re.match(r'^[^@]+@[^@]+\.[^@]+$', request.form.get('email')):
 		return redirect(url_for('error', e='emailerror'))
 
-	if not request.form.get('user'):
+	if not re.match(r'^[a-z]+$', request.form.get('user')):
 		return redirect(url_for('error', e='userexistserror'))
+
+	for field in ['firstname', 'lastname', 'country', 'city', 'organization']:
+		if not request.form.get(field):
+			return redirect(url_for('error', e='requirederror'))
+
 
 	try:
 		with sqlite3.connect('users.db') as con:
 			cur = con.cursor()
 			cur.execute('''insert into user
-					values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''', (
+					values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''', (
 						request.form.get('user'),
 						request.form.get('firstname'),
 						request.form.get('lastname'),
@@ -302,17 +302,17 @@ def storeuser():
 						request.form.get('email'),
 						request.form.get('country'),
 						request.form.get('city'),
-						request.form.get('company'),
+						request.form.get('organization'),
 						request.form.get('department'),
 						str(date.today()),
-						request.form.get('usematterhorn'),
-						request.form.get('installations'),
-						request.form.get('adoptiontime'),
-						False, False, '', ''))
+						request.form.get('usage'),
+						request.form.get('learn-about'),
+							False, False, ''))
 			con.commit()
-	except sqlite3.IntegrityError:
+	except sqlite3.IntegrityError as e:
 		return redirect(url_for('error', e='userexistserror'))
-	except:
+	except Exception as e:
+		print(e)
 		return redirect(url_for('error', e='dberror'))
 
 	# Send registration mail to admin
@@ -354,16 +354,10 @@ def registrationmail(username, email, password, firstname, lastname):
 	server.sendmail(config.mailsender, email, message)
 	server.quit()
 
-def deletemail(username, email, password, firstname, lastname, doptions):
-	#select reason
-	if doptions == 'delete0':
-		text = config.delete0
-	elif doptions == 'delete1':
-		text = config.delete1
-	elif doptions == 'delete2':
-		text = config.delete2
-	elif doptions == 'delete3':
-		text = config.delete3
+
+def deletemail(username, email, firstname, lastname, reason):
+
+	text = reason
 
 	header  = 'From: %s\n' % config.mailsender
 	header += 'To: %s\n' % email

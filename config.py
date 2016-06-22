@@ -9,11 +9,11 @@ sessionkey = 'bdkfHvkVt(r8%ZGIUZGTRHg'
 
 # EMAIL TO USER */
 
-repourl      = "http://repo.virtuos.uos.de/"
-mailsender   = "mkipp@uni-osnabrueck.de"
-mailtopic    = "Registration: Opencast RPM Repo"
+repourl      = "http://pkg.opencast.org/"
+mailsender   = "no-reply@uni-osnabrueck.de"
+mailtopic    = "Registration: Opencast Package Repository"
 mailtext     = '''Hello %(firstname)s %(lastname)s,
-Welcome to the Opüencast RPM Repository.
+Welcome to the Opüencast Package Repository.
 Here are your credentials for the repo:
 
     Username: %(username)s
@@ -24,9 +24,10 @@ For more information, please visit
 
 # EMAIL TO ADMIN */
 
-adminurl          = "http://repo.virtuos.uos.de/admin"
+adminurl          = repourl + "admin"
 adminmailadress   = ['lkiesow@uos.de', 'rrolf@uos.de']
-adminmailtopic    = "%(username)s registered on Opüencast CentOS Repo"
+adminmailadress   = ['lkiesow@uos.de']
+adminmailtopic    = "%(username)s registered on Opencast Package Repository"
 adminmailtext     = '''Hello Admin,
 %(username)s (%(firstname)s %(lastname)s) signed-up for the Opencast RPM Repo.
 
@@ -42,8 +43,9 @@ your login for the Opencast RPM Repository:
 
 # TEXT SUCCESSFULL/ERROR REGESTRATION PAGE */
 
-successtext     = '''Thank you for signing up! Your request will be reviewed
-		and you will get your login after approval.'''
+successtext     = '''Thank you for signing up. Your request will be reviewed
+                and you will get an email with your login credentials once your
+                request was approved.'''
 userexistserror = ('Sign-up failed', '''We are sorry, but a user with this
 		username already exists. Please choose another username.''', 'Go back')
 emailerror = ('Sign-up failed', '''You are required to use a valid email
@@ -76,7 +78,7 @@ passwordsenttext = "We sent a mail with your password to you."
 
 #TEXT DELETE MAIL
 delete_reasons = [
-        'Your request could not be accepted..',
+        'Your request could not be accepted.',
         'Access for non-commercial organizations only.',
         'Invalid or incomplete data.',
         'Duplicated account'

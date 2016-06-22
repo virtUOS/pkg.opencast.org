@@ -1,57 +1,32 @@
 <!DOCTYPE html>
 <html style="background-color:#EFF3F6;">
-<head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>Admin | Matterhorn Repository</title>
-<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='simple-line-icons.css') }}" />
-<link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<title>Admin | Matterhorn Repository</title>
+		<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+		<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='simple-line-icons.css') }}" />
+		<link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
-<script type="text/javascript">
+	</head>
 
-	var i = 0;
-
- // enable this disable each other select
-	function inputDisable( f ) {
-		var user = f;
-		var tuser = "#target" + f;
-		var doptions = "#delete-options" + f;
-
-		//
-
-		$( '.select' ).each( function() {
-			$( this ).prop( "disabled", true );
-		});
-
-		$( '.delete-options' ).each(function(){
-			$( this ).css( "display", "none" );
-		});
-
-		$( tuser ).removeProp( "disabled" ); //enable current users delete section
-		$( doptions ).css( "display", "block" ); // display current user
-	}
-
-</script>
-</head>
-
-<body>
-	<div class="nav" style="background-color:#ffffff;">
-		<div class="nav-wrapper">
-			<a href="{{ url_for('home') }}" class="headline"><img src="{{ url_for('static', filename='img/logo.png') }}" /></a>
-			<div class="menu">
-				<div><a href="{{ url_for('home') }}">Repository</a></div>
-				<div><a href="{{ url_for('logout') }}">Logout</a></div>
+	<body>
+		<div class="nav" style="background-color:#ffffff;">
+			<div class="nav-wrapper">
+				<a href="{{ url_for('home') }}" class="headline"><img src="{{ url_for('static', filename='img/logo.png') }}" /></a>
+				<div class="menu">
+					<div><a href="{{ url_for('home') }}">Repository</a></div>
+					<div><a href="{{ url_for('logout') }}">Logout</a></div>
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="wrapper-menu-dashboard" style="padding-top:50px;">
-		<div class="wrapper-inner dashboard-header">
+		<div class="wrapper-menu-dashboard" style="padding-top:50px;">
+			<div class="wrapper-inner dashboard-header">
 
 				<div class="menu-box active">
 					<a href="{{ url_for('admin', who='new') }}">
-						<div>New users <span class="newusercount">{{ newusercount }}</span></div>
+						<div>New users {% if newusercount > 0 %}<span class="newusercount">{{ newusercount }}</span>{% endif %}</div>
 					</a>
 				</div>
 
@@ -72,98 +47,66 @@
 				</div>
 
 				<div style="clear:both"></div>
+			</div>
 		</div>
-	</div>
 
-	<div class="wrapper" style="padding:0px!important;">
-		<div class="wrapper-inner" style="background-color:#FFFFFF;padding:50px 0px;">
+		<div class="wrapper" style="padding:0px!important;">
+			<div class="wrapper-inner" style="background-color:#FFFFFF;padding:50px 0px; padding-left:20px;">
 
-			<form class="delete-options-disable" method='POST' action='{{ url_for('admin') }}'>
 				<table class="table table-bordered table-striped new-users">
 
 					<tr id="target">
-						<th style="padding-left:20px!important;">Name</th>
+						<th>Username</th>
+						<th>Name</th>
 						<th>E-Mail</th>
-						<th>country</th>
-						<th>Company</th>
-						<th>Information</th>
+						<th>City</th>
+						<th>Organization</th>
+						<th>How did you learn…</th>
+						<th>(Planned) usage</th>
 						<th width="130px">Actions</th>
-				 </tr>
+					</tr>
 
-				 	{% for u in user %}
+					{% for u in user %}
 
-						<tr>
-								<td class="name" style="padding-left:20px!important;">{{ u[1] }} {{ u[2] }}</td>
-								<td>{{ u[4] }}</td>
-								<td>{{ u[6] }} {{ u[5] }}</td>
-								<td>{{ u[8] }} {{ u[7] }}</td>
-								<td>
+					<tr>
+						<td>{{ u[0] }}</td>
+						<td class=name>{{ u[1] }} {{ u[2] }}</td>
+						<td>{{ u[4] }}</td>
+						<td>{{ u[6] }} ({{ u[5] }})</td>
+						<td>{{ u[7] }} {% if u[8] %}
+							<span title=Department>({{ u[8] }})</span>{% endif %}</td>
+						<td>{{ u[11] }}</td>
+						<td>{{ u[10] }}</td>
 
-										{% if u[10] %}
-										Is using Matterhorn in {{ u[11] }} rooms.
-										{% else %}
-										Not using Matterhorn. Is planning to install in {{ u[12] }}.
-										{% endif %}
+						<td class="actions">
+							<form id="action-{{ u[0] }}" method='POST' action='{{ url_for('admin') }}'>
+								<input type=hidden name=user value='{{ u[0] }}' />
 
-								</td>
+								<input id=access-{{ u[0] }} type='radio' name=action onclick="$('#action-{{ u[0] }}').submit();" title='Grant Repository Access' value=user class='radio' />
+								<label for=access-{{ u[0] }}><span class='icon-color icon-users' title='Grant Repository Access'></span></label>
 
-								<td class="actions">
-									<div id="actions{{ u[0] }}">
-										<!-- insert avtion buttons -->
-										<!-- <input id='rad2{{ u[0] }}' type='radio' name='{{ u[0] }}'onclick='submit{{ u[0] }}()' title='Set Admin Rights' value=admin class='radio' />
-				 							<label for='rad2{{ u[0] }}'><span class='icon-color icon-user'></span></label> -->
-										<input id='rad3{{ u[0] }}' type='radio' name='{{ u[0] }}'onclick='submit{{ u[0] }}()' title='Set Repository Access' value=user class='radio' />
-										<label for='rad3{{ u[0] }}'><span class='icon-color icon-users' title='Set Repository Access'></span></label>
-										<input id='rad4{{ u[0] }}' type='radio' name='{{ u[0] }}'onclick='handle{{ u[0] }}()' title='Delete User' value=delete class='radio'/>
-										<label for='rad4{{ u[0] }}'><span class='icon-color icon-trash' title='Delete User'></span></label>
-									</div>
+								<input id=delete-{{ u[0] }} type='radio' name=action onclick='$("#delete-options-{{ u[0] }}").toggle()' title='Delete User' value=delete class='radio'/>
+								<label for=delete-{{ u[0] }}><span class='icon-color icon-trash' title='Delete User'></span></label>
 
-									<div class="delete-options"  id="delete-options{{ u[0] }}" style="display:none;">
-										<select class="select" id="target{{ u[0] }}" name="delete-options" disabled>
-											<option value="delete0">-</option>
-											{% for r in config.delete_reasons %}
-											<option value="{{ r }}">{{ r }}</option>
-											{% endfor %}
-										</select>
+								<div class="delete-options"  id="delete-options-{{ u[0] }}" style="display:none;">
+									<select class="select" name=reason style="padding: 2px;">
+										<option value="">Select reason…</option>
+										{% for r in config.delete_reasons %}
+										<option value="{{ r }}">{{ r }}</option>
+										{% endfor %}
+									</select>
 
-										<div class="delete-button-new" onClick="submit{{ u[0] }}()">Delete</div>
-									</div>
+									<div class="delete-button-new" onClick="$('#action-{{ u[0] }}').submit();">Delete</div>
+								</div>
+							</form>
 
-								</td>
-								<div class='submitbutton'><input type='submit' style="display:none;" id="input{{ u[0] }}" value='Save changes' /></div>
-						</tr>
-
-						<!-- Insert Action Buttons -->
-						<script type="text/javascript">
-
-							function handle{{ u[0] }}() {
-								var f = "{{ u[0]}}";
-
-								if($('#rad4{{ u[0] }}').is(':checked')) {
-									$('#delete-options{{ u[0] }}').css( "display", "block" );
-
-									//call function to disable inputs and enable selected input
-									inputDisable(f);
-								} else {
-									 $('#delete-options{{ u[0] }}').css( "display", "none" );
-								}
-
-							}
-
-							//pull trigger to shot data into python universe
-							function submit{{ u[0] }}() {
-								$('#input{{ u[0] }}').trigger('click');
-							}
-
-						</script>
-
+						</td>
+					</tr>
 					{% endfor %}
 
 				</table>
 
-			</form>
-
+			</div>
 		</div>
-	</div>
-</body>
+	</body>
 </html>

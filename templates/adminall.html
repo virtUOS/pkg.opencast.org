@@ -2,7 +2,7 @@
 <html style="background-color:#EFF3F6;">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>Admin | Matterhorn Repository</title>
+<title>Admin | Opencast Package Repository</title>
 <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='simple-line-icons.css') }}" />
 <link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
@@ -83,115 +83,54 @@ function search() {
 		 <table class="table table-bordered table-striped">
 			 <tr>
 			 	<th>Username</th>
+			 	<th>Name</th>
 				<th>E-Mail</th>
-				<th style="50px;">Status</th>
+				<th>Status</th>
 				<th>City</th>
-				<th>Country</th>
-				<th>Company</th>
+				<th>Organization</th>
+				<th>How did you learn…</th>
+				<th>(Planned) usage</th>
 				<th>Actions</th>
 			 </tr>
 
 			 {% for u in user %}
 
-			 <tr class="element" id="admin-marker{{ u[0] }}">
+			 <tr class="element {{ 'admin' if u[12] else ( 'user' if u[13] else '' ) }}" >
 			 	<td class="name">{{ u[0] }}</td>
-				<td class="email">{{ u[4] }}</td>
-				<td>{{ 'Admin' if u[13] else ( 'User' if u[14] else 'Disabled' ) }}</td>
-				<td>{{ u[1] }} {{ u[2] }}</td>
-				<td>{{ u[6] }} {{ u[5] }}</td>
-				<td>{{ u[8] }} {{ u[7] }}</td>
-				<td>
-					<!-- <form method='POST' action="{{ url_for('admin', who='all') }}" onsubmit="return checkDelete('{{ u[0] }}');">
-						<button class="delete-button" type="submit" value=delete><span class="icon-close"></span> Delete</button> <span style="margin-left:20px;" class="icon-user"></span> <span style="margin-left:20px;" class="icon-users"></span>
-					</form> -->
+			 	<td>{{ u[1] }} {{ u[2] }}</td>
+				<td>{{ u[4] }}</td>
+				<td>{{ 'Admin' if u[12] else ( 'User' if u[13] else 'Disabled' ) }}</td>
+				<td>{{ u[6] }} ({{ u[5] }})</td>
+				<td>{{ u[7] }} {% if u[8] %}
+					<span title=Department>({{ u[8] }})</span>{% endif %}</td>
+				<td>{{ u[11] }}</td>
+				<td>{{ u[10] }}</td>
+				<td class="actions">
+					<form id="action-{{ u[0] }}" method='POST' action='{{ url_for('admin') }}'>
+						<input type=hidden name=user value='{{ u[0] }}' />
 
-					<form method='POST' action="{{ url_for('admin', who='all') }}" onsubmit="return checkDelete('{{ u[0] }}');">
-						<fieldset id="fieldset{{ u[0] }}">
+						<input id=delete-{{ u[0] }} type='radio' name=action onclick='$("#delete-options-{{ u[0] }}").toggle()' title='Delete User' value=delete class='radio'/>
+						<label for=delete-{{ u[0] }}><span class='icon-color icon-trash' title='Delete User'></span></label>
 
+						<div class="delete-options"  id="delete-options-{{ u[0] }}" style="display:none;">
+							<select class="select" name=reason style="padding: 2px;">
+								<option value="">Select reason…</option>
+								{% for r in config.delete_reasons %}
+								<option value="{{ r }}">{{ r }}</option>
+								{% endfor %}
+							</select>
 
-
-						</fieldset>
-						<input id="input{{ u[0] }}" style="display:none;" type=submit value="Save Changes" />
+							<div class="delete-button-new" onClick="$('#action-{{ u[0] }}').submit();">Delete</div>
+						</div>
 					</form>
-
 				</td>
 			 </tr>
-
-			 <script type="text/javascript">
-
-				var status = "{{ 'Admin' if u[13] else ( 'User' if u[14] else 'Disabled' ) }}";
-				if (status == 'Admin') {
-					$("#admin-marker{{ u[0] }}").css('border-left', '3px solid red');
-					$("#fieldset{{ u[0] }}").append("<input style='display:none;' id='user{{ u[0] }}' onclick='submit{{ u[0] }}()' type='radio' name='{{ u[0] }}' value=user><label for='user{{ u[0] }}'<span class='icon-users'></span></label>");
-				} else {
-					$("#fieldset{{ u[0] }}").append("<input style='display:none;' id='admin{{ u[0] }}' onclick='submit{{ u[0] }}()' type='radio' name='{{ u[0] }}' value=admin><label for='admin{{ u[0] }}'<span class='icon-user'></span></label>");
-				}
-
-				$("#fieldset{{ u[0] }}").append("<input style='display:none;' id='delete{{ u[0] }}' onclick='submit{{ u[0] }}()' type='radio' name='{{ u[0] }}' value=delete><label for='delete{{ u[0] }}'<span class='icon-trash'></span></label>");
-
-				function submit{{ u[0] }}() {
-					$('#input{{ u[0] }}').trigger('click');
-				}
-			 </script>
 
 			 {% endfor %}
 		 </table>
 
 	 </div>
 </div>
-
-<!-- <div class="container">
-	<input id=search type=text placeholder=search style="margin: 10px; width: 562px;" onkeyup="search();" />
-	{% for u in user %}
-	<div class='element'>
-		<table>
-			<tr>
-				<td class='column1'>
-					<a class='more-button' onclick='$("#details{{ u[0] }}").toggle();' title='User information'>
-						<img class='arrow' src="{{ url_for('static', filename='img/info-r.png') }}" /></a></td>
-				<td class='column2'><div class='name'>{{ u[0] }}</div></td>
-				<td class='column3'><div class='email'><a href='mailto:{{ u[4] }}'>{{ u[4] }}</a></div></td>
-			</tr>
-		</table>
-		<div class='clear'>
-			<div style='display:none;' class='userinfo' id='details{{ u[0] }}'>
-				<span class='userinfoline'>
-					<label>Status:</label>{{ 'Admin' if u[13] else ( 'User' if u[14] else 'Disabled' ) }}</span>
-				<span class='userinfoline'>
-					<label>Name:</label>{{ u[1] }} {{ u[2] }}</span>
-				<span class='userinfoline'>
-					<label>E-Mail:</label>{{ u[4] }}</span>
-				<span class='userinfoline'>
-					<label>City:</label>{{ u[6] }}, {{ u[5] }}</span>
-				<span class='userinfoline'>
-					<label>Company:</label>{{ u[8] }}, {{ u[7] }}</span>
-
-				<div class='userstatistics'>
-					{% if u[10] %}
-					Is using Matterhorn in {{ u[11] }} rooms.
-					{% else %}
-					Not using Matterhorn. Is planning to install in {{ u[12] }}.
-					{% endif %}
-				</div>
-
- 					<form method='POST' action="{{ url_for('admin', who='all') }}" onsubmit="return checkDelete('{{ u[0] }}');">
-						<select style="font-size: smaller;" name='{{ u[0] }}'>
-							<option value=ignore>–</option>
-							<option value=admin>Grant Administrative Privileges</option>
-							<option value=user>Grant Repository Access Only</option>
-							<option value=delete>Delete User Completely</option>
-						</select>
-						<input style="font-size: smaller;" type=submit value="Save Changes" />
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-	{% endfor %}
-
-</div> -->
-
-
 
 <div class="clear"></div>
 
