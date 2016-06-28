@@ -22,15 +22,35 @@ app = Flask(__name__)
 app.secret_key = config.sessionkey
 
 
-dbsession = get_session()
+def init():
+    db = get_session()
+    if db.query(User).count():
+        return
+
+    # Add default admin
+    salt = passwdgen()
+    user = User(
+        username='admin',
+        firstname='Administrator',
+        lastname='',
+        email='admin@example.com',
+        country='DE',
+        city='City',
+        organization='Org',
+        created=date.today(),
+        admin=True,
+        access=True)
+    user.password_set('123')
+    db.add(user)
+    db.commit()
 
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
     user, passwd = request.form.get('username'), request.form.get('password')
     if user:
-        u = dbsession.query(User).filter(User.username==user)
-        if not u.count():
+        u = get_session().query(User).filter(User.username==user)
+        if not u.count() or not u[0].password_verify(passwd):
             return redirect(url_for('error', e='loginerror'))
         session['login'] = (u[0].username, u[0].admin, u[0].access)
 
@@ -41,7 +61,8 @@ def home():
         user, admin, repoaccess = session.get('login')
     except:
         pass
-    if user:
+
+    if user and repoaccess:
         return render_template('login.html', config=config, username=user,
                 admin=admin)
 
@@ -49,33 +70,27 @@ def home():
     return render_template('index.html', config=config)
 
 
-@app.route('/matterhorn.repo', methods=['GET', 'POST'])
-@app.route('/matterhorn-testing.repo', methods=['GET', 'POST'])
 @app.route('/opencast.repo', methods=['GET', 'POST'])
 @app.route('/opencast-testing.repo', methods=['GET', 'POST'])
 def repofile():
     if not request.authorization:
         return '', 401
-    user, passwd = request.authorization.username, request.authorization.password
+    user, passw = request.authorization.username, request.authorization.password
     if not user:
         return '', 401
     try:
-        with sqlite3.connect('users.db') as con:
-            cur = con.cursor()
-            cur.execute('''select username from user
-                    where username=? and password=? and repoaccess''',
-                    (user, passwd))
-            if not cur.fetchone():
-                return '', 400
+        u = get_session().query(User).filter(User.username==user,
+                                             User.access==True)
+        if not (u.count() and u[0].password_verify(passwd)):
+            return '', 400
     except:
-        return '', 401
+        return '', 500
 
     # Get specs
     tpl     = request.path.lstrip('/')
     os      = request.form.get('os', 'el')
     version = request.form.get('version', '6')
 
-    print tpl, user, passwd, os
     return render_template(tpl, user=user, passwd=passwd, os=os,
             version=version)
 
@@ -84,17 +99,11 @@ def repofile():
 def auth():
     try:
         user, passwd = request.authorization.username, request.authorization.password
-        if session.get('login') == (user, passwd):
+        u = get_session().query(User).filter(User.username==user,
+                                             User.access==True)
+        if u.count() and u[0].password_verify(passwd):
+            session['login'] = (user, passwd)
             return '' # 200 OK
-        with sqlite3.connect('users.db') as con:
-            cur = con.cursor()
-            cur.execute('''select username from user
-                    where username=? and password=? and repoaccess''',
-                    (user, passwd))
-            data = cur.fetchone()
-            if data:
-                session['login'] = (user, passwd)
-                return '' # 200 OK
     except:
         pass
     return Response('', 401,
@@ -113,6 +122,7 @@ def error(e):
 
 @app.route('/forgot', methods=['GET','POST'])
 def forgot():
+    # TODO
     email = request.form.get('email')
     if not email:
         return render_template('forgot.html', config=config)
@@ -146,18 +156,11 @@ def forgot():
 
 
 @app.route('/terms')
-def terms():
-    return render_template('terms.html', config=config)
-
-
 @app.route('/impressum')
-def impressum():
-    return render_template('impressum.html', config=config)
-
-
 @app.route('/success')
-def success():
-    return render_template('success.html', config=config)
+def serve():
+    tpl = request.path.lstrip('/')
+    return render_template(tpl + '.html', config=config)
 
 
 @app.route('/admin', methods=['GET', 'POST'])
@@ -195,7 +198,7 @@ def admin(who='new'):
 
     user = []
     # Get user
-    user = dbsession.query(User).order_by(User.username.asc())
+    user = get_session().query(User).order_by(User.username.asc())
 
     if who == 'new':
         user = user.filter(User.access==False)
@@ -216,8 +219,9 @@ def access(who, ref):
     if not username or not admin:
         return redirect(url_for('home'))
 
-    dbsession.query(User).filter(User.username==who).update({'access':True})
-    dbsession.commit()
+    db = get_session()
+    db.query(User).filter(User.username==who).update({'access':True})
+    db.commit()
 
     return redirect(url_for('admin', who=ref))
 
@@ -232,8 +236,9 @@ def delete(who, ref):
     if not username or not admin:
         return redirect(url_for('home'))
 
-    dbsession.query(User).filter(User.username==who).delete()
-    dbsession.commit()
+    db = get_session()
+    db.query(User).filter(User.username==who).delete()
+    db.commit()
 
     return redirect(url_for('admin', who=ref))
 
@@ -248,22 +253,17 @@ def csv():
     if not username or not admin:
         return redirect(url_for('home'))
 
-    user = []
+    attr = [a for a in User.__dict__.keys()
+            if not (a.startswith('_') or a.startswith('pass') or
+                    a.startswith('serial'))]
+    csv = ', '.join(attr) + '\n'
+
     # Get user
-    with sqlite3.connect('users.db') as con:
-        cur = con.cursor()
-        cur.execute('select * from user')
-        user = cur.fetchall()
-
-    user.sort(key=lambda u: u[0].lower())
-
-    result = 'username, firstname, lastname, password, email, country, city, ' \
-            + 'company, department, created, usematterhorn, installations, ' \
-            + 'adoptiontime, admin, repoaccess, deleteaccess, comment\n'
-
+    user = get_session().query(User).order_by(User.username.asc())
     for u in user:
-        result += '"' + '", "'.join([str(x) for x in u]) + '"\n'
-    return Response(result, content_type='application/octet-stream')
+        userdata = [getattr(u, a) or '' for a in attr]
+        csv += ', '.join(['"%s"' % x for x in userdata]) + '\n'
+    return Response(csv, content_type='application/octet-stream')
 
 
 
@@ -291,7 +291,8 @@ def storeuser():
         if not request.form.get(field):
             return redirect(url_for('error', e='requirederror'))
 
-    dbsession.add(User(
+    db = get_session()
+    db.add(User(
         username=request.form.get('user'),
         firstname=request.form.get('firstname'),
         lastname=request.form.get('lastname'),
@@ -305,10 +306,7 @@ def storeuser():
         learned=request.form.get('learn-about'),
         admin=False,
         access=False))
-    dbsession.commit()
-    #except Exception as e:
-    #    print(e)
-    #    return redirect(url_for('error', e='dberror'))
+    db.commit()
 
     # Send registration mail to admin
     header  = 'From: %s\n' % request.form.get('email')
@@ -329,10 +327,7 @@ def storeuser():
 
 def passwdgen():
     chars = string.letters + string.digits
-    passwd = ''
-    for i in xrange(10):
-        passwd += chars[random.randrange(0, len(chars))]
-    return passwd
+    return ''.join([random.choice(chars) for _ in range(16)])
 
 
 def registrationmail(username, email, password, firstname, lastname):
@@ -365,4 +360,5 @@ def deletemail(username, email, firstname, lastname, reason):
 
 
 if __name__ == "__main__":
+    init()
     app.run(debug=True)

@@ -10,6 +10,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 import config
+from passlib.hash import pbkdf2_sha512
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, Text, DateTime, Boolean, create_engine
 from sqlalchemy.orm import sessionmaker
@@ -48,7 +49,6 @@ class User(Base):
     access = Column('access', Boolean(), nullable=False)
     admin = Column('admin', Boolean(), nullable=False)
     city = Column('city', Text(), nullable=False)
-    comment = Column('comment', Text(), nullable=True)
     country = Column('country', Text(), nullable=False)
     created = Column('created', DateTime(), nullable=False)
     department = Column('department', Text(), nullable=True)
@@ -58,8 +58,13 @@ class User(Base):
     learned = Column('learned', Text(), nullable=True)
     organization = Column('organization', Text(), nullable=False)
     password = Column('password', Text(), nullable=True)
-    salt = Column('salt', Text(), nullable=True)
     usage = Column('usage', Text(), nullable=True)
+
+    def password_set(self, password):
+        self.password = pbkdf2_sha512.encrypt(password)
+
+    def password_verify(self, password):
+        return pbkdf2_sha512.verify(password, self.password)
 
     def __repr__(self):
         '''Return a string representation of an user object.
@@ -80,7 +85,6 @@ class User(Base):
             'access': self.access,
             'admin': self.admin,
             'city': self.city,
-            'comment': self.comment,
             'country': self.country,
             'created': self.created,
             'department': self.department,
