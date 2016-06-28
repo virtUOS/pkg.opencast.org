@@ -69,14 +69,16 @@
 					{% for u in user %}
 
 					<tr>
-						<td>{{ u[0] }}</td>
-						<td class=name>{{ u[1] }} {{ u[2] }}</td>
-						<td>{{ u[4] }}</td>
-						<td>{{ u[6] }} ({{ u[5] }})</td>
-						<td>{{ u[7] }} {% if u[8] %}
-							<span title=Department>({{ u[8] }})</span>{% endif %}</td>
-						<td>{{ u[11] }}</td>
-						<td>{{ u[10] }}</td>
+						<td>{{ u.username }}</td>
+						<td class=name>{{ u.firstname }} {{ u.lastname }}</td>
+						<td>{{ u.email }}</td>
+						<td>{{ u.city }} ({{ u.country }})</td>
+						<td>{{ u.organization }}
+							{% if u.department %}
+							<span title=Department>({{ u.department }})</span>
+							{% endif %}</td>
+						<td>{{ u.learned }}</td>
+						<td>{{ u.usage }}</td>
 
 						<td class="actions">
 							<form id="action-{{ u[0] }}" method='POST' action='{{ url_for('admin') }}'>
@@ -85,8 +87,7 @@
 								<input id=access-{{ u[0] }} type='radio' name=action onclick="$('#action-{{ u[0] }}').submit();" title='Grant Repository Access' value=user class='radio' />
 								<label for=access-{{ u[0] }}><span class='icon-color icon-users' title='Grant Repository Access'></span></label>
 
-								<input id=delete-{{ u[0] }} type='radio' name=action onclick='$("#delete-options-{{ u[0] }}").toggle()' title='Delete User' value=delete class='radio'/>
-								<label for=delete-{{ u[0] }}><span class='icon-color icon-trash' title='Delete User'></span></label>
+								<a href="{{ url_for('delete', who=u.username, ref='new') }}"><span class='icon-color icon-trash' title='Delete User'></span></a>
 
 								<div class="delete-options"  id="delete-options-{{ u[0] }}" style="display:none;">
 									<select class="select" name=reason style="padding: 2px;">

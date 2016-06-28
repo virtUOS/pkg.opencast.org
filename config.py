@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-db_username="matterhorn-rpms"
-db_password="j5QV9DCj4vd5bu8h"
-database="matterhorn-rpms"
+database='sqlite:///user.db'
 
 # LOGIN
 
@@ -13,7 +11,7 @@ repourl      = "http://pkg.opencast.org/"
 mailsender   = "no-reply@uni-osnabrueck.de"
 mailtopic    = "Registration: Opencast Package Repository"
 mailtext     = '''Hello %(firstname)s %(lastname)s,
-Welcome to the Opüencast Package Repository.
+Welcome to the Opencast Package Repository.
 Here are your credentials for the repo:
 
     Username: %(username)s

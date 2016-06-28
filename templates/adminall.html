@@ -96,15 +96,17 @@ function search() {
 			 {% for u in user %}
 
 			 <tr class="element {{ 'admin' if u[12] else ( 'user' if u[13] else '' ) }}" >
-			 	<td class="name">{{ u[0] }}</td>
-			 	<td>{{ u[1] }} {{ u[2] }}</td>
-				<td>{{ u[4] }}</td>
-				<td>{{ 'Admin' if u[12] else ( 'User' if u[13] else 'Disabled' ) }}</td>
-				<td>{{ u[6] }} ({{ u[5] }})</td>
-				<td>{{ u[7] }} {% if u[8] %}
-					<span title=Department>({{ u[8] }})</span>{% endif %}</td>
-				<td>{{ u[11] }}</td>
-				<td>{{ u[10] }}</td>
+				<td>{{ u.username }}</td>
+				<td class=name>{{ u.firstname }} {{ u.lastname }}</td>
+				<td>{{ u.email }}</td>
+				<td>{{ 'Admin' if u.admin else ( 'User' if u.access else 'Disabled' ) }}</td>
+				<td>{{ u.city }} ({{ u.country }})</td>
+				<td>{{ u.organization }}
+					{% if u.department %}
+					<span title=Department>({{ u.department }})</span>
+					{% endif %}</td>
+				<td>{{ u.learned }}</td>
+				<td>{{ u.usage }}</td>
 				<td class="actions">
 					<form id="action-{{ u[0] }}" method='POST' action='{{ url_for('admin') }}'>
 						<input type=hidden name=user value='{{ u[0] }}' />
