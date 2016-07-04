@@ -42,9 +42,6 @@ your login for the Opencast RPM Repository:
 
 # TEXT SUCCESSFULL/ERROR REGESTRATION PAGE */
 
-successtext     = '''Thank you for signing up. Your request will be reviewed
-                and you will get an email with your login credentials once your
-                request was approved.'''
 userexistserror = ('Sign-up failed', '''We are sorry, but a user with this
 		username already exists. Please choose another username.''', 'Go back')
 emailerror = ('Sign-up failed', '''You are required to use a valid email

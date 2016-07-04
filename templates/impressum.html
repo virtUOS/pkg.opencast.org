@@ -1,16 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>Terms of Service</title>
-<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-<link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
-</head>
-
-<body>
+{% extends "layout.html" %}
+{% block body %}
 
 <div class="box" style="min-width: 500px;">
 	<div class="text-wrapper">
@@ -24,8 +13,7 @@
 			<h1>Impressum</h1>
 
 			<p>
-
-			<h3>Zentrum für Informationsmanagement und virtuelle Lehre (virtUOS)</h3>
+			Zentrum für Informationsmanagement und virtuelle Lehre (virtUOS)
 
 			<p>
 			Dr. Andreas Knaden, geschäftsführender Leiter<br />
@@ -55,6 +43,4 @@
 
 	</div>
 </div>
-</body>
-
-</html>
+{% endblock %}

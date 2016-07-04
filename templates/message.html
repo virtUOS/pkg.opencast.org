@@ -1,31 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>{{ message[0] }}</title>
-<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-<link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
-</head>
+{% extends "layout.html" %}
+{% block body %}
 
-<body>
-
-<div class="header">
-	<a href="{{ url_for('home') }}">
-		<h1>
-			<img src="{{ url_for('static', filename='img/logo.png') }}" />
-		</h1>
-	</a>
-</div>
-<div class="box">
+<div class="box main">
 	<div class="text-wrapper">
-		<h2>Error</h2>      
-		<p style="margin-top: 30px;">{{ message }}</p>
+		<a href="{{ url_for('home') }}">
+			<img src="{{ url_for('static', filename='img/logo.png') }}" />
+		</a>
+		<p style="margin-top: 30px; text-align: center;">{{ message }}</p>
 		<p style="margin-top: 30px;"><a href="{{ url_for('home') }}" 
 			onclick="window.history.back(); return false;" style="width: 100%; text-align: center;"
 			class="button">Go back</a></p>
 	</div>
-
 </div>
-</body>
-
-</html>
+{% endblock %}

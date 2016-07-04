@@ -1,32 +1,16 @@
-<?php 
-include 'config.php';
-?>
+{% extends "layout.html" %}
+{% block body %}
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>Sign up successfull</title>
-<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-<link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
-</head>
-
-<body>
-
-<div class="header">
-	<a href="{{ url_for('home') }}">
-		<h1>
-			<img src="{{ url_for('static', filename='img/logo.png') }}" />
-		</h1>
-	</a>
-</div>
-<div class="box">
+<div class="box main">
 	<div class="text-wrapper">
-		<h2>Sign up successfull!</h2>      
-		<p style="margin-top: 30px;">{{ config.successtext }}</p>
+	<a href="{{ url_for('home') }}">
+		<img src="{{ url_for('static', filename='img/logo.png') }}" />
+	</a>
+	<p>Sign up successful</p>
+	<p>Thank you for signing up. Your request will be reviewed and you will get
+	an email with your login credentials once your request was approved.</p>
 	</div>
 
 </div>
-</body>
 
-</html>
+{% endblock %}
