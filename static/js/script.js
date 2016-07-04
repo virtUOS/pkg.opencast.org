@@ -62,3 +62,32 @@ function animateCardOut(x){
 		$(".black-overlay").fadeOut();
 	}
 }
+
+function checkDelete(u) {
+	if ($('input:radio[name='+u+']:checked').val() == 'delete') {
+		if (!confirm('Are you sure, you want to delete this user?')) {
+			return false;
+		}
+	}
+	return true;
+}
+
+function search() {
+	var value = $('#search').val().toLowerCase();
+	$('.element').each(function(k, v) {
+		var name  = $(v).find('td.name').html().toLowerCase();
+		var email = $(v).find('td.email').html().toLowerCase();
+		if (name.indexOf(value) >= 0 || email.indexOf(value) >= 0) {
+			$(v).show();
+		} else {
+			$(v).hide();
+		}
+	});
+}
+
+function deleteDialog(user) {
+	$('#delete-dialog .user').text(user);
+	$('#delete-dialog input[name=user]').val(user);
+	$('.black-overlay').fadeToggle();
+	$('#delete-dialog').fadeToggle();
+}

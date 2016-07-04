@@ -97,13 +97,10 @@ ul {
   font-size: 13px; }
 
 /* line 83, style.sass */
-.actions label {
-  margin-right: 20px;
-  cursor: pointer;
-  font-size: 21px; }
-  /* line 87, style.sass */
-  .actions label:last-child {
-    margin-right: 0px; }
+.actions a {
+	padding: 0 5px;
+	color: black;
+}
 
 /* line 91, style.sass */
 .userinfoline label {
@@ -119,24 +116,32 @@ ul {
   .new-users-table label {
     font-weight: 700; }
 
-/* line 101, style.sass */
-.delete-button-new {
-  padding: 3px;
-  background-color: #e74c3c;
-  width: 102px;
-  color: white;
-  text-align: center;
-  margin-top: 5px;
-  cursor: pointer; }
+#delete-dialog {
+	display: none;
+	width: 400px;
+	border: 1px solid gray;
+	padding: 40px;
+	position: absolute;
+	left: 50%;
+	top: 200px;
+	margin-left: -200px;
+	border-radius: 10px;
+	background-color: white;
+	z-index: 99;
+}
 
-/* line 112, style.sass */
-.delete-button {
-  background-color: rgba(255, 255, 255, 0);
-  font-size: 16px; }
-  /* line 115, style.sass */
-  .delete-button:hover {
-    color: #c82647;
-    cursor: pointer; }
+#delete-dialog input[type=submit] {
+	background-color: red;
+	color: white;
+	font-weight: bold;
+}
+#delete-dialog img {
+	float: right;
+	cursor: pointer;
+	height: 30px;
+	margin-top: -20px;
+	margin-right: -20px;
+}
 
 /* line 119, style.sass */
 .admin-button {
@@ -194,12 +199,8 @@ h1 a {
   left: 50%;
   margin-left: -250px !important; }
 
-/* line 165, style.sass */
-.menu a {
-  color: #24435d; }
-
 /* line 168, style.sass */
-.menu-box {
+a.menu-box {
   color: black;
   font-size: 16px;
   float: left;
@@ -207,17 +208,13 @@ h1 a {
   text-align: center;
   cursor: pointer;
   width: 110px;
-  border-bottom: 3px solid #e2e2e2; }
-  /* line 177, style.sass */
-  .menu-box:hover {
-    border-bottom: 3px solid #47b07b; }
-  /* line 179, style.sass */
-  .menu-box i {
-    font-size: 34px; }
-  /* line 181, style.sass */
-  .menu-box a {
-    color: black;
-    text-decoration: none; }
+  border-bottom: 3px solid #e2e2e2;
+	text-decoration: none;
+}
+
+a.menu-box:hover {
+    border-bottom: 3px solid #47b07b;
+}
 
 /* line 185, style.sass */
 .search-box {
@@ -537,22 +534,23 @@ fieldset label {
 
 /* line 468, style.sass */
 .menu {
-  float: right; }
-  /* line 470, style.sass */
-  .menu a {
-    text-decoration: none; }
-  /* line 472, style.sass */
-  .menu div {
+  float: right;
+}
+.menu a {
+	color: #24435d;
+    text-decoration: none;
     float: right;
     height: 73px;
     width: 110px;
     text-align: center;
     line-height: 62px;
     border-top: 3px solid white;
-    cursor: pointer; }
-    /* line 480, style.sass */
-    .menu div:hover {
-      border-top: 3px solid #47b07b; }
+    cursor: pointer;
+	 display: block;
+ }
+ .menu a:hover {
+	border-top: 3px solid #47b07b;
+}
 
 /* line 483, style.sass */
 .banner {

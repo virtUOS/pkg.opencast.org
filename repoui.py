@@ -16,6 +16,7 @@ import random
 import string
 import json
 import smtplib
+from sqlalchemy.exc import IntegrityError
 from datetime import date
 from flask import Flask, render_template, request, Response, redirect, url_for, session
 app = Flask(__name__)
@@ -51,7 +52,7 @@ def home():
     if user:
         u = get_session().query(User).filter(User.username==user)
         if not u.count() or not u[0].password_verify(passwd):
-            return redirect(url_for('error', e='loginerror'))
+            return redirect(url_for('error', e='Invalid user or password.'))
         session['login'] = (u[0].username, u[0].admin, u[0].access)
 
 
@@ -114,8 +115,7 @@ def auth():
 @app.route('/msg/<e>')
 def error(e):
     try:
-        msg = getattr(config, e)
-        return render_template('message.html', config=config, message=msg)
+        return render_template('message.html', config=config, message=e)
     except:
         return '', 400
 
@@ -163,8 +163,8 @@ def serve():
     return render_template(tpl + '.html', config=config)
 
 
-@app.route('/admin', methods=['GET', 'POST'])
-@app.route('/admin/<who>', methods=['GET', 'POST'])
+@app.route('/admin', methods=['GET'])
+@app.route('/admin/<who>', methods=['GET'])
 def admin(who='new'):
     username, admin, repoaccess = [None]*3
     try:
@@ -174,39 +174,16 @@ def admin(who='new'):
     if not username or not admin:
         return redirect(url_for('home'))
 
-    # Handle save option
-    if request.form:
-        with sqlite3.connect('users.db') as con:
-            cur = con.cursor()
-            user = unicode(request.form.get('user'))
-            action = request.form.get('action')
-            cur.execute(u'''select repoaccess, email, password, firstname, lastname
-                    from user where username=?''', (user,))
-            data = cur.fetchone()
-            if data:
-                if action in (u'admin', u'user') and not data[0]:
-                    registrationmail(user, data[1], data[2], data[3], data[4])
-                if action == u'user':
-                    cur.execute(u'update user set repoaccess=1, admin=0 where username=?', (user,))
-                elif action == u'admin':
-                    cur.execute(u'update user set repoaccess=1, admin=1 where username=?', (user,))
-                elif action == u'delete':
-                    cur.execute(u'delete from user where username=?', (user,))
-                    reason = request.form.get(u'reason')
-                    deletemail(user, data[1], data[3], data[4], reason)
-                con.commit()
-
-    user = []
     # Get user
     user = get_session().query(User).order_by(User.username.asc())
 
     if who == 'new':
         user = user.filter(User.access==False)
         return render_template('adminnew.html', config=config, user=user,
-                newusercount=user.count())
+                newusercount=user.count(), who=who)
     return render_template('adminall.html', config=config, user=user,
             newusercount=len([ u for u in user if not u.access]),
-            usercount=user.count())
+            usercount=user.count(), who=who)
 
 
 @app.route('/access/<who>/<ref>', methods=['GET'])
@@ -219,15 +196,25 @@ def access(who, ref):
     if not username or not admin:
         return redirect(url_for('home'))
 
+    password = passwdgen()
     db = get_session()
-    db.query(User).filter(User.username==who).update({'access':True})
+    user = db.query(User).filter(User.username==who)
+    user.update({'access':True})
+    user[0].password_set(password)
     db.commit()
+
+    body = config.accessmailtext % {
+            'firstname' : user[0].firstname,
+            'lastname'  : user[0].lastname,
+            'username'  : user[0].username,
+            'password'  : password}
+    email(h_to=user[0].email, h_subject=config.accessmailsubject, body=body)
 
     return redirect(url_for('admin', who=ref))
 
 
-@app.route('/delete/<who>/<ref>', methods=['GET'])
-def delete(who, ref):
+@app.route('/delete', methods=['POST'])
+def delete():
     username, admin, repoaccess = [None]*3
     try:
         username, admin, repoaccess = session.get('login')
@@ -236,9 +223,19 @@ def delete(who, ref):
     if not username or not admin:
         return redirect(url_for('home'))
 
+    user = request.form.get('user')
+    reason = request.form.get('reason')
+
     db = get_session()
-    db.query(User).filter(User.username==who).delete()
+    user = db.query(User).filter(User.username==user)
+    user.delete()
     db.commit()
+
+    body = config.deletemailtext % {
+            'firstname' : user.firstname,
+            'lastname' : user.lastname,
+            'reasin' : reasin}
+    email(h_to=user.email, h_subject=config.deletemailsubject, body=body)
 
     return redirect(url_for('admin', who=ref))
 
@@ -273,23 +270,26 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route('/storeuser', methods=['POST'])
-def storeuser():
+@app.route('/register', methods=['POST'])
+def register():
     if request.form.get('terms') != 'agree':
-        return redirect(url_for('error', e='termsofuseuerror'))
+        return redirect(url_for('error',
+                                e='You have to accept the Terms of Service'))
 
     if request.form.get('url'):
-        return redirect(url_for('error', e='boterror'))
+        return redirect(url_for('error', e='You seem to be a robot.'))
 
     if not re.match(r'^[^@]+@[^@]+\.[^@]+$', request.form.get('email')):
-        return redirect(url_for('error', e='emailerror'))
+        return redirect(url_for('error', e='Your mail address is invalid.'))
 
     if not re.match(r'^[a-z]+$', request.form.get('user')):
-        return redirect(url_for('error', e='userexistserror'))
+        return redirect(url_for('error',
+                                e='Your username contains invalid characters'))
 
     for field in ['firstname', 'lastname', 'country', 'city', 'organization']:
         if not request.form.get(field):
-            return redirect(url_for('error', e='requirederror'))
+            return redirect(url_for('error',
+                                    e='Not all required data is provided.'))
 
     db = get_session()
     db.add(User(
@@ -306,56 +306,38 @@ def storeuser():
         learned=request.form.get('learn-about'),
         admin=False,
         access=False))
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        return redirect(url_for('error', e='User already exists.'))
 
     # Send registration mail to admin
-    header  = 'From: %s\n' % request.form.get('email')
-    header += 'To: %s\n' % config.adminmailadress
-    header += 'Subject: %s\n\n' % (
-            config.adminmailtopic % {'username' : request.form.get('user')})
-    message = header + ( config.adminmailtext % {
+    h_from = request.form.get('email')
+    h_subject = config.adminmailsubject % {'username' : request.form.get('user')}
+    body = config.adminmailtext % {
         'username'  : request.form.get('user'),
         'firstname' : request.form.get('firstname'),
-        'lastname'  : request.form.get('lastname') })
+        'lastname'  : request.form.get('lastname') }
 
-    server = smtplib.SMTP('smtp.serv.uos.de')
     for to in config.adminmailadress:
-        server.sendmail(request.form.get('email'), to, message)
-    server.quit()
-    return redirect(url_for('success'))
+        print to
+        email(h_from=h_from, h_to=to, h_subject=h_subject, body=body)
+    return redirect('/success')
 
 
-def passwdgen():
+def passwdgen(length=16):
     chars = string.letters + string.digits
-    return ''.join([random.choice(chars) for _ in range(16)])
+    return ''.join([random.choice(chars) for _ in range(length)])
 
 
-def registrationmail(username, email, password, firstname, lastname):
-    header  = 'From: %s\n' % config.mailsender
-    header += 'To: %s\n' % email
-    header += 'Subject: %s\n\n' % config.mailtopic
-    message = header + config.mailtext % {
-            'firstname' : firstname,
-            'lastname'  : lastname,
-            'username'  : username,
-            'password'  : password}
+def email(h_to, h_subject, body, h_from=config.accessmailsender):
+    header  = 'From: %s\n' % h_from
+    header += 'To: %s\n' % h_to
+    header += 'Subject: %s\n\n' % h_subject
+    message = header + body
 
     server = smtplib.SMTP('smtp.serv.uos.de')
-    server.sendmail(config.mailsender, email, message)
-    server.quit()
-
-
-def deletemail(username, email, firstname, lastname, reason):
-
-    text = reason
-
-    header  = 'From: %s\n' % config.mailsender
-    header += 'To: %s\n' % email
-    header += 'Subject: OpencastRepo Accound has been Deleted\n\n'
-    message = header + text
-
-    server = smtplib.SMTP('smtp.serv.uos.de')
-    server.sendmail(config.mailsender, email, message)
+    server.sendmail(h_from, h_to, message)
     server.quit()
 
 

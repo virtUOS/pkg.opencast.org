@@ -1,113 +1,44 @@
-<!DOCTYPE html>
-<html style="background-color:#EFF3F6;">
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8">
-		<title>Admin | Matterhorn Repository</title>
-		<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-		<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='simple-line-icons.css') }}" />
-		<link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+{% extends "admin.html" %}
+{% block adminbody %}
+<div class="wrapper" style="padding:0px!important;">
+	<div class="wrapper-inner" style="background-color:#FFFFFF;padding:50px 0px; padding-left:20px;">
 
-	</head>
+		<table class="table table-bordered table-striped new-users">
 
-	<body>
-		<div class="nav" style="background-color:#ffffff;">
-			<div class="nav-wrapper">
-				<a href="{{ url_for('home') }}" class="headline"><img src="{{ url_for('static', filename='img/logo.png') }}" /></a>
-				<div class="menu">
-					<div><a href="{{ url_for('home') }}">Repository</a></div>
-					<div><a href="{{ url_for('logout') }}">Logout</a></div>
-				</div>
-			</div>
-		</div>
+			<tr id="target">
+				<th>Username</th>
+				<th>Name</th>
+				<th>E-Mail</th>
+				<th>City</th>
+				<th>Organization</th>
+				<th>How did you learn…</th>
+				<th>(Planned) usage</th>
+				<th>Actions</th>
+			</tr>
 
-		<div class="wrapper-menu-dashboard" style="padding-top:50px;">
-			<div class="wrapper-inner dashboard-header">
+			{% for u in user %}
 
-				<div class="menu-box active">
-					<a href="{{ url_for('admin', who='new') }}">
-						<div>New users {% if newusercount > 0 %}<span class="newusercount">{{ newusercount }}</span>{% endif %}</div>
-					</a>
-				</div>
+			<tr>
+				<td>{{ u.username }}</td>
+				<td class=name>{{ u.firstname }} {{ u.lastname }}</td>
+				<td class=email>{{ u.email }}</td>
+				<td>{{ u.city }} ({{ u.country }})</td>
+				<td>{{ u.organization }}
+					{% if u.department %}
+					<span title=Department>({{ u.department }})</span>
+					{% endif %}</td>
+				<td>{{ u.learned }}</td>
+				<td>{{ u.usage }}</td>
 
-				<div class="menu-box">
-					<a href="{{ url_for('admin', who='all') }}">
-						<div>All users</div>
-					</a>
-				</div>
+				<td class="actions">
+					<a href={{ url_for('access', who=u.username, ref='new' ) }}><span class='icon-color icon-users' title='Grant Repository Access'></span></a>
+					<a href="#" onclick="deleteDialog('{{ u.username }}');"><span class='icon-color icon-trash' title='Delete User'></span></a>
+				</td>
+			</tr>
+			{% endfor %}
 
-				<div class="menu-box">
-					<a href="{{ url_for('csv') }}">
-						<div>Export</div>
-					</a>
-				</div>
+		</table>
 
-				<div class="search-box">
-					<span class="icon-magnifier"></span><input id=search class="search" type=text placeholder="Search for a user" style="width: 199px;" onkeyup="search();" />
-				</div>
-
-				<div style="clear:both"></div>
-			</div>
-		</div>
-
-		<div class="wrapper" style="padding:0px!important;">
-			<div class="wrapper-inner" style="background-color:#FFFFFF;padding:50px 0px; padding-left:20px;">
-
-				<table class="table table-bordered table-striped new-users">
-
-					<tr id="target">
-						<th>Username</th>
-						<th>Name</th>
-						<th>E-Mail</th>
-						<th>City</th>
-						<th>Organization</th>
-						<th>How did you learn…</th>
-						<th>(Planned) usage</th>
-						<th width="130px">Actions</th>
-					</tr>
-
-					{% for u in user %}
-
-					<tr>
-						<td>{{ u.username }}</td>
-						<td class=name>{{ u.firstname }} {{ u.lastname }}</td>
-						<td>{{ u.email }}</td>
-						<td>{{ u.city }} ({{ u.country }})</td>
-						<td>{{ u.organization }}
-							{% if u.department %}
-							<span title=Department>({{ u.department }})</span>
-							{% endif %}</td>
-						<td>{{ u.learned }}</td>
-						<td>{{ u.usage }}</td>
-
-						<td class="actions">
-							<form id="action-{{ u[0] }}" method='POST' action='{{ url_for('admin') }}'>
-								<input type=hidden name=user value='{{ u[0] }}' />
-
-								<input id=access-{{ u[0] }} type='radio' name=action onclick="$('#action-{{ u[0] }}').submit();" title='Grant Repository Access' value=user class='radio' />
-								<label for=access-{{ u[0] }}><span class='icon-color icon-users' title='Grant Repository Access'></span></label>
-
-								<a href="{{ url_for('delete', who=u.username, ref='new') }}"><span class='icon-color icon-trash' title='Delete User'></span></a>
-
-								<div class="delete-options"  id="delete-options-{{ u[0] }}" style="display:none;">
-									<select class="select" name=reason style="padding: 2px;">
-										<option value="">Select reason…</option>
-										{% for r in config.delete_reasons %}
-										<option value="{{ r }}">{{ r }}</option>
-										{% endfor %}
-									</select>
-
-									<div class="delete-button-new" onClick="$('#action-{{ u[0] }}').submit();">Delete</div>
-								</div>
-							</form>
-
-						</td>
-					</tr>
-					{% endfor %}
-
-				</table>
-
-			</div>
-		</div>
-	</body>
-</html>
+	</div>
+</div>
+{% endblock %}

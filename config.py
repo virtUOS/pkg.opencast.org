@@ -8,9 +8,9 @@ sessionkey = 'bdkfHvkVt(r8%ZGIUZGTRHg'
 # EMAIL TO USER */
 
 repourl      = "http://pkg.opencast.org/"
-mailsender   = "no-reply@uni-osnabrueck.de"
-mailtopic    = "Registration: Opencast Package Repository"
-mailtext     = '''Hello %(firstname)s %(lastname)s,
+accessmailsender   = "no-reply@uni-osnabrueck.de"
+accessmailsubject = "Registration: Opencast Package Repository"
+accessmailtext     = '''Hello %(firstname)s %(lastname)s,
 Welcome to the Opencast Package Repository.
 Here are your credentials for the repo:
 
@@ -25,11 +25,12 @@ For more information, please visit
 adminurl          = repourl + "admin"
 adminmailadress   = ['lkiesow@uos.de', 'rrolf@uos.de']
 adminmailadress   = ['lkiesow@uos.de']
-adminmailtopic    = "%(username)s registered on Opencast Package Repository"
+adminmailsubject = "%(username)s registered on Opencast Package Repository"
 adminmailtext     = '''Hello Admin,
-%(username)s (%(firstname)s %(lastname)s) signed-up for the Opencast RPM Repo.
+%(username)s (%(firstname)s %(lastname)s) signed-up for the Opencast Package
+Repository. To review this registration, visit:
 
-Visit ''' + adminurl + ''' to activate his account.'''
+''' + adminurl
 
 # EMAIL FORGOT PASSWORD */
 
@@ -81,3 +82,23 @@ delete_reasons = [
         'Invalid or incomplete data.',
         'Duplicated account'
         ]
+deletemailsubject = "Registration: Opencast Package Repository"
+deletemailtext = '''Hello %(firstname)s %(lastname)s,
+we reviewed your registration and are sorry to say that access to the Opencast
+Package Repository could not be granted. The reason for this decision is:
+
+    %(reason)s
+
+'''
+
+# FORGOT PASSWORD
+set_password_mail = '''Hello %(firstname)s %(lastname)s,
+Welcome to the Opencast Package Repository.
+Your access has been confirmed. The last step now is to set a password for your
+account
+
+    Username: %(username)s
+    Password: %(password)s
+
+For more information, please visit
+ ''' + repourl

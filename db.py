@@ -52,7 +52,7 @@ class User(Base):
     country = Column('country', Text(), nullable=False)
     created = Column('created', DateTime(), nullable=False)
     department = Column('department', Text(), nullable=True)
-    email = Column('email', Text(), nullable=False)
+    email = Column('email', Text(), nullable=False, unique=True)
     firstname = Column('firstname', Text(), nullable=False)
     lastname = Column('lastname', Text(), nullable=False)
     learned = Column('learned', Text(), nullable=True)
@@ -96,4 +96,35 @@ class User(Base):
             'password': self.password,
             'salt': self.salt,
             'usage': self.usage
+            }
+
+
+class ActivationLink(Base):
+    '''Database definition for users.'''
+
+    __tablename__ = 'activationlink'
+
+    username = Column('username', String(length=255), primary_key=True)
+    '''Unique username'''
+    key = Column('key', Text(), nullable=False)
+    created = Column('created', DateTime(), nullable=False)
+
+    def __repr__(self):
+        '''Return a string representation of an user object.
+
+        :return: String representation of object.
+        '''
+        return '<User=%s, key="%s", created="%s")>' % \
+               (self.username, self.key, self.created)
+
+    def serialize(self, expand=0):
+        '''Serialize this object as dictionary usable for conversion to JSON.
+
+        :param expand: Defines if sub objects shall be serialized as well.
+        :return: Dictionary representing this object.
+        '''
+        return {
+            'username': self.username,
+            'key': self.key,
+            'created': self.created
             }

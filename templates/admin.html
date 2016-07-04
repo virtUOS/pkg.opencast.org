@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="nav" style="background-color:#ffffff;">
+	<div class="nav-wrapper">
+		<a href="{{ url_for('home') }}" class="headline"><img src="{{ url_for('static', filename='img/logo.png') }}" /></a>
+		<div class="menu">
+			<a href="{{ url_for('logout') }}">Logout</a>
+			<a href="{{ url_for('home') }}">Repository</a>
+		</div>
+	</div>
+</div>
+
+<div class="wrapper-menu-dashboard" style="padding-top:50px;">
+	<div class="wrapper-inner dashboard-header">
+
+		<a class="menu-box{% if who=='new' %} active {% endif %}" href="{{ url_for('admin', who='new') }}">
+			<div>New users {% if newusercount > 0 %}<span class="newusercount">{{ newusercount }}</span>{% endif %}</div>
+		</a>
+
+		<a class="menu-box{% if who=='all' %} active {% endif %}" href="{{ url_for('admin', who='all') }}">
+			<div>All users</div>
+		</a>
+
+		<a class="menu-box" href="{{ url_for('csv') }}">
+			<div>Export</div>
+		</a>
+
+		<div class="search-box">
+			<span class="icon-magnifier"></span><input id=search class=search type=text placeholder="Search for users" style="width: 199px;" onkeyup="search();" />
+		</div>
+
+		<div style="clear:both"></div>
+	</div>
+</div>
+
+{% block adminbody %}{% endblock %}
+
+<div class=black-overlay></div>
+<div id="delete-dialog">
+	<img src="{{ url_for('static', filename='img/close.png') }}" onClick="deleteDialog();" />
+	<h3>Delete <span class=user>testuser</span></h3>
+	<p>Are you sure you want to delete this user?</p>
+	<form method=POST action="{{ url_for('delete') }}">
+		<input type=hidden name=user />
+		<select class=select name=reason style="padding: 2px;">
+			<option value="">Select a reason…</option>
+			{% for r in config.delete_reasons %}
+			<option value="{{ r }}">{{ r }}</option>
+			{% endfor %}
+		</select>
+		<input type=submit value=Delete />
+	</form>
+</div>
+{% endblock %}
