@@ -27,13 +27,6 @@ $(document).ready(function() {
 		'margin-top' : -$('.main').height()/2,
 	});
 
-	$('.signup-link').click(function() {
-		$('.signup-link').removeClass('signup-inactive');
-		$('.login-link').addClass('login-inactive');
-		$('.login-view').hide();
-		$('.signup-view').fadeIn('slow');
-	});
-
 	$('.login-link').click(function() {
 		$('.signup-link').addClass('signup-inactive');
 		$('.login-link').removeClass('login-inactive');
