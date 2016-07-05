@@ -7,7 +7,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 import config
-from db import get_session, User
+from db import get_session, User, ActivationLink
 from hashlib import sha512
 
 #import sqlite3
@@ -122,37 +122,33 @@ def error(e):
 
 @app.route('/forgot', methods=['GET','POST'])
 def forgot():
-    # TODO
-    email = request.form.get('email')
-    if not email:
+    if request.form.get('url'):
+        return redirect(url_for('error', e='You seem to be a robot.'))
+    emailaddr = request.form.get('email')
+    if not emailaddr:
         return render_template('forgot.html', config=config)
 
-    data = None
-    with sqlite3.connect('users.db') as con:
-        cur = con.cursor()
-        cur.execute('''select username, password from user
-                where email=? and repoaccess''', (email,))
-        data = cur.fetchall()
+    key = passwdgen(64)
+    db = get_session()
+    user = db.query(User).filter(User.email==emailaddr)
+    if not user.count():
+        return redirect(url_for('error', e='User does not exist.'))
+    user = user[0]
+    db.query(ActivationLink).filter(ActivationLink.username==user.username).delete()
+    db.add(ActivationLink(
+        username=user.username,
+        created=date.today(),
+        key=key))
+    db.commit()
 
-    if not data:
-        return redirect(url_for('error', e='forgotmailerror'))
+    body = config.forgotmailtext % {
+            'firstname' : user.firstname,
+            'lastname'  : user.lastname,
+            'resetlink' : key}
+    email(h_to=user.email, h_subject=config.forgotmailsubject, body=body)
 
-    # Send mail
-    header  = 'From: %s\n' % config.mailsender
-    header += 'To: %s\n' % email
-    header += 'Subject: %s\n\n' % config.forgotmailtopic
-    message = header + config.forgotmailtext
-    for username, password in data:
-        message += '\nusername: %s'   % username
-        message += '\npassword: %s\n' % password
-
-    server = smtplib.SMTP('smtp.serv.uos.de')
-    server.sendmail(
-            config.mailsender,
-            email,
-            message)
-    server.quit()
-    return redirect(url_for('error', e='forgotsuccess'))
+    return redirect(url_for('error',
+                            e='We sent you a mail with further instructions.'))
 
 
 @app.route('/terms')

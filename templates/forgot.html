@@ -11,8 +11,9 @@
 		<div style="margin-top: 10px;">
 			<p>Please enter your email address to recover your password.</p>
 			<form method="POST" action="{{ url_for('forgot') }}" style="margin-top:20px;">
-				<input style="padding-left:11px!important" id="email" type="email" name="email" placeholder="email address" />
-				<input style="width: 100%; text-align: center;" type="submit" class="button-recover" />
+				<input id=email type=email name=email placeholder="email address" required />
+				<input type=text name=url style='display:none;' placeholder="Please leave empty" />
+				<input type=submit class=button-recover />
 			</form>
 		</div>
 	</div>
