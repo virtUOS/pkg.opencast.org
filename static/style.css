@@ -499,6 +499,13 @@ input, select {
     input#password:focus {
       background: white url("/static/img/lock.png") 20px bottom no-repeat;
       background-size: 16px 80px; }
+  input#email {
+    background: white url("/static/img/mail.png") 20px top no-repeat;
+    background-size: 16px 80px; }
+    /* line 431, style.sass */
+    input#email:focus {
+      background: white url("/static/img/mail.png") 20px bottom no-repeat;
+      background-size: 16px 80px; }
 
 /* line 443, style.sass */
 .userinfo input, .userinfo select {
@@ -602,7 +609,7 @@ fieldset label {
   /* line 527, style.sass */
   .forgot-card input {
     background-color: rgba(255, 255, 255, 0);
-    padding-left: 8px !important; }
+ }
     /* line 530, style.sass */
     .forgot-card input:focus {
       border-color: #47b07b; }

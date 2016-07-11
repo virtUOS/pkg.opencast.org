@@ -1,19 +1,19 @@
 [opencast-testing]
-name = Opencast  {{ os }} {{ version }} Test Repository
-baseurl  = http://{{ user }}:{{ passwd }}@repo.virtuos.uos.de/rpms/testing/{{ os }}/{{ version }}/x86_64
+name = Opencast {{ os }} {{ version }} Test Repository
+baseurl  = http://{{ user }}:{{ password }}@pkg.opencast.org/rpms/testing/{{ os }}/{{ version }}/x86_64
 enabled  = 1
 protect  = 0
 gpgcheck = 0
 
 [opencast-testing-noarch]
-name = Opencast  {{ os }} {{ version }} Test Repository - noarch
-baseurl  = http://{{ user }}:{{ passwd }}@repo.virtuos.uos.de/rpms/testing/{{ os }}/{{ version }}/noarch
+name = Opencast {{ os }} {{ version }} Test Repository - noarch
+baseurl  = http://{{ user }}:{{ password }}@pkg.opencast.org/rpms/testing/{{ os }}/{{ version }}/noarch
 enabled  = 1
 protect  = 0
 gpgcheck = 0
 
 [opencast-testing-debuginfo]
-name = Opencast  {{ os }} {{ version }} Test Repository - debuginfo
-baseurl  = http://{{ user }}:{{ passwd }}@repo.virtuos.uos.de/rpms/testing/{{ os }}/{{ version }}/debuginfo
+name = Opencast {{ os }} {{ version }} Test Repository - debuginfo
+baseurl  = http://{{ user }}:{{ password }}@pkg.opencast.org/rpms/testing/{{ os }}/{{ version }}/debuginfo
 enabled  = 0
 protect  = 0

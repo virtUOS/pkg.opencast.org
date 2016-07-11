@@ -1,0 +1,20 @@
+<div class="forgot-card">
+	<div class="forgot-card-header">
+		<img height="30px" src="{{ url_for('static', filename='img/logo.png') }}" />
+		<img style="margin-left:155px;cursor:pointer;" height="30px" src="{{ url_for('static', filename='img/close.png') }}" onClick="animateCardOut(0)" />
+	</div>
+
+	<div class="text-wrapper">
+
+		<h3>Recover Password</h3>
+
+		<div style="margin-top: 10px;">
+			<p>Please enter your email address to recover your password.</p>
+			<form method="POST" action="{{ url_for('forgot') }}" style="margin-top:20px;">
+				<input id=email type=email name=email placeholder="email address" required />
+				<input type=text name=url style='display:none;' placeholder="Please leave empty" />
+				<input type=submit class=button-recover />
+			</form>
+		</div>
+	</div>
+</div>

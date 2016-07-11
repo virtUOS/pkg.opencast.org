@@ -13,7 +13,9 @@ import config
 from passlib.hash import pbkdf2_sha512
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, Text, DateTime, Boolean, create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import ForeignKey
+from sqlalchemy.schema import ForeignKeyConstraint
+from sqlalchemy.orm import sessionmaker, relationship, backref
 Base = declarative_base()
 
 
@@ -104,10 +106,13 @@ class ActivationLink(Base):
 
     __tablename__ = 'activationlink'
 
-    username = Column('username', String(length=255), primary_key=True)
+    username = Column('username', ForeignKey('user.username'), primary_key=True)
     '''Unique username'''
     key = Column('key', Text(), nullable=False)
     created = Column('created', DateTime(), nullable=False)
+
+    user = relationship('User', backref=backref('activationlink'))
+    '''User related to this activation link'''
 
     def __repr__(self):
         '''Return a string representation of an user object.

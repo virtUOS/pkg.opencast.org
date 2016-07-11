@@ -1,20 +1,26 @@
-<div class="forgot-card">
-	<div class="forgot-card-header">
-		<img height="30px" src="{{ url_for('static', filename='img/logo.png') }}" />
-		<img style="margin-left:155px;cursor:pointer;" height="30px" src="{{ url_for('static', filename='img/close.png') }}" onClick="animateCardOut(0)" />
-	</div>
+{% extends "layout.html" %}
+{% block body %}
 
+<div class="box main">
 	<div class="text-wrapper">
+		<a href="{{ url_for('home') }}">
+			<img src="{{ url_for('static', filename='img/logo.png') }}" />
+		</a>
 
-		<h3>Recover Password</h3>
+		<h3>Reset Password</h3>
 
 		<div style="margin-top: 10px;">
-			<p>Please enter your email address to recover your password.</p>
-			<form method="POST" action="{{ url_for('forgot') }}" style="margin-top:20px;">
-				<input id=email type=email name=email placeholder="email address" required />
+			<p>Note that resetting your password will require an update of the
+			repository configuration file on each of your servers.</p>
+			<form method="POST" action="{{ url_for('reset') }}" style="margin-top:20px;">
+				<input type=text id=username name=user placeholder="username" required readonly value="{{ user.username }}" />
+				<input type=email id=email name=email placeholder="email address" required readonly value="{{ user.email }}" />
+				<input type=text id=password name=key placeholder="key" required readonly value="{{ key }}" />
+				<input type=text name=yes pattern=YES placeholder="Type YES to continue" required />
 				<input type=text name=url style='display:none;' placeholder="Please leave empty" />
 				<input type=submit class=button-recover />
 			</form>
 		</div>
 	</div>
 </div>
+{% endblock %}

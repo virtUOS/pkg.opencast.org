@@ -17,7 +17,7 @@ import string
 import json
 import smtplib
 from sqlalchemy.exc import IntegrityError
-from datetime import date
+from datetime import datetime, timedelta
 from flask import Flask, render_template, request, Response, redirect, url_for, session
 app = Flask(__name__)
 app.secret_key = config.sessionkey
@@ -38,7 +38,7 @@ def init():
         country='DE',
         city='City',
         organization='Org',
-        created=date.today(),
+        created=datetime.today(),
         admin=True,
         access=True)
     user.password_set('123')
@@ -76,23 +76,21 @@ def home():
 def repofile():
     if not request.authorization:
         return '', 401
-    user, passw = request.authorization.username, request.authorization.password
-    if not user:
+    user = request.authorization.username
+    password = request.authorization.password
+    if not user or not password:
         return '', 401
-    try:
-        u = get_session().query(User).filter(User.username==user,
-                                             User.access==True)
-        if not (u.count() and u[0].password_verify(passwd)):
-            return '', 400
-    except:
-        return '', 500
+    u = get_session().query(User).filter(User.username==user,
+                                         User.access==True)
+    if not (u.count() and u[0].password_verify(password)):
+        return '', 400
 
     # Get specs
     tpl     = request.path.lstrip('/')
     os      = request.form.get('os', 'el')
-    version = request.form.get('version', '6')
+    version = request.form.get('version', '7')
 
-    return render_template(tpl, user=user, passwd=passwd, os=os,
+    return render_template(tpl, user=user, password=password, os=os,
             version=version)
 
 
@@ -137,18 +135,65 @@ def forgot():
     db.query(ActivationLink).filter(ActivationLink.username==user.username).delete()
     db.add(ActivationLink(
         username=user.username,
-        created=date.today(),
+        created=datetime.today(),
         key=key))
     db.commit()
 
     body = config.forgotmailtext % {
             'firstname' : user.firstname,
             'lastname'  : user.lastname,
-            'resetlink' : key}
+            'resetlink' : url_for('resetview', username=user.username, key=key)}
     email(h_to=user.email, h_subject=config.forgotmailsubject, body=body)
 
     return redirect(url_for('error',
                             e='We sent you a mail with further instructions.'))
+
+@app.route('/reset/<username>/<key>')
+def resetview(username, key):
+    db = get_session()
+    timebarrier = datetime.now() - timedelta(days=1)
+    activation = db.query(ActivationLink).filter(ActivationLink.username==username)\
+                                         .filter(ActivationLink.key==key)\
+                                         .filter(ActivationLink.created>=timebarrier)
+    if not activation.count():
+        return redirect(url_for('error', e='Invalid reset link.'))
+
+    user = activation[0].user
+    return render_template('forgot.html', config=config, user=user, key=key)
+
+
+@app.route('/reset', methods=['post'])
+def reset():
+    if request.form.get('url'):
+        return redirect(url_for('error', e='You seem to be a robot.'))
+    if request.form.get('yes') != 'YES':
+        return redirect(url_for('error', e='You need to confirm a reset.'))
+
+    username = request.form.get('user')
+    key = request.form.get('key')
+    db = get_session()
+
+    timebarrier = datetime.now() - timedelta(days=1)
+    activation = db.query(ActivationLink).filter(ActivationLink.username==username)\
+                                         .filter(ActivationLink.key==key)\
+                                         .filter(ActivationLink.created>=timebarrier)
+    if not activation.count():
+        return redirect(url_for('error', e='Invalid reset link.'))
+
+    user = activation[0].user
+    password = passwdgen()
+    user.password_set(password)
+    activation.delete()
+    db.commit()
+
+    body = config.accessmailtext % {
+            'firstname' : user.firstname,
+            'lastname'  : user.lastname,
+            'username'  : user.username,
+            'password'  : password}
+    email(h_to=user.email, h_subject=config.accessmailsubject, body=body)
+    return redirect(url_for('error',
+                            e='We sent you a mail with further information.'))
 
 
 @app.route('/terms')
@@ -297,7 +342,7 @@ def register():
         city=request.form.get('city'),
         organization=request.form.get('organization'),
         department=request.form.get('department'),
-        created=date.today(),
+        created=datetime.today(),
         usage=request.form.get('usage'),
         learned=request.form.get('learn-about'),
         admin=False,

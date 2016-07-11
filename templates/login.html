@@ -27,48 +27,32 @@
 		The following Linux distributions are currently supported:
 		</p>
 		<ul>
-			<li> CentOS 6x, 7x</li>
-			<li> Scientific Linux 6.x, 7.x</li>
-			<li> RedHat Enterprise Linux 6.x, 7.x</li>
-			<li> Fedora 20 (Testing only)</li>
+			<li> CentOS 7x</li>
+			<li> Scientific Linux 7.x</li>
+			<li> RedHat Enterprise Linux 7.x</li>
+			<li> Fedora latest (Testing only)</li>
 		</ul>
 
 
 		<p>
-		A detailed description of the installation process can be found in the  <a href="https://opencast.jira.com/wiki/display/MHTRUNK/Install">Matterhorn Release Wiki</a>:<br/>
+		A detailed description of the installation process can be found in the  <a href="https://docs.opencast.org">official Opencast documentation</a>.<br/>
 		</p>
-
-		<h5>CentOS/RHEL/Scientific Linux 6.x</h5>
-		<div class="repocontent light">
-			<pre>
-	# Add matterhorn repository.
-	cd /etc/yum.repos.d
-	curl -O http://repo.virtuos.uos.de/matterhorn.repo \
-		-d os=el -d version=6 \
-		-u [YOUR_USERNAME]:[YOUR_PASSWORD]
-
-	# Add epel repository.
-	yum install epel-release
-
-	# Install matterhorn with all it's dependencies.
-	yum install opencast-matterhorn15
-			</pre>
-		</div>
 
 		<h5>CentOS/RHEL/Scientific Linux 7.x</h5>
 		<div class="repocontent light">
 			<pre>
-	# Add matterhorn repository.
+	# Add Opencast repository
+	# You will be asked for your password
 	cd /etc/yum.repos.d
-	curl -O http://repo.virtuos.uos.de/matterhorn.repo \
+	curl -O {{ config.repourl }}/opencast.repo \
 		-d os=el -d version=7 \
-		-u [YOUR_USERNAME]:[YOUR_PASSWORD]
+		-u {{ username }}
 
 	# Add epel repository.
 	yum install epel-release
 
-	# Install matterhorn with all it's dependencies.
-	yum install opencast-matterhorn15
+	# Install Opencast with all its dependencies.
+	yum install opencast22-allinone
 			</pre>
 		</div>
 
@@ -87,47 +71,41 @@
 
 		<h2>Testing repository</h2>
 
-		<p>If you want the newest updates and package build you can enable the Opencast Matterhorn Testing Repositories. However, the probability that something is not working right if you pull the RPMs from here is higher. So you should not use this for productive systems.</p>
-		<p>To enable the testing repository first install the regular repositories and then follow these steps:</p>
-
-		<h5>CentOS/RHEL/Scientific Linux 6.x</h5>
-		<div class="repocontent">
-			<pre>
-		# Add matterhorn repository.
-		cd /etc/yum.repos.d
-		curl -O http://repo.virtuos.uos.de/matterhorn-testing.repo \
-			 -d version=6 -d os=el \
-			 -u [YOUR_USERNAME]:[YOUR_PASSWORD]
-			</pre>
-		</div>
+		<p>If you want the newest updates and package builds, you can enable the
+		Opencast Testing Repositories. However, the probability that something is
+		not working right if you pull the RPMs from here is higher.  So you
+		should not use this for productive systems.</p>
+		
+		<p>To enable the testing repository first install the regular
+		repositories and then follow these steps:</p>
 
 		<h5>CentOS/RHEL/Scientific Linux 7.x</h5>
 		<div class="repocontent">
 			<pre>
-		# Add matterhorn repository.
-		cd /etc/yum.repos.d
-		curl -O http://repo.virtuos.uos.de/matterhorn-testing.repo \
-			 -d version=7 -d os=el \
-			 -u [YOUR_USERNAME]:[YOUR_PASSWORD]
+	# Add Opencast repository.
+	cd /etc/yum.repos.d
+	curl -O {{ config.repourl }}/opencast-testing.repo \
+		 -d version=7 -d os=el \
+		 -u {{ username }}
 			</pre>
 		</div>
 
 		<h5>Fedora</h5>
 		<div class="repocontent">
 			<pre>
-		# Add matterhorn repository.
-		cd /etc/yum.repos.d
-		curl -O http://repo.virtuos.uos.de/matterhorn-testing.repo \
-			-d 'version=$releasever' -d os=fc \
-			-u [YOUR_USERNAME]:[YOUR_PASSWORD]
+	# Add Opencast repository.
+	cd /etc/yum.repos.d
+	curl -O {{ config.repourl }}/opencast-testing.repo \
+		-d 'version=$releasever' -d os=fc \
+		-u {{ username }}
 
-		# Add rpmfusion repository.
-		yum localinstall --nogpgcheck \
-		  http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
-		  http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+	# Add rpmfusion repository.
+	yum localinstall --nogpgcheck \
+		http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+		http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-		# Install matterhorn with all it's dependencies.
-		yum install opencast-matterhorn15
+	# Install Opencast with all its dependencies.
+	yum install opencast22-allinone
 			</pre>
 		</div>
 

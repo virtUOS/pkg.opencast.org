@@ -1,20 +1,20 @@
 [opencast]
-name = Opencast  {{ os }} {{ version }} Repository
-baseurl  = http://{{ user }}:{{ passwd }}@repo.virtuos.uos.de/rpms/release/{{ os }}/{{ version }}/x86_64
+name = Opencast {{ os }} {{ version }} Repository
+baseurl  = http://{{ user }}:{{ password }}@pkg.opencast.org/rpms/release/{{ os }}/{{ version }}/x86_64
 enabled  = 1
 protect  = 0
 gpgcheck = 0
 
 [opencast-noarch]
-name = Opencast  {{ os }} {{ version }} Repository - noarch
-baseurl  = http://{{ user }}:{{ passwd }}@repo.virtuos.uos.de/rpms/release/{{ os }}/{{ version }}/noarch
+name = Opencast {{ os }} {{ version }} Repository - noarch
+baseurl  = http://{{ user }}:{{ password }}@pkg.opencast.org/rpms/release/{{ os }}/{{ version }}/noarch
 enabled  = 1
 protect  = 0
 gpgcheck = 0
 
 [opencast-debuginfo]
-name = Opencast  {{ os }} {{ version }} Repository - debuginfo
-baseurl  = http://{{ user }}:{{ passwd }}@repo.virtuos.uos.de/rpms/release/{{ os }}/{{ version }}/debuginfo
+name = Opencast {{ os }} {{ version }} Repository - debuginfo
+baseurl  = http://{{ user }}:{{ password }}@pkg.opencast.org/rpms/release/{{ os }}/{{ version }}/debuginfo
 enabled  = 0
 protect  = 0
 gpgcheck = 0
