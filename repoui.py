@@ -255,7 +255,8 @@ def access(who, ref):
 
 
 @app.route('/delete', methods=['POST'])
-def delete():
+@app.route('/delete/<ref>', methods=['POST'])
+def delete(ref='new'):
     username, admin, repoaccess = [None]*3
     try:
         username, admin, repoaccess = session.get('login')
@@ -268,20 +269,22 @@ def delete():
     reason = request.form.get('reason')
 
     db = get_session()
-    user = db.query(User).filter(User.username==user)
-    user.delete()
-    db.commit()
+    users = db.query(User).filter(User.username==user)
 
-    body = config.deletemailtext % {
-            'firstname' : user.firstname,
-            'lastname' : user.lastname,
-            'reasin' : reasin}
-    email(h_to=user.email, h_subject=config.deletemailsubject, body=body)
+    for user in users:
+        body = config.deletemailtext % {
+                'firstname' : user.firstname,
+                'lastname' : user.lastname,
+                'reasin' : reasin}
+        email(h_to=user.email, h_subject=config.deletemailsubject, body=body)
+
+    users.delete()
+    db.commit()
 
     return redirect(url_for('admin', who=ref))
 
 
-@app.route('/csv', methods=['GET'])
+@app.route('/opencast-repo.csv', methods=['GET'])
 def csv():
     username, admin, repoaccess = [None]*3
     try:

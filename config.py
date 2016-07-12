@@ -2,7 +2,6 @@
 database='sqlite:///user.db'
 
 # LOGIN
-
 sessionkey = 'bdkfHvkVt(r8%ZGIUZGTRHg'
 
 # EMAIL TO USER */
@@ -22,7 +21,7 @@ For more information, please visit
 
 # EMAIL TO ADMIN */
 
-adminurl          = repourl + "admin"
+adminurl          = repourl + "/admin"
 adminmailadress   = ['lkiesow@uos.de', 'rrolf@uos.de']
 adminmailadress   = ['lkiesow@uos.de']
 adminmailsubject = "%(username)s registered on Opencast Package Repository"

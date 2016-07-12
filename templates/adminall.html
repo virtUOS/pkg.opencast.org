@@ -20,11 +20,11 @@
 
 			{% for u in user %}
 
-			<tr class="element {{ 'admin' if u[12] else ( 'user' if u[13] else '' ) }}" >
+			<tr class="element {{ 'admin' if u.admin else ( 'user' if u.access else '' ) }}" >
 				<td>{{ u.username }}</td>
 				<td class=name>{{ u.firstname }} {{ u.lastname }}</td>
 				<td class=email>{{ u.email }}</td>
-				<td>{{ 'Admin' if u.admin else ( 'User' if u.access else 'Disabled' ) }}</td>
+				<td>{{ ['Disabled','User','Admin'][u.admin + u.access] }}</td>
 				<td>{{ u.city }} ({{ u.country }})</td>
 				<td>{{ u.organization }}
 					{% if u.department %}
