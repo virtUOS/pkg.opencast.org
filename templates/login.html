@@ -45,8 +45,7 @@
 	# You will be asked for your password
 	cd /etc/yum.repos.d
 	curl -O {{ config.repourl }}/opencast.repo \
-		-d os=el -d version=7 \
-		-u {{ username }}
+		-d os=el -d version=7 -u {{ username }}
 
 	# Add epel repository.
 	yum install epel-release
@@ -75,7 +74,7 @@
 		Opencast Testing Repositories. However, the probability that something is
 		not working right if you pull the RPMs from here is higher.  So you
 		should not use this for productive systems.</p>
-		
+
 		<p>To enable the testing repository first install the regular
 		repositories and then follow these steps:</p>
 
@@ -85,8 +84,7 @@
 	# Add Opencast repository.
 	cd /etc/yum.repos.d
 	curl -O {{ config.repourl }}/opencast-testing.repo \
-		 -d version=7 -d os=el \
-		 -u {{ username }}
+		 -d version=7 -d os=el -u {{ username }}
 			</pre>
 		</div>
 

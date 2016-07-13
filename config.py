@@ -6,7 +6,7 @@ sessionkey = 'bdkfHvkVt(r8%ZGIUZGTRHg'
 
 # EMAIL TO USER */
 
-repourl = 'http://pkg.opencast.org'
+repourl = 'https://pkg.opencast.org'
 accessmailsender = "no-reply@uni-osnabrueck.de"
 accessmailsubject = "Opencast Package Repository"
 accessmailtext = '''Hello %(firstname)s %(lastname)s,
