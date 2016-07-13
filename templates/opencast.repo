@@ -3,15 +3,18 @@ name = Opencast {{ os }} {{ version }} Repository
 baseurl  = https://{{ user }}:{{ password }}@pkg.opencast.org/rpms/release/{{ os }}/{{ version }}/x86_64
 enabled  = 1
 gpgcheck = 1
+gpgkey = https://pkg.opencast.org/gpgkeys/opencast-el7-rpm.opencast.org.key
 
 [opencast-noarch]
 name = Opencast {{ os }} {{ version }} Repository - noarch
 baseurl  = https://{{ user }}:{{ password }}@pkg.opencast.org/rpms/release/{{ os }}/{{ version }}/noarch
 enabled  = 1
 gpgcheck = 1
+gpgkey = https://pkg.opencast.org/gpgkeys/opencast-el7-rpm.opencast.org.key
 
 [opencast-debuginfo]
 name = Opencast {{ os }} {{ version }} Repository - debuginfo
 baseurl  = https://{{ user }}:{{ password }}@pkg.opencast.org/rpms/release/{{ os }}/{{ version }}/debuginfo
 enabled  = 0
 gpgcheck = 1
+gpgkey = https://pkg.opencast.org/gpgkeys/opencast-el7-rpm.opencast.org.key
