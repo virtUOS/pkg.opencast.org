@@ -363,9 +363,16 @@ def register():
         'firstname' : request.form.get('firstname'),
         'lastname'  : request.form.get('lastname') }
 
-    for to in config.adminmailadress:
-        print to
-        email(h_from=h_from, h_to=to, h_subject=h_subject, body=body)
+    try:
+        for to in config.adminmailadress:
+            print to
+            email(h_from=h_from, h_to=to, h_subject=h_subject, body=body)
+    except smtplib.SMTPSenderRefused as err:
+        db = get_session()
+        db.query(User).filter(User.username==request.form.get('user')).delete()
+        db.commit()
+        return redirect(url_for('error', e='There seems to be an error woth'
+            'your email address: %s.' % (err,)))
     return redirect('/success')
 
 
