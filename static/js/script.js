@@ -70,7 +70,8 @@ function search() {
 	$('.element').each(function(k, v) {
 		var name  = $(v).find('td.name').html().toLowerCase();
 		var email = $(v).find('td.email').html().toLowerCase();
-		if (name.indexOf(value) >= 0 || email.indexOf(value) >= 0) {
+		var org = $(v).find('td.org').html().toLowerCase();
+		if (name.indexOf(value) >= 0 || email.indexOf(value) >= 0 || org.indexOf(value) >= 0) {
 			$(v).show();
 		} else {
 			$(v).hide();

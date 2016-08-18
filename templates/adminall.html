@@ -3,8 +3,6 @@
 <div class="wrapper" style="padding:0px!important;">
 	<div class="wrapper-inner" style="background-color:#FFFFFF;padding:50px 0px;margin-bottom:50px;">
 
-		<!-- <input id=search type=text placeholder=Search style="width: 400px;" onkeyup="search();" /> -->
-
 		<table class="table table-bordered table-striped">
 			<tr>
 				<th>Username</th>
@@ -26,7 +24,7 @@
 				<td class=email>{{ u.email }}</td>
 				<td>{{ ['Disabled','User','Admin'][u.admin + u.access] }}</td>
 				<td>{{ u.city }} ({{ u.country }})</td>
-				<td>{{ u.organization }}
+				<td class=org>{{ u.organization }}
 					{% if u.department %}
 					<span title=Department>({{ u.department }})</span>
 					{% endif %}</td>
