@@ -275,7 +275,7 @@ def delete(ref='new'):
         body = config.deletemailtext % {
                 'firstname' : user.firstname,
                 'lastname' : user.lastname,
-                'reasin' : reasin}
+                'reason' : reason}
         email(h_to=user.email, h_subject=config.deletemailsubject, body=body)
 
     users.delete()
