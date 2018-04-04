@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-database='sqlite:///user.db'
+database = 'sqlite:///user.db'
 
 # LOGIN
 sessionkey = 'bdkfHvkVt(r8%ZGIUZGTRHg'
@@ -21,10 +21,10 @@ For more information, please visit
 
 # EMAIL TO ADMIN */
 
-adminurl          = repourl + "/admin"
-adminmailadress   = ['lkiesow@uos.de', 'rrolf@uos.de']
+adminurl = repourl + "/admin"
+adminmailadress = ['lkiesow@uos.de', 'rrolf@uos.de']
 adminmailsubject = "%(username)s registered on Opencast Package Repository"
-adminmailtext     = '''Hello Admin,
+adminmailtext = '''Hello Admin,
 %(username)s (%(firstname)s %(lastname)s) signed-up for the Opencast Package
 Repository. To review this registration, visit:
 
@@ -42,7 +42,7 @@ Repository. To do so, follow the following link within the next 24h:
 If you did not initiate this process, please just ignore this e-mail.
 '''
 
-#TEXT DELETE MAIL
+# TEXT DELETE MAIL
 delete_reasons = [
         'Your request could not be accepted.',
         'Access for non-commercial organizations only.',

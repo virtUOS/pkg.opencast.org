@@ -1,24 +1,17 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
 
-# Set default encoding to UTF-8
-import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
-
 import config
 from db import get_session, User, ActivationLink
-from hashlib import sha512
 
-#import sqlite3
 import re
 import random
 import string
-import json
 import smtplib
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime, timedelta
-from flask import Flask, render_template, request, Response, redirect, url_for, session
+from flask import Flask, render_template, request, Response, redirect, \
+                  url_for, session
 app = Flask(__name__)
 app.secret_key = config.sessionkey
 
@@ -29,7 +22,6 @@ def init():
         return
 
     # Add default admin
-    salt = passwdgen()
     user = User(
         username='admin',
         firstname='Administrator',
@@ -50,11 +42,10 @@ def init():
 def home():
     user, passwd = request.form.get('username'), request.form.get('password')
     if user:
-        u = get_session().query(User).filter(User.username==user)
+        u = get_session().query(User).filter(User.username == user)
         if not u.count() or not u[0].password_verify(passwd):
             return redirect(url_for('error', e='Invalid user or password.'))
         session['login'] = (u[0].username, u[0].admin, u[0].access)
-
 
     # Don't accept self set users
     user = None
@@ -65,7 +56,7 @@ def home():
 
     if user and repoaccess:
         return render_template('login.html', config=config, username=user,
-                admin=admin)
+                               admin=admin)
 
     # No login? Show start page:
     return render_template('index.html', config=config)
@@ -80,34 +71,34 @@ def repofile():
     password = request.authorization.password
     if not user or not password:
         return '', 401
-    u = get_session().query(User).filter(User.username==user,
-                                         User.access==True)
+    u = get_session().query(User).filter(User.username == user,
+                                         User.access == True)  # noqa
     if not (u.count() and u[0].password_verify(password)):
         return '', 400
 
     # Get specs
-    tpl     = request.path.lstrip('/')
-    os      = request.form.get('os', 'el')
+    tpl = request.path.lstrip('/')
+    os = request.form.get('os', 'el')
     version = request.form.get('version', '7')
 
     return render_template(tpl, user=user, password=password, os=os,
-            version=version)
+                           version=version)
 
 
 @app.route('/auth', methods=['GET'])
 def auth():
     try:
-        user, passwd = request.authorization.username, request.authorization.password
-        u = get_session().query(User).filter(User.username==user,
-                                             User.access==True)
+        user = request.authorization.username
+        passwd = request.authorization.password
+        u = get_session().query(User).filter(User.username == user,
+                                             User.access == True)  # noqa
         if u.count() and u[0].password_verify(passwd):
             session['login'] = (user, passwd)
-            return '' # 200 OK
+            return ''  # 200 OK
     except:
         pass
     return Response('', 401,
-            {'WWW-Authenticate': 'Basic realm="Login Required"'})
-
+                    {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
 
 @app.route('/msg/<e>')
@@ -118,7 +109,7 @@ def error(e):
         return '', 400
 
 
-@app.route('/forgot', methods=['GET','POST'])
+@app.route('/forgot', methods=['GET', 'POST'])
 def forgot():
     if request.form.get('url'):
         return redirect(url_for('error', e='You seem to be a robot.'))
@@ -128,11 +119,13 @@ def forgot():
 
     key = passwdgen(64)
     db = get_session()
-    user = db.query(User).filter(User.email==emailaddr)
+    user = db.query(User).filter(User.email == emailaddr)
     if not user.count():
         return redirect(url_for('error', e='User does not exist.'))
     user = user[0]
-    db.query(ActivationLink).filter(ActivationLink.username==user.username).delete()
+    db.query(ActivationLink)\
+      .filter(ActivationLink.username == user.username)\
+      .delete()
     db.add(ActivationLink(
         username=user.username,
         created=datetime.today(),
@@ -140,21 +133,23 @@ def forgot():
     db.commit()
 
     body = config.forgotmailtext % {
-            'firstname' : user.firstname,
-            'lastname'  : user.lastname,
-            'resetlink' : url_for('resetview', username=user.username, key=key)}
+            'firstname': user.firstname,
+            'lastname': user.lastname,
+            'resetlink': url_for('resetview', username=user.username, key=key)}
     email(h_to=user.email, h_subject=config.forgotmailsubject, body=body)
 
     return redirect(url_for('error',
                             e='We sent you a mail with further instructions.'))
 
+
 @app.route('/reset/<username>/<key>')
 def resetview(username, key):
     db = get_session()
     timebarrier = datetime.now() - timedelta(days=1)
-    activation = db.query(ActivationLink).filter(ActivationLink.username==username)\
-                                         .filter(ActivationLink.key==key)\
-                                         .filter(ActivationLink.created>=timebarrier)
+    activation = db.query(ActivationLink)\
+                   .filter(ActivationLink.username == username)\
+                   .filter(ActivationLink.key == key)\
+                   .filter(ActivationLink.created >= timebarrier)
     if not activation.count():
         return redirect(url_for('error', e='Invalid reset link.'))
 
@@ -174,9 +169,10 @@ def reset():
     db = get_session()
 
     timebarrier = datetime.now() - timedelta(days=1)
-    activation = db.query(ActivationLink).filter(ActivationLink.username==username)\
-                                         .filter(ActivationLink.key==key)\
-                                         .filter(ActivationLink.created>=timebarrier)
+    activation = db.query(ActivationLink)\
+                   .filter(ActivationLink.username == username)\
+                   .filter(ActivationLink.key == key)\
+                   .filter(ActivationLink.created >= timebarrier)
     if not activation.count():
         return redirect(url_for('error', e='Invalid reset link.'))
 
@@ -187,10 +183,10 @@ def reset():
     db.commit()
 
     body = config.accessmailtext % {
-            'firstname' : user.firstname,
-            'lastname'  : user.lastname,
-            'username'  : user.username,
-            'password'  : password}
+            'firstname': user.firstname,
+            'lastname': user.lastname,
+            'username': user.username,
+            'password': password}
     email(h_to=user.email, h_subject=config.accessmailsubject, body=body)
     return redirect(url_for('error',
                             e='We sent you a mail with further information.'))
@@ -219,17 +215,19 @@ def admin(who='new'):
     user = get_session().query(User).order_by(User.username.asc())
 
     if who == 'new':
-        user = user.filter(User.access==False)
+        user = user.filter(User.access == False)  # noqa
         return render_template('adminnew.html', config=config, user=user,
-                newusercount=user.count(), who=who)
+                               newusercount=user.count(), who=who)
+
+    user_without_access = len([u for u in user if not u.access]),
     return render_template('adminall.html', config=config, user=user,
-            newusercount=len([ u for u in user if not u.access]),
-            usercount=user.count(), who=who)
+                           newusercount=user_without_access,
+                           usercount=user.count(), who=who)
 
 
 @app.route('/access/<who>/<ref>', methods=['GET'])
 def access(who, ref):
-    username, admin, repoaccess = [None]*3
+    username, admin, repoaccess = [None] * 3
     try:
         username, admin, repoaccess = session.get('login')
     except:
@@ -239,16 +237,16 @@ def access(who, ref):
 
     password = passwdgen()
     db = get_session()
-    user = db.query(User).filter(User.username==who)
-    user.update({'access':True})
+    user = db.query(User).filter(User.username == who)
+    user.update({'access': True})
     user[0].password_set(password)
     db.commit()
 
     body = config.accessmailtext % {
-            'firstname' : user[0].firstname,
-            'lastname'  : user[0].lastname,
-            'username'  : user[0].username,
-            'password'  : password}
+            'firstname': user[0].firstname,
+            'lastname': user[0].lastname,
+            'username': user[0].username,
+            'password': password}
     email(h_to=user[0].email, h_subject=config.accessmailsubject, body=body)
 
     return redirect(url_for('admin', who=ref))
@@ -269,13 +267,13 @@ def delete(ref='new'):
     reason = request.form.get('reason')
 
     db = get_session()
-    users = db.query(User).filter(User.username==user)
+    users = db.query(User).filter(User.username == user)
 
     for user in users:
         body = config.deletemailtext % {
-                'firstname' : user.firstname,
-                'lastname' : user.lastname,
-                'reason' : reason}
+                'firstname': user.firstname,
+                'lastname': user.lastname,
+                'reason': reason}
         email(h_to=user.email, h_subject=config.deletemailsubject, body=body)
 
     users.delete()
@@ -286,7 +284,7 @@ def delete(ref='new'):
 
 @app.route('/opencast-repo.csv', methods=['GET'])
 def csv():
-    username, admin, repoaccess = [None]*3
+    username, admin, repoaccess = [None] * 3
     try:
         username, admin, repoaccess = session.get('login')
     except:
@@ -305,7 +303,6 @@ def csv():
         userdata = [getattr(u, a) or '' for a in attr]
         csv += ', '.join(['"%s"' % x for x in userdata]) + '\n'
     return Response(csv, content_type='application/octet-stream')
-
 
 
 @app.route('/logout')
@@ -357,22 +354,22 @@ def register():
 
     # Send registration mail to admin
     h_from = request.form.get('email')
-    h_subject = config.adminmailsubject % {'username' : request.form.get('user')}
+    username = request.form.get('user')
+    h_subject = config.adminmailsubject % {'username': username}
     body = config.adminmailtext % {
-        'username'  : request.form.get('user'),
-        'firstname' : request.form.get('firstname'),
-        'lastname'  : request.form.get('lastname') }
+        'username': username,
+        'firstname': request.form.get('firstname'),
+        'lastname': request.form.get('lastname')}
 
     try:
         for to in config.adminmailadress:
-            print to
             email(h_from=h_from, h_to=to, h_subject=h_subject, body=body)
     except smtplib.SMTPSenderRefused as err:
         db = get_session()
-        db.query(User).filter(User.username==request.form.get('user')).delete()
+        db.query(User).filter(User.username == username).delete()
         db.commit()
-        return redirect(url_for('error', e='There seems to be an error woth'
-            'your email address: %s.' % (err,)))
+        return redirect(url_for('error', e='There seems to be an error with '
+                                'your email address: %s.' % (err,)))
     return redirect('/success')
 
 
@@ -382,7 +379,7 @@ def passwdgen(length=16):
 
 
 def email(h_to, h_subject, body, h_from=config.accessmailsender):
-    header  = 'From: %s\n' % h_from
+    header = 'From: %s\n' % h_from
     header += 'To: %s\n' % h_to
     header += 'Subject: %s\n\n' % h_subject
     message = header + body

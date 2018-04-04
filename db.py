@@ -4,17 +4,11 @@ Database specification for the Opencast package repository user interface.
 :license: FreeBSD, see license file for more details.
 '''
 
-# Set default encoding to UTF-8
-import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
-
 import config
 from passlib.hash import pbkdf2_sha512
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, Text, DateTime, Boolean, create_engine
 from sqlalchemy import ForeignKey
-from sqlalchemy.schema import ForeignKeyConstraint
 from sqlalchemy.orm import sessionmaker, relationship, backref
 Base = declarative_base()
 
@@ -106,7 +100,8 @@ class ActivationLink(Base):
 
     __tablename__ = 'activationlink'
 
-    username = Column('username', ForeignKey('user.username'), primary_key=True)
+    username = Column('username', ForeignKey('user.username'),
+                      primary_key=True)
     '''Unique username'''
     key = Column('key', Text(), nullable=False)
     created = Column('created', DateTime(), nullable=False)
