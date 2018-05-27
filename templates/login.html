@@ -54,15 +54,6 @@
 	yum install opencast22-allinone
 			</pre>
 		</div>
-
-		<!--
-		<h5>Fedora</h5>
-		<div class="repocontent light">
-			<pre>
-	Fedora is available from the testing repository only.
-			</pre>
-		</div>
-		-->
 	</div>
 </div>
 
@@ -89,27 +80,6 @@
 		 -d version=7 -d os=el -u {{ username }}
 			</pre>
 		</div>
-
-		<!--
-		<h5>Fedora</h5>
-		<div class="repocontent">
-			<pre>
-	# Add Opencast repository.
-	cd /etc/yum.repos.d
-	curl -O {{ config.repourl }}/opencast-testing.repo \
-		-d 'version=$releasever' -d os=fc \
-		-u {{ username }}
-
-	# Add rpmfusion repository.
-	yum localinstall --nogpgcheck \
-		http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
-		http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-
-	# Install Opencast with all its dependencies.
-	yum install opencast22-allinone
-			</pre>
-		</div>
-		-->
 	</div>
 </div>
 
@@ -117,7 +87,10 @@
 	<div class="wrapper-inner">
 
 		<h2>Sources</h2>
-		<p>If you want to build your own RPM repository you can get the source RPMs from <a href="http://repo.virtuos.uos.de/srpms/">here</a>. Additional documentation and the SPEC files can be found at <a href="https://github.com/lkiesow/matterhorn-rpms">GitHub</a>.</p>
+		<p>If you want to build your own RPM repository you can
+		<a href="https://pkg.opencast.org/srpms/">download the source RPMs</a>.
+		Additional documentation and the SPEC files can be found at
+		<a href="https://github.com/lkiesow/matterhorn-rpms">GitHub</a>.</p>
 
 	</div>
 </div>
