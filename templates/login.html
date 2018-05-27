@@ -136,18 +136,33 @@
 	<div class="wrapper-inner">
 
 		<h2>Troubleshooting</h2>
-			<h5>CentOS/RHEL/Scientific Linux</h5>
+
+		<h5>CentOS/RHEL/Scientific Linux</h5>
 		<p>
-		If you encounter any trouble during the installation process check if all repositories are installed and enabled properly. Some distributions for example come with a preinstalled but disabled epel repository. The installation of the epel-release package will not fix this.
-		You can check what repositories are installed and enabled by executing yum repolist enabled which should give you a list with epel, matterhorn and matterhorn-noarch in it.
+		If you encounter any trouble during the installation process check if all
+		repositories are installed and enabled properly. Some distributions for
+		example come with a preinstalled but disabled epel repository. The
+		installation of the epel-release package will not fix this.  You can
+		check what repositories are installed and enabled by executing '<pre>yum
+		repolist enabled</pre>' which should list at least epel, opencast and
+		opencast-noarch.
 		</p>
 
 		<p>
-		If epel was preinstalled but disabled on your system, you can obviously skip the installation of the epel-release package, although an installation will not harm your system. You just need to enable the system by editing the configuration file /etc/yum.repo.d/epel.repo and set the property enabled to 1.
-		If you get errors that Matterhorn dependencies are missing, make sure that you are actually running an OS with x86_64 architecture. There is no repository for other architectures.
+		If epel was preinstalled but disabled on your system, you can obviously
+		skip the installation of the epel-release package, although an
+		installation will not harm your system. You just need to enable the
+		system by editing the configuration file /etc/yum.repo.d/epel.repo and
+		set the property enabled to 1.
 		</p>
 
-			<h5>Debian/Ubuntu</h5>
+		<p>
+		If you get errors that dependencies are missing, make sure that you are
+		actually running an OS with x86_64 architecture. There is no repository
+		for other architectures.
+		</p>
+
+		<h5>Debian/Ubuntu</h5>
 		<p>
 		Older versions of Debian and Ubuntu ship with older versions of the JDK, and various dependencies.  If you are encountering issues, please check that your have followed <a href="https://docs.opencast.org">the instructions</a> to the letter.  If you continue to encounter issues please email the users list
 		</p>
