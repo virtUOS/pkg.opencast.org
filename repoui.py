@@ -380,7 +380,7 @@ def register():
 
 
 def passwdgen(length=16):
-    chars = string.letters + string.digits
+    chars = string.ascii_letters + string.digits
     return ''.join([random.choice(chars) for _ in range(length)])
 
 
