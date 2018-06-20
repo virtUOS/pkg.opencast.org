@@ -55,6 +55,7 @@ class User(Base):
     organization = Column('organization', Text(), nullable=False)
     password = Column('password', Text(), nullable=True)
     usage = Column('usage', Text(), nullable=True)
+    accepted_terms = Column('accepted_terms', Boolean(), nullable=False)
 
     def password_set(self, password):
         self.password = pbkdf2_sha512.encrypt(password)
@@ -91,7 +92,8 @@ class User(Base):
             'organization': self.organization,
             'password': self.password,
             'salt': self.salt,
-            'usage': self.usage
+            'usage': self.usage,
+            'accepted_terms': self.accepted_terms
             }
 
 

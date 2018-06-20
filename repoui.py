@@ -32,7 +32,8 @@ def init():
         organization='Org',
         created=datetime.today(),
         admin=True,
-        access=True)
+        access=True,
+        accepted_terms=True)
     user.password_set('123')
     db.add(user)
     db.commit()
@@ -317,6 +318,10 @@ def register():
         return redirect(url_for('error',
                                 e='You have to accept the Terms of Service'))
 
+    if request.form.get('accept-terms') != 'agree':
+        return redirect(url_for('error',
+                                e='You have to accept the Terms of Service'))
+
     if request.form.get('url'):
         return redirect(url_for('error', e='You seem to be a robot.'))
 
@@ -346,7 +351,8 @@ def register():
         usage=request.form.get('usage'),
         learned=request.form.get('learn-about'),
         admin=False,
-        access=False))
+        access=False,
+        accepted_terms=True))
     try:
         db.commit()
     except IntegrityError:
