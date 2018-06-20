@@ -220,7 +220,7 @@ def admin(who='new'):
         return render_template('adminnew.html', config=config, user=user,
                                newusercount=user.count(), who=who)
 
-    user_without_access = len([u for u in user if not u.access]),
+    user_without_access = len([u for u in user if not u.access])
     return render_template('adminall.html', config=config, user=user,
                            newusercount=user_without_access,
                            usercount=user.count(), who=who)
