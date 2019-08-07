@@ -144,6 +144,9 @@
 			<pre>
 	# Add the stable repository, as above
 
+	# Add Opencast unstable repository signing key
+	wget -qO - https://pkg.opencast.org/gpgkeys/automated.key | apt-key add -
+
 	# Add Opencast unstable repository, as root
 	cd /etc/apt/sources.list.d/
 	echo "deb https://[YOUR_USERNAME]:[YOUR_PASSWORD]@pkg.opencast.org/debian unstable/" | \
